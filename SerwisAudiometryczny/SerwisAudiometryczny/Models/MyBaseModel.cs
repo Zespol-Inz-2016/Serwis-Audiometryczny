@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using SerwisAudiometryczny.Interface;
+using SerwisAudiometryczny.Models.Dicts;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace SerwisAudiometryczny.Models
 {
-    public class MyBaseModel
+    public class MyBaseModel : IMyBase
     {
         public MyBaseModel()
         {
@@ -23,6 +26,14 @@ namespace SerwisAudiometryczny.Models
         public MyBaseModelDBContext() : base("DefaultConnection")//Połaczenie z danym connectionstringiem
         {
         }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
         public DbSet<MyBaseModel> MyBaseObjects { get; set; }
+        public DbSet<DictSexModel> DictSexObjects { get; set; }
+        public DbSet<DictDiagnosisModel> DictDiagnosisObjects { get; set; }
+        public DbSet<DictInstrumentModel> DictInstrumentObjects { get; set; }
+        public DbSet<DictNuisanceModel> DictNuisanceObjects { get; set; }
     }
 }

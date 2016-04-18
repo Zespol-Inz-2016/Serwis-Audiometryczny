@@ -25,6 +25,7 @@ namespace SerwisAudiometryczny.ActionFilters
             var message = String.Format("created at: {0}, controller: {1}, action: {2}, duration: {3}", created_at, controller,
                     action, duration);
             Log("logfile.txt", message); //sciezka do ustalenia
+            //To powinno sie zapisywac do bazy danych !!
 
         }
         public void Log(string path, string message)

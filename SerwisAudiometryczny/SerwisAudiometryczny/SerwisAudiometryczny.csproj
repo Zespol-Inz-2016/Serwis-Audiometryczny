@@ -197,13 +197,24 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ModelsControllers\DictDiagnosisModelsController.cs" />
+    <Compile Include="Controllers\ModelsControllers\DictInstrumentModelsController.cs" />
+    <Compile Include="Controllers\ModelsControllers\DictNuisanceModelsController.cs" />
+    <Compile Include="Controllers\ModelsControllers\DictSexModelsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MyBaseModelsController.cs" />
+    <Compile Include="Controllers\ModelsControllers\MyBaseModelsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interface\IDictBase.cs" />
+    <Compile Include="Interface\IMyBase.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Dicts\DictBaseModel.cs" />
+    <Compile Include="Models\Dicts\DictDiagnosisModel.cs" />
+    <Compile Include="Models\Dicts\DictInstrumentModel.cs" />
+    <Compile Include="Models\Dicts\DictNuisanceModel.cs" />
+    <Compile Include="Models\Dicts\DictSexModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyBaseModel.cs" />
@@ -275,6 +286,26 @@
     <Content Include="Views\MyBaseModels\Details.cshtml" />
     <Content Include="Views\MyBaseModels\Edit.cshtml" />
     <Content Include="Views\MyBaseModels\Index.cshtml" />
+    <Content Include="Views\DictSexModels\Create.cshtml" />
+    <Content Include="Views\DictSexModels\Delete.cshtml" />
+    <Content Include="Views\DictSexModels\Details.cshtml" />
+    <Content Include="Views\DictSexModels\Edit.cshtml" />
+    <Content Include="Views\DictSexModels\Index.cshtml" />
+    <Content Include="Views\DictDiagnosisModels\Create.cshtml" />
+    <Content Include="Views\DictDiagnosisModels\Delete.cshtml" />
+    <Content Include="Views\DictDiagnosisModels\Details.cshtml" />
+    <Content Include="Views\DictDiagnosisModels\Edit.cshtml" />
+    <Content Include="Views\DictDiagnosisModels\Index.cshtml" />
+    <Content Include="Views\DictInstrumentModels\Create.cshtml" />
+    <Content Include="Views\DictInstrumentModels\Delete.cshtml" />
+    <Content Include="Views\DictInstrumentModels\Details.cshtml" />
+    <Content Include="Views\DictInstrumentModels\Edit.cshtml" />
+    <Content Include="Views\DictInstrumentModels\Index.cshtml" />
+    <Content Include="Views\DictNuisanceModels\Create.cshtml" />
+    <Content Include="Views\DictNuisanceModels\Delete.cshtml" />
+    <Content Include="Views\DictNuisanceModels\Details.cshtml" />
+    <Content Include="Views\DictNuisanceModels\Edit.cshtml" />
+    <Content Include="Views\DictNuisanceModels\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

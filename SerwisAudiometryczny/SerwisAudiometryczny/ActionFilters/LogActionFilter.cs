@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -29,10 +29,10 @@ namespace SerwisAudiometryczny.ActionFilters
         }
         public void Log(string path, string message)
         {
-            StreamWriter sw = new StreamWriter(path, true);
+          /*  StreamWriter sw = new StreamWriter(path, true);
             sw.WriteLine(message);
             sw.Flush();
-            sw.Close();
+            sw.Close();*/
         }
 
     }

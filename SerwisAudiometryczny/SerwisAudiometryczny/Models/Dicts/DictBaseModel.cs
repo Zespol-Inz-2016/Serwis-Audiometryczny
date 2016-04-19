@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SerwisAudiometryczny.Models.Dicts
 {
-    public class DictBaseModel : MyBaseModel, IDictBase
+    public abstract class DictBaseModel : MyBaseModel, IDictBase
     {
 
         public DictBaseModel() : base()

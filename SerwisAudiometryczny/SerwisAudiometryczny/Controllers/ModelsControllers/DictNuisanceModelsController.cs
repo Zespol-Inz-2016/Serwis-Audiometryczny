@@ -51,7 +51,7 @@ namespace SerwisAudiometryczny.Controllers.ModelsControllers
         {
             if (ModelState.IsValid)
             {
-                db.MyBaseObjects.Add(dictNuisanceModel);
+                db.DictNuisanceObjects.Add(dictNuisanceModel);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -111,7 +111,7 @@ namespace SerwisAudiometryczny.Controllers.ModelsControllers
         public ActionResult DeleteConfirmed(int id)
         {
             DictNuisanceModel dictNuisanceModel = db.DictNuisanceObjects.Find(id);
-            db.MyBaseObjects.Remove(dictNuisanceModel);
+            db.DictNuisanceObjects.Remove(dictNuisanceModel);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

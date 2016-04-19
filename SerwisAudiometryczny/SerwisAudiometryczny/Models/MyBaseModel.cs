@@ -7,10 +7,11 @@ using System.Data.Entity;
 using SerwisAudiometryczny.Interface;
 using SerwisAudiometryczny.Models.Dicts;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SerwisAudiometryczny.Models
 {
-    public class MyBaseModel : IMyBase
+    public abstract class MyBaseModel : IMyBase
     {
         public MyBaseModel()
         {
@@ -30,7 +31,7 @@ namespace SerwisAudiometryczny.Models
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
-        public DbSet<MyBaseModel> MyBaseObjects { get; set; }
+        //public DbSet<MyBaseModel> MyBaseObjects { get; set; }
         public DbSet<DictSexModel> DictSexObjects { get; set; }
         public DbSet<DictDiagnosisModel> DictDiagnosisObjects { get; set; }
         public DbSet<DictInstrumentModel> DictInstrumentObjects { get; set; }

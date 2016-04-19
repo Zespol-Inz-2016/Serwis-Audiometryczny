@@ -51,7 +51,7 @@ namespace SerwisAudiometryczny.Controllers.ModelsControllers
         {
             if (ModelState.IsValid)
             {
-                db.MyBaseObjects.Add(dictInstrumentModel);
+                db.DictInstrumentObjects.Add(dictInstrumentModel);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -111,7 +111,7 @@ namespace SerwisAudiometryczny.Controllers.ModelsControllers
         public ActionResult DeleteConfirmed(int id)
         {
             DictInstrumentModel dictInstrumentModel = db.DictInstrumentObjects.Find(id);
-            db.MyBaseObjects.Remove(dictInstrumentModel);
+            db.DictInstrumentObjects.Remove(dictInstrumentModel);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

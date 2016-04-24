@@ -214,6 +214,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BackupController.cs" />
+    <Compile Include="Models\LogModels.cs" />
     <Compile Include="Controllers\ModelsControllers\DictDiagnosisModelsController.cs" />
     <Compile Include="Controllers\ModelsControllers\DictInstrumentModelsController.cs" />
     <Compile Include="Controllers\ModelsControllers\DictNuisanceModelsController.cs" />

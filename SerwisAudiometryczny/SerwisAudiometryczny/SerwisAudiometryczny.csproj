@@ -214,6 +214,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BackupController.cs" />
+    <Compile Include="Models\AudiogramModel.cs" />
     <Compile Include="Models\LogModels.cs" />
     <Compile Include="Controllers\ModelsControllers\DictDiagnosisModelsController.cs" />
     <Compile Include="Controllers\ModelsControllers\DictInstrumentModelsController.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyBackupAndRestore.cs" />
     <Compile Include="Models\MyBaseModel.cs" />
+    <Compile Include="Models\PointModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

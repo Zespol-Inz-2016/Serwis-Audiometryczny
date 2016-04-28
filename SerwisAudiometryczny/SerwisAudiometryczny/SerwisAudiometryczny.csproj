@@ -214,6 +214,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BackupController.cs" />
+    <Compile Include="Controllers\ModelsControllers\AudiogramModelsController.cs" />
+    <Compile Include="Controllers\ModelsControllers\PointModelsController.cs" />
     <Compile Include="Models\AudiogramModel.cs" />
     <Compile Include="Models\LogModels.cs" />
     <Compile Include="Controllers\ModelsControllers\DictDiagnosisModelsController.cs" />
@@ -327,6 +329,16 @@
     <Content Include="Views\DictNuisanceModels\Details.cshtml" />
     <Content Include="Views\DictNuisanceModels\Edit.cshtml" />
     <Content Include="Views\DictNuisanceModels\Index.cshtml" />
+    <Content Include="Views\AudiogramModels\Create.cshtml" />
+    <Content Include="Views\AudiogramModels\Delete.cshtml" />
+    <Content Include="Views\AudiogramModels\Details.cshtml" />
+    <Content Include="Views\AudiogramModels\Edit.cshtml" />
+    <Content Include="Views\AudiogramModels\Index.cshtml" />
+    <Content Include="Views\PointModels\Create.cshtml" />
+    <Content Include="Views\PointModels\Delete.cshtml" />
+    <Content Include="Views\PointModels\Details.cshtml" />
+    <Content Include="Views\PointModels\Edit.cshtml" />
+    <Content Include="Views\PointModels\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

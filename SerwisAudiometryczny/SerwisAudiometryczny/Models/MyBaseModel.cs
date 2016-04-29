@@ -36,5 +36,7 @@ namespace SerwisAudiometryczny.Models
         public DbSet<DictDiagnosisModel> DictDiagnosisObjects { get; set; }
         public DbSet<DictInstrumentModel> DictInstrumentObjects { get; set; }
         public DbSet<DictNuisanceModel> DictNuisanceObjects { get; set; }
+        public DbSet<PointModel> PointModels { get; set; }
+        public DbSet<AudiogramModel> AudiogramModels { get; set; }
     }
 }

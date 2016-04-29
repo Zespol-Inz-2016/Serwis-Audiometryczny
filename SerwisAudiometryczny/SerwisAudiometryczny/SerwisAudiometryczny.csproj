@@ -217,7 +217,7 @@
     <Compile Include="Controllers\ModelsControllers\AudiogramModelsController.cs" />
     <Compile Include="Controllers\ModelsControllers\PointModelsController.cs" />
     <Compile Include="Models\AudiogramModel.cs" />
-    <Compile Include="Models\LogModels.cs" />
+    <Compile Include="Models\LogModel.cs" />
     <Compile Include="Controllers\ModelsControllers\DictDiagnosisModelsController.cs" />
     <Compile Include="Controllers\ModelsControllers\DictInstrumentModelsController.cs" />
     <Compile Include="Controllers\ModelsControllers\DictNuisanceModelsController.cs" />

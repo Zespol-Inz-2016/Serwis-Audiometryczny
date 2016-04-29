@@ -19,19 +19,17 @@ namespace SerwisAudiometryczny.ActionFilters
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-
             RouteData route_data = filterContext.RouteData;     ///pobieramy dane z wykonanej czynnoœci     
-            LogModels log = new LogModels();
+            LogModel log = new LogModel();
             if (filterContext.RouteData.DataTokens.ContainsKey("username"))
-                log.idUser = (string)route_data.Values["username"];   ///zapisujemy kto zrobi³
+                log.IdUser = (string)route_data.Values["username"];   ///zapisujemy kto zrobi³
             else
-                log.idUser = "anonymous";
-            log.controller = (string)route_data.Values["controller"];    ///zapisujemy gdzie to wykona³ (na jakiej stronie)
-            log.action = (string)route_data.Values["action"];    ///zapisujemy co zrobi³
-            log.time = start_time;
+                log.IdUser = "anonymous";
+            log.Controller = (string)route_data.Values["controller"];    ///zapisujemy gdzie to wykona³ (na jakiej stronie)
+            log.Action = (string)route_data.Values["action"];    ///zapisujemy co zrobi³
+            log.Time = start_time;  ///zapisujemy o której zrobi³
 
             Log("C:\\logfile.txt", log.ToString() ); //sciezka do ustalenia, powinno sie zapisywac do bazy danych !!
-
         }
         public void Log(string path, string message)
         {

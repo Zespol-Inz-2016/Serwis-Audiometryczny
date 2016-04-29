@@ -38,5 +38,6 @@ namespace SerwisAudiometryczny.Models
         public DbSet<DictNuisanceModel> DictNuisanceObjects { get; set; }
         public DbSet<PointModel> PointModels { get; set; }
         public DbSet<AudiogramModel> AudiogramModels { get; set; }
+        public DbSet<LogModel> LogModels { get; set; }
     }
 }

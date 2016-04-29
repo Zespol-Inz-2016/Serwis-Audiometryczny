@@ -11,6 +11,20 @@ namespace SerwisAudiometryczny.Controllers
     {
         MyBackupAndRestore backupAndRestore = new MyBackupAndRestore();
            
+        //przykładowe wygenerowanie zrzutu bazy do skryptu
+        public string script()
+        {
+            try
+            {
+                backupAndRestore.GenerateScript("skrypt");
+            }
+            catch (Exception error)
+            {
+                return error.Message;
+            }
+            return @"Wygenerowano skrypt do ścieżki C:\Skrypty\skrypt.sql";
+        }
+
         // GET: Backup
         public ActionResult Index()
         {

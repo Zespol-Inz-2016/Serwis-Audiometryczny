@@ -1,8 +1,10 @@
 ﻿using System;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Collections.Specialized;
+using System.IO;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace SerwisAudiometryczny.Models
 {
@@ -12,7 +14,7 @@ namespace SerwisAudiometryczny.Models
         private string databaseName = "SerwisAudiometryczny"; // nazwa bazy danych
 
         /// <summary>
-        /// Właściwość pobierająca nazwę serwera(Data Source)
+        /// Właściwość zwracająca nazwę serwera(Data Source)
         /// </summary>
         private string serverName
         {
@@ -129,6 +131,54 @@ namespace SerwisAudiometryczny.Models
             }
             sqlRestore.Devices.Remove(deviceItem);
             connection.Disconnect();
+        }
+        
+        // WAŻNE: Skrypty zapisują się jak narazie w folderze  C:\Skrypty\
+        /// <summary>
+        /// Metoda wykonująca zrzut bazy danych do skryptu (.sql)
+        /// </summary>
+        /// <param name="scriptName">Nazwa skryptu</param>
+        public void GenerateScript(string scriptName)
+        {
+            ServerConnection connection = new ServerConnection(serverName);
+            Server sqlServer = new Server(connection);
+            Database database = sqlServer.Databases["SerwisAudiometryczny"];
+            StringCollection databaseScript = database.Script();
+
+            if (!Directory.Exists(@"C:\Skrypty"))
+                Directory.CreateDirectory(@"C:\Skrypty");
+
+            FileStream fs = new FileStream($@"C:\Skrypty\{scriptName}.sql", FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+
+            //Dodanie daty wykonania skryptu 
+            sw.WriteLine($"/*********     Skrypt wygenerowany: {DateTime.Now}      *********/\n");
+
+            //Umieszczenie skryptu tworzacego baze danych
+            foreach (var item in databaseScript)
+            {
+                sw.WriteLine(item);
+            }
+            sw.WriteLine($"GO\n"); //Trzeba dodac GO, ponieważ najpierw trzeba stworzyć bazę, aby móc stworzyć w niej tabele
+
+            Scripter script = new Scripter(sqlServer);
+            ScriptingOptions scriptOptions = new ScriptingOptions()
+            {
+                IncludeDatabaseContext = true,
+                ScriptData = true,
+                ScriptSchema = true,
+                ScriptDrops = false,
+            };
+            script.Options = scriptOptions;
+
+            foreach (Table table in database.Tables)
+            {
+                foreach (var item in table.EnumScript(scriptOptions))
+                {
+                    sw.WriteLine(item);
+                }
+            }
+            sw.Close();
         }
     }
 

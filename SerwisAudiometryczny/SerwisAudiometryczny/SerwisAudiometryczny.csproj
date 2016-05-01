@@ -217,6 +217,9 @@
     <Compile Include="Controllers\ModelsControllers\AudiogramModelsController.cs" />
     <Compile Include="Controllers\ModelsControllers\PointModelsController.cs" />
     <Compile Include="Models\AudiogramModel.cs" />
+    <Compile Include="Models\FrequencyModel.cs" />
+    <Compile Include="Models\HearingLevel.cs" />
+    <Compile Include="Models\InstrumentModel.cs" />
     <Compile Include="Models\LogModel.cs" />
     <Compile Include="Controllers\ModelsControllers\DictDiagnosisModelsController.cs" />
     <Compile Include="Controllers\ModelsControllers\DictInstrumentModelsController.cs" />

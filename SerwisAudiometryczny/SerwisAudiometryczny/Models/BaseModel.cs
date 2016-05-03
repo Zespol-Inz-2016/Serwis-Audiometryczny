@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SerwisAudiometryczny.Models
 {
-    public abstract class BaseModel : IMyBase
+    public abstract class BaseModel : IBaseModel
     {
         public int ID { get; set; }
     }

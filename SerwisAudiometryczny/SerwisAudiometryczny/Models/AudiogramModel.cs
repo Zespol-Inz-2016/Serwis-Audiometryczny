@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 namespace SerwisAudiometryczny.Models
 {
-    public class AudiogramModel : BaseModel, IMyBase
+    public class AudiogramModel : BaseModel, IBaseModel
     {
         /// <summary>
         /// Typ wyliczeniowy dla płci.

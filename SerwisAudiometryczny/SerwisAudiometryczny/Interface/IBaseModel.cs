@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SerwisAudiometryczny.Interface
 {
-    interface IMyBase
+    interface IBaseModel
     {
         int ID
         {

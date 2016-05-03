@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SerwisAudiometryczny.Models
 {
-    public class InstrumentModel : BaseModel, IMyBase
+    public class InstrumentModel : BaseModel, IBaseModel
     {
         /// <summary>
         /// Nazwa instrumentu.

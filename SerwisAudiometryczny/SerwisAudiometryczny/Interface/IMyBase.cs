@@ -13,10 +13,5 @@ namespace SerwisAudiometryczny.Interface
             get;
             set;
         }
-        DateTime CreationDate
-        {
-            get;
-            set;
-        }
     }
 }

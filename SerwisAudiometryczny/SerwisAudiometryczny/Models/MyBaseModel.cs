@@ -13,12 +13,7 @@ namespace SerwisAudiometryczny.Models
 {
     public abstract class MyBaseModel : IMyBase
     {
-        public MyBaseModel()
-        {
-            CreationDate = DateTime.Now;
-        }
-        public int ID { get; set; }
-        public DateTime CreationDate { get; set; }
+
     }
     public class MyBaseModelDBContext : DbContext
     {

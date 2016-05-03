@@ -16,11 +16,9 @@ namespace SerwisAudiometryczny.Models
         public MyBaseModel()
         {
             CreationDate = DateTime.Now;
-            Type = "MyBaseModel";
         }
         public int ID { get; set; }
         public DateTime CreationDate { get; set; }
-        public string Type { get; set; }
     }
     public class MyBaseModelDBContext : DbContext
     {
@@ -31,13 +29,9 @@ namespace SerwisAudiometryczny.Models
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
-        //public DbSet<MyBaseModel> MyBaseObjects { get; set; }
-        public DbSet<DictSexModel> DictSexObjects { get; set; }
-        public DbSet<DictDiagnosisModel> DictDiagnosisObjects { get; set; }
-        public DbSet<DictInstrumentModel> DictInstrumentObjects { get; set; }
-        public DbSet<DictNuisanceModel> DictNuisanceObjects { get; set; }
-        public DbSet<PointModel> PointModels { get; set; }
-        public DbSet<AudiogramModel> AudiogramModels { get; set; }
-        public DbSet<LogModel> LogModels { get; set; }
+        public DbSet<AudiogramModel> AudiogramModels;
+        public DbSet<LogModel> LogModels;
+        public DbSet<InstrumentModel> InstrumentModels;
+        public DbSet<FrequencyModel> FrequencyModels;
     }
 }

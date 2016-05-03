@@ -10,48 +10,57 @@ namespace SerwisAudiometryczny.Models
 {
     public class AudiogramModel : MyBaseModel, IMyBase
     {
-        public AudiogramModel():base()
-        {
-            Type = "AudiogramModel";
-        }
-        //
-        //Typ wyliczeniowy dla płci.
+        /// <summary>
+        /// Typ wyliczeniowy dla płci.
+        /// </summary>
         public enum Sexes { Male, Female }
-        //
-        //Typ wyliczeniowy dla Uciążliwości uszkodzenia słuchu.
+        /// <summary>
+        /// Typ wyliczeniowy dla Uciążliwości uszkodzenia słuchu.
+        /// </summary>
         public enum Nuisances { Unspecified = 0, None = 1, Slight = 2, Perceptible = 3, Moderate = 4, Significant = 5, Strong = 6, Extreme = 7 }
-        //
-        //Udziela dostępu do zmiennej LeftEar typu HearingLevel dla lewego ucha w AudiogramModel.
+        /// <summary>
+        /// Opisuje poziom uszkodzenia słuchu dla lewego ucha.
+        /// </summary>
         public HearingLevel LeftEar { get; set; }
-        //
-        //Udziela dostępu do zmiennej RightEar typu HearingLevel dla prawego ucha w AudiogramModel.
+        /// <summary>
+        /// Opisuje poziom uszkodzenia słuchu dla prawego ucha.
+        /// </summary>
         public HearingLevel RightEar { get; set; }
-        //
-        //Udziela dostępu do zmiennej Diagnosis w AudiogramModel. Opisuje diagnozę wystawioną pacjentowi.
+        /// <summary>
+        /// Opisuje diagnozę wystawioną pacjentowi.
+        /// </summary>
         public string Diagnosis { get; set; }
-        //
-        //Udziela dostępu do zmiennej Gender w AudiogramModel. Opisuje płeć pacjenta/pacjentki.
-        public Sexes Gender { get; set; }
-        //
-        //Udziela dostępu do zmiennej Nuisance w AudiogramModel. Opisuje stopień uciążliwości uszkodzenia słuchu.
+        /// <summary>
+        /// Opisuje płeć pacjenta/pacjentki.
+        /// </summary>
+        public Sexes Sex { get; set; }
+        /// <summary>
+        /// Opisuje stopień uciążliwości uszkodzenia słuchu.
+        /// </summary>
         public Nuisances Nuisance { get; set; }
-        //
-        //Udziela dostępu do zmiennej Age w AudiogramModel. Opisuje wiek pacjenta.
+        /// <summary>
+        /// Opisuje wiek pacjenta.
+        /// </summary>
         public int Age { get; set; }
-        //
-        //Udziela dostępu do zmiennej PercentageHearingLoss w AudiogramModel. Opisuje utratę słuchu w procentach.
+        /// <summary>
+        /// Opisuje utratę słuchu w procentach.
+        /// </summary>
         public float PercentageHearingLoss { get; set; }
-        //
-        //Udziela dostępu do zmiennej IsMusician w AudiogramModel. Opisuje, czy pacjent jest muzykiem.
+        /// <summary>
+        /// Opisuje, czy pacjent jest muzykiem.
+        /// </summary>
         public bool IsMusician { get; set; }
-        //
-        //Udziela dostępu do zmiennej Instrument w AudiogramModel. Opisuje główny instrument, którego używa pacjent.
+        /// <summary>
+        /// Opisuje główny instrument, którego używa pacjent.
+        /// </summary>
         public InstrumentModel Instrument { get; set; }
-        //
-        //Udziela dostępu do zmiennej Patient w AudiogramModel. Opisuje, do którego pacjenta należy ten audiogram.
+        /// <summary>
+        /// Opisuje, do którego pacjenta należy ten audiogram.
+        /// </summary>
         public ApplicationUser Patient { get; set; }
-        //
-        //Udziela dostępu do zmiennej EditorBackupController w AudiogramModel. Opisuje, który lekarz(edytor) dodał ten audiogram.
+        /// <summary>
+        /// Opisuje, który lekarz(edytor) dodał ten audiogram.
+        /// </summary>
         public ApplicationUser Editor { get; set; }
     }
 }

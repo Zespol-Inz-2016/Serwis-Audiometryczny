@@ -7,8 +7,9 @@ namespace SerwisAudiometryczny.Models
 {
     public class InstrumentModel
     {
-        //
-        //Udziela dostepu do zmiennej Name w InstrumentModel.
+        /// <summary>
+        /// Nazwa instrumentu.
+        /// </summary>
         public string Name { get; set; }
     }
 }

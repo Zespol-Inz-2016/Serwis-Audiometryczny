@@ -7,11 +7,13 @@ namespace SerwisAudiometryczny.Models
 {
     public class HearingLevel
     {
-        //
-        //Udziela dostepu do zmiennej Levels[] w HearingLevel.
+        /// <summary>
+        /// Opisuje poziomy słyszalności w dB.
+        /// </summary>
         public float[] Levels { get; set; }
-        //
-        //Udziela dostepu do zmiennej InternalLevels w HearingLevel.
+        /// <summary>
+        /// Zawiera pooddzielane średnikami kolejne częstotliwości.
+        /// </summary>
         public string InternalLevels { get; set; }
     }
 }

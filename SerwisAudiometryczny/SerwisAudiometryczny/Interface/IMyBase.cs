@@ -18,10 +18,5 @@ namespace SerwisAudiometryczny.Interface
             get;
             set;
         }
-        string Type
-        {
-            get;
-            set;
-        }
     }
 }

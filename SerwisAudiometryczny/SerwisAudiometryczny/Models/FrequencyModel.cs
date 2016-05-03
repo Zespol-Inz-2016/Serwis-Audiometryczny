@@ -7,8 +7,9 @@ namespace SerwisAudiometryczny.Models
 {
     public class FrequencyModel
     {
-        //
-        //Udziela dostepu do zmiennej Frequency we FrequencyModel.
+        /// <summary>
+        /// Opisuje częstotliwość.
+        /// </summary>
         public int Frequency { get; set; }
     }
 }

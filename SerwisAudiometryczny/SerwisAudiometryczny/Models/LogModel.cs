@@ -12,10 +12,6 @@ namespace SerwisAudiometryczny.Models
     /// </summary>
     public class LogModel : BaseModel
     {
-        public LogModel() : base()
-        {
-            Type = "Log";
-        }
         /// <summary>
         /// IdUser - zmienna przechowywująca numer indentyfikacyjny użytkownika
         /// </summary>

@@ -213,6 +213,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AudiogramModelsController.cs" />
     <Compile Include="Controllers\BackupController.cs" />
     <Compile Include="Models\AudiogramModel.cs" />
     <Compile Include="Models\FrequencyModel.cs" />
@@ -299,6 +300,11 @@
     <Content Include="Views\MyBaseModels\Details.cshtml" />
     <Content Include="Views\MyBaseModels\Edit.cshtml" />
     <Content Include="Views\MyBaseModels\Index.cshtml" />
+    <Content Include="Views\AudiogramModels\Create.cshtml" />
+    <Content Include="Views\AudiogramModels\Delete.cshtml" />
+    <Content Include="Views\AudiogramModels\Details.cshtml" />
+    <Content Include="Views\AudiogramModels\Edit.cshtml" />
+    <Content Include="Views\AudiogramModels\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

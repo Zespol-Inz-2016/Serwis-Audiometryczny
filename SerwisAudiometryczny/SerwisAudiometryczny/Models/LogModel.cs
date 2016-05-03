@@ -10,7 +10,7 @@ namespace SerwisAudiometryczny.Models
     /// <summary>
     /// Model przechowywujący dane o zdarzeniu do zalogowania
     /// </summary>
-    public class LogModel : MyBaseModel
+    public class LogModel : BaseModel
     {
         public LogModel() : base()
         {

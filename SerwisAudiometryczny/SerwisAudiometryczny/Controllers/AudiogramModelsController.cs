@@ -12,7 +12,7 @@ namespace SerwisAudiometryczny.Controllers
 {
     public class AudiogramModelsController : Controller
     {
-        private MyBaseModelDBContext db = new MyBaseModelDBContext();
+        private ModelsDbContext db = new ModelsDbContext();
 
         // GET: AudiogramModels
         public ActionResult Index()

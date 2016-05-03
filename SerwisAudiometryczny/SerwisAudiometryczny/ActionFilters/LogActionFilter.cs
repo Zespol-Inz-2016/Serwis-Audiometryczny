@@ -53,7 +53,7 @@ namespace SerwisAudiometryczny.ActionFilters
         /// <param name="log">Log do wspisania</param>
         public void Log(LogModel log)
         {
-            var db = new MyBaseModelDBContext();
+            var db = new ModelsDbContext();
             db.LogModels.Add(log);
             db.SaveChanges();
         }

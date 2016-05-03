@@ -215,6 +215,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AudiogramModelsController.cs" />
     <Compile Include="Controllers\BackupController.cs" />
+    <Compile Include="Controllers\FrequencyModelsController.cs" />
+    <Compile Include="Controllers\InstrumentModelsController.cs" />
     <Compile Include="Models\AudiogramModel.cs" />
     <Compile Include="Models\FrequencyModel.cs" />
     <Compile Include="Models\HearingLevel.cs" />
@@ -305,6 +307,16 @@
     <Content Include="Views\AudiogramModels\Details.cshtml" />
     <Content Include="Views\AudiogramModels\Edit.cshtml" />
     <Content Include="Views\AudiogramModels\Index.cshtml" />
+    <Content Include="Views\FrequencyModels\Create.cshtml" />
+    <Content Include="Views\FrequencyModels\Delete.cshtml" />
+    <Content Include="Views\FrequencyModels\Details.cshtml" />
+    <Content Include="Views\FrequencyModels\Edit.cshtml" />
+    <Content Include="Views\FrequencyModels\Index.cshtml" />
+    <Content Include="Views\InstrumentModels\Create.cshtml" />
+    <Content Include="Views\InstrumentModels\Delete.cshtml" />
+    <Content Include="Views\InstrumentModels\Details.cshtml" />
+    <Content Include="Views\InstrumentModels\Edit.cshtml" />
+    <Content Include="Views\InstrumentModels\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

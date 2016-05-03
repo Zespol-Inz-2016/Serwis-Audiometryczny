@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SerwisAudiometryczny.Models
 {
-    public class FrequencyModel : BaseModel, IBaseModel
+    public class FrequencyModel : BaseModel
     {
         /// <summary>
         /// Opisuje częstotliwość.

@@ -14,18 +14,18 @@ namespace SerwisAudiometryczny.Models
     {
         public int ID { get; set; }
     }
-    public class MyBaseModelDBContext : DbContext
+    public class ModelsDbContext : DbContext
     {
-        public MyBaseModelDBContext() : base("DefaultConnection")//Połaczenie z danym connectionstringiem
+        public ModelsDbContext() : base("DefaultConnection")//Połaczenie z danym connectionstringiem
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
-        public DbSet<AudiogramModel> AudiogramModels;
-        public DbSet<LogModel> LogModels;
-        public DbSet<InstrumentModel> InstrumentModels;
-        public DbSet<FrequencyModel> FrequencyModels;
+        public DbSet<AudiogramModel> AudiogramModels { get; set; }
+        public DbSet<LogModel> LogModels { get; set; }
+        public DbSet<InstrumentModel> InstrumentModels { get; set; }
+        public DbSet<FrequencyModel> FrequencyModels { get; set; }
     }
 }

@@ -4,46 +4,58 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.IO;
 using SerwisAudiometryczny.Models;
+using SerwisAudiometryczny.Controllers;
 
 namespace SerwisAudiometryczny.ActionFilters
 {
+    /// <summary>
+    /// Filter akcji
+    /// </summary>
     public class LogActionFilter : ActionFilterAttribute
     {
+        /// <summary>
+        /// zmienna przechowywuj¹ca czas rozpoczêcia akcji
+        /// </summary>
         protected DateTime start_time;
 
+        /// <summary>
+        /// Kiedy zaczêta akcjê zapisujemy o której siê zacze³a
+        /// </summary>
+        /// <param name="filterContext">Akcja która siê rozpoczê³a</param>
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
-            ///zapisujemy kiedy zacze³a siê dana czynnoœæ
-            start_time = DateTime.Now;            
+            start_time = DateTime.Now;
         }
 
+        /// <summary>
+        /// Kiedy wykonano akcjê zapisujemy j¹ do logów
+        /// </summary>
+        /// <param name="filterContext">Akcja która siê zakoñczy³a</param>
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            RouteData route_data = filterContext.RouteData;     ///pobieramy dane z wykonanej czynnoœci     
+            RouteData route_data = filterContext.RouteData;
             LogModel log = new LogModel();
-            if (filterContext.RouteData.DataTokens.ContainsKey("username"))
-                log.IdUser = (string)route_data.Values["username"];   ///zapisujemy kto zrobi³
+
+            if (filterContext.RouteData.DataTokens.ContainsKey("iduser"))
+                log.IdUser = (int)route_data.Values["iduser"];
             else
-                log.IdUser = "anonymous";
-            log.Controller = (string)route_data.Values["controller"];    ///zapisujemy gdzie to wykona³ (na jakiej stronie)
-            log.Action = (string)route_data.Values["action"];    ///zapisujemy co zrobi³
-            log.Time = start_time;  ///zapisujemy o której zrobi³
+                log.IdUser = -1;
+            log.Controller = (string)route_data.Values["controller"];
+            log.Action = (string)route_data.Values["action"];
+            log.Time = start_time;
 
-            Log("C:\\logfile.txt", log.ToString() ); //sciezka do ustalenia, powinno sie zapisywac do bazy danych !!
+            Log(log);
         }
-        public void Log(string path, string message)
+
+        /// <summary>
+        /// Metoda log wpisuje dany log do bazy
+        /// </summary>
+        /// <param name="log">Log do wspisania</param>
+        public void Log(LogModel log)
         {
-            /*
-            FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write); ///tworzymy strumieñ do logów, bêdziemy tylko dopisywaæ kolejne logi
-            StreamWriter sw = new StreamWriter(fs); ///tworzymy strumieñ zapisu 
-            sw.WriteLine(message);  ///zapisujemy logi do plików
-            sw.Flush(); ///czyœcimy bufor strumienia z danych
-
-            ///zamykamy strumienie
-            sw.Close(); 
-            fs.Close(); 
-            */
+            var db = new MyBaseModelDBContext();
+            db.LogModels.Add(log);
+            db.SaveChanges();
         }
-
     }
 }

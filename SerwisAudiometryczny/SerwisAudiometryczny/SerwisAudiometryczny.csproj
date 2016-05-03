@@ -240,6 +240,7 @@
     <Compile Include="Models\Dicts\DictNuisanceModel.cs" />
     <Compile Include="Models\Dicts\DictSexModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LogSearchViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MyBackupAndRestore.cs" />
     <Compile Include="Models\MyBaseModel.cs" />

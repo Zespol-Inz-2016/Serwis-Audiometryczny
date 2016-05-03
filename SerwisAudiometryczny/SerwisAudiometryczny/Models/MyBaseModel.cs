@@ -13,7 +13,7 @@ namespace SerwisAudiometryczny.Models
 {
     public abstract class MyBaseModel : IMyBase
     {
-
+        public int ID { get; set; }
     }
     public class MyBaseModelDBContext : DbContext
     {

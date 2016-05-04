@@ -20,7 +20,7 @@ x86/
 bld/
 [Bb]in/
 [Oo]bj/
-[Ll]og/
+[Ll]og/*
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -204,7 +204,7 @@ Generated_Code/
 # to a newer Visual Studio version. Backup files are not needed,
 # because we have git ;-)
 _UpgradeReport_Files/
-Backup*/
+Backup*/*
 UpgradeLog*.XML
 UpgradeLog*.htm
 
@@ -250,3 +250,6 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+!Views/Backup
+!Views/Log

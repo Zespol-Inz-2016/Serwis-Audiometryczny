@@ -4,43 +4,38 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
+using System.IO;
 
 namespace SerwisAudiometryczny.Controllers
 {
     public class BackupController : Controller
     {
-        MyBackupAndRestore backupAndRestore = new MyBackupAndRestore();
-           
-        //przykładowe wygenerowanie zrzutu bazy do skryptu
-        public string script()
-        {
-            try
-            {
-                backupAndRestore.GenerateScript("skrypt");
-            }
-            catch (Exception error)
-            {
-                return error.Message;
-            }
-            return @"Wygenerowano skrypt do ścieżki C:\Skrypty\skrypt.sql";
-        }
+        DatabaseBackuper databaseBackuper = new DatabaseBackuper();
 
-        // GET: Backup
-        public ActionResult Index()
+        public ActionResult Import()
         {
             return View();
         }
 
-        // GET: Backup/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Import(HttpPostedFileBase backup)
+        {
+            databaseBackuper.Restore(backup.InputStream);
+            return View();
+        }
+
+        public ActionResult Export()
         {
             return View();
         }
 
-        // GET: Backup/Create
-        public ActionResult Create()
+        public FileResult SendFile()
         {
-            return View();
+            Stream stream = databaseBackuper.Backup();
+            string contentType = MimeMapping.GetMimeMapping(Server.MapPath("~/App_Data/backup.sql"));
+            string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_SerwisAudiometryczny.sql";
+            FileStreamResult fileStreamResult = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };
+   
+            return fileStreamResult;
         }
 
         // POST: Backup/Create

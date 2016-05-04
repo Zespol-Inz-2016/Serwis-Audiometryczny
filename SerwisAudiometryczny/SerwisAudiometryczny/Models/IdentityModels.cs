@@ -9,6 +9,22 @@ namespace SerwisAudiometryczny.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        /// <summary>
+        /// Rola administratora.
+        /// </summary>
+        public bool Administrator { get; set; }
+        /// <summary>
+        /// Rola urzytkownika
+        /// </summary>
+        public bool User { get; set; }
+        /// <summary>
+        /// Rola badacza
+        /// </summary>
+        public bool Researcher { get; set; }
+        /// <summary>
+        /// Rola pacjenta
+        /// </summary>
+        public bool Patient { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

@@ -10,10 +10,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// Bazowy model po którym dziedziczą inne modele
+    /// </summary>
     public abstract class BaseModel : IBaseModel
     {
+        /// <summary>
+        /// Id obiektu
+        /// </summary>
         public int ID { get; set; }
     }
+
     public class ModelsDbContext : DbContext
     {
         public ModelsDbContext() : base("DefaultConnection")//Połaczenie z danym connectionstringiem

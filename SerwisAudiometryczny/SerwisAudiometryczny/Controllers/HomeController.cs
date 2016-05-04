@@ -10,11 +10,12 @@ namespace SerwisAudiometryczny.Controllers
     public class HomeController : Controller
     {
         [LogActionFilter] //atrybut tworzący logi
+
         public ActionResult Index()
         {
             return View();
         }
-
+        [IsAdministratorAttribute]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

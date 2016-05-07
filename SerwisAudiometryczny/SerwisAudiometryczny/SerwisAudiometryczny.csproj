@@ -339,10 +339,11 @@
     <Content Include="Views\Log\Details.cshtml" />
     <Content Include="Views\Log\Edit.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Backup\Export.cshtml" />
+    <Content Include="Views\Backup\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Backup\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -17,9 +17,11 @@ namespace SerwisAudiometryczny.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult Import(HttpPostedFileBase backup)
         {
             databaseBackuper.Restore(backup.InputStream);
+            ViewBag.Message = "Pomyślnie przywrócono bazę danych!";
             return View();
         }
 

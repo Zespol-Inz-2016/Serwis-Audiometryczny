@@ -10,7 +10,16 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje poziomy słyszalności w dB.
         /// </summary>
-        public float[] Levels { get; set; }
+        [NotMapped]
+        public float[] Levels 
+        { 
+            get { 
+                return Array.ConvertAll(InternalLevels.Split(';'), Float.Parse); 
+            } 
+            set { 
+                InternalLevels = String.Join(";", value.Select(p => p.ToString()).ToArray()); 
+            } 
+        }
         /// <summary>
         /// Zawiera pooddzielane średnikami kolejne częstotliwości.
         /// </summary>

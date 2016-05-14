@@ -61,7 +61,22 @@ namespace SerwisAudiometryczny.Controllers
             return View();
         }
 
-        //
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
+        //:TODO
+        public ActionResult Edit(AccountEditViewModel model)
+        {
+            return View();
+        }
+
+        public ActionResult Details()
+        {
+            return View();
+        }
+
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]

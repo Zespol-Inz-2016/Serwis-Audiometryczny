@@ -10,12 +10,23 @@ using SerwisAudiometryczny.Models;
 
 namespace SerwisAudiometryczny.Controllers
 {
-    public class AudiogramModelsController : Controller
+    public class AudiogramController : Controller
     {
         private ModelsDbContext db = new ModelsDbContext();
 
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+        //:TODO
+        public ActionResult Search(int? page, AudiogramSearchViewModel model)
+        {
+            return View();
+        }
+
         // GET: AudiogramModels
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             return View(db.AudiogramModels.ToList());
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SerwisAudiometryczny.Models
 {
-    class AccountEditViewModel
+    public class AccountEditViewModel
     { 
         /// <summary>
         /// Opisuje nazwę konta użytkownika.

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SerwisAudiometryczny.Models
 {
-    class UserCreateModelView
+    public class UserCreateModelView
     {
         /// <summary>
         /// Opisuje imię użytkownika.

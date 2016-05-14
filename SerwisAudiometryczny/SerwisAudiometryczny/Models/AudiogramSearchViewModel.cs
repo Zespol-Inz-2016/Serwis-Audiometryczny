@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SerwisAudiometryczny.Models
 {
-    class AudiogramSearchViewModel
+    public class AudiogramSearchViewModel
     {
         /// <summary>
         /// Typ wyliczeniowy dla płci.

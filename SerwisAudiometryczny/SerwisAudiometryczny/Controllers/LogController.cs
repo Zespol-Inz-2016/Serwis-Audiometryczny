@@ -16,12 +16,23 @@ namespace SerwisAudiometryczny.Controllers
         private ModelsDbContext db = new ModelsDbContext();
 
         // GET: Log
-        public ActionResult Index(int? page, LogSearchViewModel model)
+        public ActionResult Index(int? page)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             return View(db.LogModels.OrderBy(i => i.Time).ToPagedList(pageNumber, pageSize));
+        }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+        public ActionResult Search(LogSearchViewModel model)
+        {
+            //:TODO
+            return View();
         }
 
         //niektóre metody poniżej do późniejszego usunięcia

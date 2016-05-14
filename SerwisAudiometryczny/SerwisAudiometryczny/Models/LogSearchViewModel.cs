@@ -13,7 +13,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Zmienna przechowywująca numer indetyfikacyjny użytkownika, którego chcemy wyszukać w logach
         /// </summary>
-        public int? IdUser { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// Zmienna przechowywująca miejsce, które chcemy wyszukać w logach 

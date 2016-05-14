@@ -13,7 +13,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Typ wyliczeniowy dla płci.
         /// </summary>
-        public enum Sexes { Male, Female }
+        public enum Genders { Male, Female }
         /// <summary>
         /// Typ wyliczeniowy dla Uciążliwości uszkodzenia słuchu.
         /// </summary>
@@ -33,7 +33,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje płeć pacjenta/pacjentki.
         /// </summary>
-        public Sexes Sex { get; set; }
+        public Genders Gender { get; set; }
         /// <summary>
         /// Opisuje stopień uciążliwości uszkodzenia słuchu.
         /// </summary>
@@ -57,10 +57,10 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje, do którego pacjenta należy ten audiogram.
         /// </summary>
-        public int PatientID { get; set; }
+        public ApplicationUser Patient { get; set; }
         /// <summary>
         /// Opisuje, który lekarz(edytor) dodał ten audiogram.
         /// </summary>
-        public int EditorID { get; set; }
+        public ApplicationUser Editor { get; set; }
     }
 }

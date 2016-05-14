@@ -13,9 +13,9 @@ namespace SerwisAudiometryczny.Models
     public class LogModel : BaseModel
     {
         /// <summary>
-        /// IdUser - zmienna przechowywująca numer indentyfikacyjny użytkownika
+        /// UserId - zmienna przechowywująca numer indentyfikacyjny użytkownika
         /// </summary>
-        public int IdUser { get; set; }
+        public int UserId { get; set; }
 
         /// <summary>
         /// Controller - zmienna przechowywująca gdzie zrobiono
@@ -38,7 +38,7 @@ namespace SerwisAudiometryczny.Models
         /// </summary>
         public override string ToString()
         {
-            return string.Format("Date: {0}, user ID: {1}, controller: {2}, action: {3}", Time, IdUser, Controller, Action);
+            return string.Format("Date: {0}, user ID: {1}, controller: {2}, action: {3}", Time, UserId, Controller, Action);
         }
     }
 }

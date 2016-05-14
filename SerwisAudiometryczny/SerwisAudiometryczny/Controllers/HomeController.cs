@@ -9,7 +9,7 @@ namespace SerwisAudiometryczny.Controllers
 {
     public class HomeController : Controller
     {
-        [LogActionFilter] //atrybut tworzący logi
+        [LogActionFilterAttribute] //atrybut tworzący logi
 
         public ActionResult Index()
         {

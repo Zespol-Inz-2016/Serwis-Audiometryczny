@@ -11,7 +11,7 @@ namespace SerwisAudiometryczny.ActionFilters
     /// <summary>
     /// Filter akcji
     /// </summary>
-    public class LogActionFilter : ActionFilterAttribute
+    public class LogActionFilterAttribute : ActionFilterAttribute
     {
         /// <summary>
         /// zmienna przechowywuj¹ca czas rozpoczêcia akcji
@@ -37,9 +37,9 @@ namespace SerwisAudiometryczny.ActionFilters
             LogModel log = new LogModel();
 
             if (filterContext.RouteData.DataTokens.ContainsKey("iduser"))
-                log.IdUser = (int)route_data.Values["iduser"];
+                log.UserId = (int)route_data.Values["iduser"];
             else
-                log.IdUser = -1;
+                log.UserId = -1;
             log.Controller = (string)route_data.Values["controller"];
             log.Action = (string)route_data.Values["action"];
             log.Time = start_time;

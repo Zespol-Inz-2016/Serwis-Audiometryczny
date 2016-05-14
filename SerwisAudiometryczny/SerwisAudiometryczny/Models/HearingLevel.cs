@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,7 +15,7 @@ namespace SerwisAudiometryczny.Models
         public float[] Levels 
         { 
             get { 
-                return Array.ConvertAll(InternalLevels.Split(';'), Float.Parse); 
+                return Array.ConvertAll(InternalLevels.Split(';'), float.Parse); 
             } 
             set { 
                 InternalLevels = String.Join(";", value.Select(p => p.ToString()).ToArray()); 

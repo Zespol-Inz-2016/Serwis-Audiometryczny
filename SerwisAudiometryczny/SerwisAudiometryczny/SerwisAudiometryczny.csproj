@@ -218,7 +218,7 @@
     <Compile Include="ActionFilters\IsPatientAttribute.cs" />
     <Compile Include="ActionFilters\IsResercherAttribute.cs" />
     <Compile Include="ActionFilters\IsUserAttribute.cs" />
-    <Compile Include="ActionFilters\LogActionFilter.cs" />
+    <Compile Include="ActionFilters\LogActionFilterAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -230,7 +230,9 @@
     <Compile Include="Controllers\FrequencyModelsController.cs" />
     <Compile Include="Controllers\InstrumentModelsController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Models\AccountEditViewModel.cs" />
     <Compile Include="Models\AudiogramModel.cs" />
+    <Compile Include="Models\AudiogramSearchViewModel.cs" />
     <Compile Include="Models\FrequencyModel.cs" />
     <Compile Include="Models\HearingLevel.cs" />
     <Compile Include="Models\InstrumentModel.cs" />
@@ -247,6 +249,8 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\DatabaseBackuper.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\UserCreateModelView.cs" />
+    <Compile Include="Models\UserEditModelView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

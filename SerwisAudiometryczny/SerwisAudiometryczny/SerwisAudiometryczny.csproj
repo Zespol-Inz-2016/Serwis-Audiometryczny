@@ -228,7 +228,7 @@
     <Compile Include="Controllers\AudiogramModelsController.cs" />
     <Compile Include="Controllers\BackupController.cs" />
     <Compile Include="Controllers\FrequencyModelsController.cs" />
-    <Compile Include="Controllers\InstrumentModelsController.cs" />
+    <Compile Include="Controllers\InstrumentsController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Models\AccountEditViewModel.cs" />
     <Compile Include="Models\AudiogramModel.cs" />

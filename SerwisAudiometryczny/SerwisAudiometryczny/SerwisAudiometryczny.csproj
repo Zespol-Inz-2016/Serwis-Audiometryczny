@@ -230,6 +230,7 @@
     <Compile Include="Controllers\FrequencyController.cs" />
     <Compile Include="Controllers\InstrumentsController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\UserManagementController.cs" />
     <Compile Include="Models\AccountEditViewModel.cs" />
     <Compile Include="Models\AudiogramModel.cs" />
     <Compile Include="Models\AudiogramSearchViewModel.cs" />
@@ -345,6 +346,10 @@
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Backup\Export.cshtml" />
     <Content Include="Views\Backup\Import.cshtml" />
+    <Content Include="Views\UserManagement\CreateUser.cshtml" />
+    <Content Include="Views\UserManagement\DeactivateUser.cshtml" />
+    <Content Include="Views\UserManagement\DeactivateUserConfirmed.cshtml" />
+    <Content Include="Views\UserManagement\EditUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

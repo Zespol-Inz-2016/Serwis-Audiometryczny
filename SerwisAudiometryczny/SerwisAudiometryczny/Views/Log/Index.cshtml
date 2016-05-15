@@ -9,12 +9,12 @@
 <h2></h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Search", "Search")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().IdUser)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().Controller)
@@ -31,7 +31,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.IdUser)
+            @Html.DisplayFor(modelItem => item.UserId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Controller)
@@ -41,11 +41,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Time)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
 }

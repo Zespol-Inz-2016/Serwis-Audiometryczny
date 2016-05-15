@@ -36,8 +36,8 @@ namespace SerwisAudiometryczny.ActionFilters
             RouteData route_data = filterContext.RouteData;
             LogModel log = new LogModel();
 
-            if (filterContext.RouteData.DataTokens.ContainsKey("iduser"))
-                log.UserId = (int)route_data.Values["iduser"];
+            if (filterContext.RouteData.DataTokens.ContainsKey("userid"))
+                log.UserId = (int)route_data.Values["userid"];
             else
                 log.UserId = -1;
             log.Controller = (string)route_data.Values["controller"];

@@ -21,18 +21,40 @@ namespace SerwisAudiometryczny.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            return View(db.LogModels.OrderBy(i => i.Time).ToPagedList(pageNumber, pageSize));
+            return View(db.LogModels.OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
         }
 
+        // GET: Search
         public ActionResult Search()
         {
             return View();
         }
-
+        // POST: Search
+        [HttpPost]
         public ActionResult Search(LogSearchViewModel model)
         {
-            //:TODO
-            return View();
+            var logs = from i in db.LogModels
+                       select i;
+            if (model != null)
+            {
+                logs = from i in db.LogModels
+                       where i.UserId == model.UserId ||
+                       i.Controller.Equals(model.Controller) &&
+                       i.Action.Equals(model.Action) ||
+                       i.Time >= model.FromTime && i.Time < model.ToTime
+                       select i;
+            }
+
+            return View(logs.OrderByDescending(x => x.Time).ToList());
+
+            //if (!ModelState.IsValid)
+            //    return View(model);
+
+            //var result = db.LogModels.Where(x => x.UserId.Equals(model.UserId)
+            //|| x.Controller.Equals(model.Controller)
+            //|| x.Action.Equals(model.Action)
+            //|| x.Time >= model.FromTime && x.Time <= model.ToTime);
+            //return View(result.ToList());
         }
 
         //niektóre metody poniżej do późniejszego usunięcia

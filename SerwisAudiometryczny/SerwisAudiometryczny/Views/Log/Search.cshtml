@@ -1,0 +1,82 @@
+﻿@model IEnumerable<SerwisAudiometryczny.Models.LogModel>
+
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search</h2>
+
+
+@using (Html.BeginForm())
+{
+    <div class="span2">UserID </div>
+    <div class="span2">@Html.TextBox("UserId")</div>
+    <div class="span2">Controller </div>
+    <div class="span2">@Html.TextBox("Controller")</div>
+    <div class="span2">Action </div>
+    <div class="span2">@Html.TextBox("Action")</div>
+    <div class="span2">From time </div>
+    <div class="span2">@Html.TextBox("FromTime") </div>
+    <div class="span2">To time </div>
+    <div class="span2">@Html.TextBox("ToTime")</div>
+    <div class="span2 offset2"><button type="submit">Search</button></div>
+
+    if (Model != null)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Controller)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Action)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Time)
+                </th>
+            </tr>
+            @foreach (var item in Model)
+        {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Controller)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Action)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+
+                    @*<form method="get" action="@Url.Action("Search", "LogController")">
+                    <label for="search">Controller</label>
+                    <input type="text" name="Controller" id="Controller" />
+                    <button type="submit">Perform search</button>
+                </form>*@
+}
+                    @*@if (ViewBag != null)
+                {
+                    foreach (var room in ViewBag.Rooms as List<Room>)
+                    {
+                        // Build your room list markup here
+                    }
+                }*@
+
+                    <div>
+                        @Html.ActionLink("Back to logs", "Index")
+                    </div>
+
+                    @section Scripts {
+                        @Scripts.Render("~/bundles/jqueryval")
+                    }

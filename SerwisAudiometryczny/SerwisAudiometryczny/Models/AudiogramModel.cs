@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace SerwisAudiometryczny.Models
 {
@@ -29,6 +30,8 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje diagnozę wystawioną pacjentowi.
         /// </summary>
+        [Required(ErrorMessage = "Proszę podać diagnozę.")]
+        [StringLength(150,ErrorMessage = "Diagnoza nie powinna być dłuższa nić 150 znaków.")]
         public string Diagnosis { get; set; }
         /// <summary>
         /// Opisuje płeć pacjenta/pacjentki.
@@ -41,10 +44,14 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje wiek pacjenta.
         /// </summary>
+        [Range(0, 150, ErrorMessage = "Wiek nie może być ujemny lub jest zbyt duży.")]
+        [Required(ErrorMessage = "Podanie wieku jest wymagane.")]
         public int Age { get; set; }
         /// <summary>
         /// Opisuje utratę słuchu w procentach.
         /// </summary>
+        [Required(ErrorMessage = "Proszę podać procent utraty słuchu.")]
+        [Range(typeof(float), "0","100")]
         public float PercentageHearingLoss { get; set; }
         /// <summary>
         /// Opisuje, czy pacjent jest muzykiem.

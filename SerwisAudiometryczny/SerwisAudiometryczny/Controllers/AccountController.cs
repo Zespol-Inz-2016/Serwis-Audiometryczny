@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SerwisAudiometryczny.Models;
+using System.Net;
 
 namespace SerwisAudiometryczny.Controllers
 {
@@ -52,28 +53,11 @@ namespace SerwisAudiometryczny.Controllers
             }
         }
 
-        //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-        public ActionResult Edit()
-        {
-            return View();
-        }
-
-        //:TODO
-        public ActionResult Edit(AccountEditViewModel model)
-        {
-            return View();
-        }
-
-        public ActionResult Details()
-        {
             return View();
         }
 
@@ -90,7 +74,7 @@ namespace SerwisAudiometryczny.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false/*tu było RememberMe z LoginViewModel*/, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -98,7 +82,7 @@ namespace SerwisAudiometryczny.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -106,7 +90,67 @@ namespace SerwisAudiometryczny.Controllers
             }
         }
 
-        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        public ActionResult Edit()
+        {
+            string username = User.Identity.Name;
+
+            // Fetch the userprofile
+            ApplicationUser user = UserManager.FindById<ApplicationUser,string>(User.Identity.GetUserId());
+                //db..FirstOrDefault(u => u.UserName.Equals(username));
+
+            // Construct the viewmodel
+            AccountEditViewModel model = new AccountEditViewModel();
+            model.Name = user.Name;
+            model.Address = user.Address;
+            model.Email = user.Email;
+            //model.Password = user.PasswordHash;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(AccountEditViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                ApplicationUser user = UserManager.FindById<ApplicationUser, string>(User.Identity.GetUserId());
+                user.Name = model.Name;
+                user.Address = model.Address;
+                user.Email = model.Email;
+                user.UserName = model.Email;
+
+                UserManager.SetEmail<ApplicationUser, string>(User.Identity.GetUserId(), model.Email);
+                UserManager.Update<ApplicationUser, string>(user);
+                if (model.Password.CompareTo(model.ConfirmPassword) == 0)
+                {
+                    UserManager.RemovePassword(User.Identity.GetUserId());
+                    UserManager.AddPassword(user.Id, model.Password);
+                }
+                UserManager.Update<ApplicationUser, string>(user);
+            }
+            return View(model);
+        }
+
+        public ActionResult Details()
+        {
+            if(User.Identity.Name == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View();
+        }
+
+        //reszta zbędna wg Uml
+
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
@@ -398,16 +442,6 @@ namespace SerwisAudiometryczny.Controllers
 
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
-        }
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
         }
 
         //

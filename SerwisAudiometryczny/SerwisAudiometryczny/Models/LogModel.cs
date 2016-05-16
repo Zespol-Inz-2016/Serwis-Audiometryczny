@@ -13,22 +13,22 @@ namespace SerwisAudiometryczny.Models
     public class LogModel : BaseModel
     {
         /// <summary>
-        /// UserId - zmienna przechowywująca numer indentyfikacyjny użytkownika
+        /// Zmienna przechowywująca numer indentyfikacyjny użytkownika
         /// </summary>
         public int UserId { get; set; }
 
         /// <summary>
-        /// Controller - zmienna przechowywująca gdzie zrobiono
+        /// Zmienna przechowywująca gdzie zrobiono
         /// </summary>
         public string Controller { get; set; }
 
         /// <summary>
-        /// Action - zmienna przechowywująca co zrobiono 
+        /// Zmienna przechowywująca co zrobiono 
         /// </summary>
         public string Action { get; set; }
 
         /// <summary>
-        /// Time - zmienna przechowywująca czas o której coś zrobiono
+        /// Zmienna przechowywująca czas o której coś zrobiono
         /// </summary>
         public DateTime Time { get; set; }
 

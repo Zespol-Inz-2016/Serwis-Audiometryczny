@@ -14,12 +14,12 @@ namespace SerwisAudiometryczny.ActionFilters
     public class LogActionFilterAttribute : ActionFilterAttribute
     {
         /// <summary>
-        /// zmienna przechowywuj¹ca czas rozpoczêcia akcji
+        /// Zmienna przechowywuj¹ca czas rozpoczêcia akcji
         /// </summary>
         protected DateTime start_time;
 
         /// <summary>
-        /// Kiedy zaczêta akcjê zapisujemy o której siê zacze³a
+        /// Kiedy zacze³a siê akcja zapisujemy datê rozpoczêcia
         /// </summary>
         /// <param name="filterContext">Akcja która siê rozpoczê³a</param>
         public override void OnResultExecuting(ResultExecutingContext filterContext)
@@ -48,7 +48,7 @@ namespace SerwisAudiometryczny.ActionFilters
         }
 
         /// <summary>
-        /// Metoda log wpisuje dany log do bazy
+        /// Wpisuje dany log do bazy
         /// </summary>
         /// <param name="log">Log do wspisania</param>
         public void Log(LogModel log)

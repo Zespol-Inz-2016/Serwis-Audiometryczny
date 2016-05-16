@@ -9,90 +9,330 @@
 <div>
     <h4>AudiogramModel</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.LeftEar)
-        </dt>
+    <div class="row">
+        <div class="col-sm-12 col-lg-5 col-md-5 col-xs-12">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.LeftEar)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.LeftEar)
-        </dd>
+                <dd id="LeftEarLevels">
+                    @Html.DisplayFor(model => model.LeftEar)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.RightEar)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RightEar)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.RightEar)
-        </dd>
+                <dd id="RightEarLevels">
+                    @Html.DisplayFor(model => model.RightEar)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Diagnosis)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Diagnosis)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Diagnosis)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Diagnosis)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Sex)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Sex)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Gender)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Nuisance)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Nuisance)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Nuisance)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Nuisance)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Age)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Age)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Age)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PercentageHearingLoss)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PercentageHearingLoss)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.PercentageHearingLoss)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.PercentageHearingLoss)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IsMusician)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsMusician)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.IsMusician)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.IsMusician)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PatientID)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PatientID)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.PatientID)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.PatientID)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EditorID)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.EditorID)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.EditorID)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.EditorID)
+                </dd>
 
-    </dl>
+            </dl>
+        </div>
+        <div class="col-sm-12 col-lg-7 col-md-7 col-xs-12">
+            <div id="graf">
+                <canvas id="ag" width="600" height="500" style="border:1px solid black;"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<script>
+
+	function AG(config){
+		// właściwości definiowane przez użytkownika
+		this.canvas = document.getElementById(config.canvasId);
+		this.minX = config.minX;
+		this.minY = config.minY;
+		this.maxX = config.maxX;
+		this.maxY = config.maxY;
+		this.unitsPerTickX = config.unitsPerTickX;
+		this.unitsPerTickY = config.unitsPerTickY;
+		this.checkpointX = config.checkpointX;
+		this.checkpointY = config.checkpointY;
+
+
+		// stałe
+		this.padding = 10;
+		this.tickSize = 10;
+		this.axisColor = "#d3d3d3";
+		this.pointRadius = 5;
+		this.font = "12pt Calibri";
+		this.numXTicks = this.checkpointX.length;
+		this.numYTicks = this.checkpointY.length;
+
+		/*
+		 * metoda measureText nie dostarcza informacji
+		 * o wysokości tekstu, zatem będziemy musieli podać
+		 * jej wartość
+		 */
+		this.fontHeight = 12;
+
+		// zależności
+		this.context = this.canvas.getContext("2d");
+		this.rangeX = this.maxX - this.minY;
+		this.rangeY = this.maxY - this.minY;
+		this.x = this.getLongestValueWidth() + this.padding * 2;
+		this.y = this.padding * 2;
+		this.width = this.canvas.width - this.x - this.padding * 2;
+		this.height = this.canvas.height - this.y - this.padding - this.fontHeight;
+		this.scaleX = this.width / this.rangeX;
+		this.scaleY = this.height / this.rangeY;
+		this.reverse = false;
+
+		// rysujemy osie x i y wraz z kreseczkami ich wartości
+		this.drawXAxis();
+		this.drawYAxis();
+	}
+
+	AG.prototype.getLongestValueWidth = function(){
+		this.context.font = this.font;
+		var longestValueWidth = 0;
+		for (var n = 0; n <= this.numYTicks; n++) {
+			var value = this.maxY - (n * this.unitsPerTickY);
+			longestValueWidth = Math.max(longestValueWidth, this.context.measureText(value).width);
+		}
+		return longestValueWidth;
+	};
+
+	AG.prototype.drawXAxis = function(){
+		var context = this.context;
+		context.save();
+		context.beginPath();
+		context.moveTo(this.x, this.y + this.height);
+		context.lineTo(this.x + this.width, this.y + this.height);
+		context.strokeStyle = this.axisColor;
+		context.lineWidth = 2;
+		context.stroke();
+
+		// kreseczki wartości osi
+		for (var n = 0; n < this.numXTicks; n++) {
+			context.beginPath();
+			context.moveTo((n + 1) * this.width / this.numXTicks + this.x, this.y + this.height);
+			context.lineTo((n + 1) * this.width / this.numXTicks + this.x, this.y + this.height - this.height);
+			context.stroke();
+		}
+
+		// etykiety wartości
+		context.font = this.font;
+		context.fillStyle = "black";
+		context.textAlign = "center";
+		context.textBaseline = "middle";
+
+		for (var n = 0; n < this.numXTicks; n++) {
+			context.save();
+			context.translate((n + 1) * this.width / this.numXTicks + this.x, this.y + this.height + this.padding);
+			context.fillText(this.checkpointX[n], 0, 0);
+			context.restore();
+		}
+		context.restore();
+	};
+
+	AG.prototype.drawYAxis = function(){
+		var context = this.context;
+		context.save();
+		context.save();
+		context.beginPath();
+		context.moveTo(this.x, this.y);
+		context.lineTo(this.x, this.y + this.height);
+		context.strokeStyle = this.axisColor;
+		context.lineWidth = 2;
+		context.stroke();
+		context.restore();
+
+
+
+		// kreseczki wartości osi
+		for (var n = 0; n < this.numYTicks; n++) {
+			context.beginPath();
+			context.moveTo(this.x, n * this.height / this.numYTicks + this.y);
+			context.lineTo(this.x + this.width, n * this.height / this.numYTicks + this.y);
+			context.stroke();
+		}
+
+		// etykiety wartości
+		context.font = this.font;
+		context.fillStyle = "black";
+		context.textAlign = "right";
+		context.textBaseline = "middle";
+
+		for (var n = 0; n < this.numYTicks; n++) {
+			var value = Math.round(this.maxY - n * this.maxY / this.numYTicks);
+			context.save();
+			context.translate(this.x - this.padding, n * this.height / this.numYTicks + this.y);
+			context.fillText(this.checkpointY[n], 0, 0);
+			context.restore();
+		}
+		context.restore();
+	};
+
+	AG.prototype.drawLine = function(data, color, width) {
+		var x = function(point){
+			var coord = point.y;
+			if (coord == 0) {
+				coord = 130;
+			} else {
+				if (coord < 0) {
+					coord = (-coord + 130);
+				} else {
+					coord = (-coord + 130);
+				}
+			}
+			return coord;
+		}
+		var context = this.context;
+		context.save();
+		this.transformContext();
+		context.lineWidth = width;
+		context.strokeStyle = color;
+		context.fillStyle = color;
+		context.beginPath();
+
+		context.moveTo((this.unitsPerTickX + width) * (n+1) * (this.scaleX) - (1 * n), x(data[0]) * this.scaleY);
+
+		for (var n = 0; n < data.length; n++) {
+			var point = data[n];
+
+			// segment linii
+			context.lineTo((this.unitsPerTickX) * (n+1) * (this.scaleX), x(point) * this.scaleY);
+			context.stroke();
+			context.closePath();
+			context.beginPath();
+			context.arc(
+					(this.unitsPerTickX) * (n+1) * (this.scaleX),
+					x(point) * this.scaleY,
+					this.pointRadius, 0, 2 * Math.PI,
+					false
+				);
+			context.fill();
+			context.closePath();
+
+			// początek następnego segmentu
+			context.beginPath();
+			context.moveTo((this.unitsPerTickX) * (n+1) * (this.scaleX), x(point) * this.scaleY);
+		}
+		context.restore();
+	};
+
+	AG.prototype.transformContext = function(){
+		var context = this.context;
+
+		// przesunięcie kontekstu do środka obszaru elementu canvas
+		this.context.translate(this.x, this.y + this.height);
+
+		// odwrócenie kierunku osi y, tak by jej wartości
+		// rosły ku górze
+		context.scale(1, -1);
+	};
+
+	window.onload = function(){
+
+	    var EL = $('.display-field');
+	    if (EL[0].innerHTML.indexOf(";") != -1) {
+	        LEL = EL[0].innerHTML.split(";");
+	        REL = EL[1].innerHTML.split(";");
+	    } else {
+	        LEL = EL[0].innerHTML.split(",");
+	        REL = EL[1].innerHTML.split(",");
+	    }
+
+		console.log("LEL " + LEL);
+		console.log("REL " + REL);
+
+		var _maxX = LEL.length;
+
+		var myAG = new AG({
+		    canvasId: "ag",
+		    minX: 0,
+		    minY: 0,
+		    maxX: 12 * 10,
+		    maxY: 15 * 10,
+		    unitsPerTickX: 10,
+		    unitsPerTickY: 10,
+		    checkpointX: [125, 250, 500, 750, 1000, 1500, 2000, 3000, 4000, 6000, 8000, ""],
+		    checkpointY: [-20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+		});
+		var _chp = [125, 250, 500, 750, 1000, 1500, 2000, 3000, 4000, 6000, 8000];
+		var data = [];
+		for (var i = 0; i < LEL.length; i++) {
+            data.push({x: _chp[i], y: LEL[i]})
+		}
+		/*var data = [{ x:  czestotliwosc, y: poziom },{ x:  itd, y: itd }];*/
+		myAG.drawLine(data, "blue", 3);
+
+		data = []
+		for (var i = 0; i < LEL.length; i++) {
+		    data.push({ x: _chp[i], y: REL[i] })
+		}
+		myAG.drawLine(data, "red", 3);
+	};
+</script>

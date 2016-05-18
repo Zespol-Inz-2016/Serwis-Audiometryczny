@@ -30,7 +30,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Zmienna przechowywująca czas o której coś zrobiono
         /// </summary>
-        public DateTime Time { get; set; }
+        public DateTime? Time { get; set; }
 
         /// <summary>
         /// Metoda nadpisuje ToString()

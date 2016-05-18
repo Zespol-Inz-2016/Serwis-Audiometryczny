@@ -28,12 +28,12 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Zmienna przechowywująca czas od kiedy chcemy wyszukać w logach 
         /// </summary>
-        public DateTime FromTime { get; set; }
+        public DateTime? FromTime { get; set; }
 
         /// <summary>
         /// Zmienna przechowywująca czas do kiedy chcemy wyszukać w logach 
         /// </summary>
-        public DateTime ToTime { get; set; }
+        public DateTime? ToTime { get; set; }
 
     }
 

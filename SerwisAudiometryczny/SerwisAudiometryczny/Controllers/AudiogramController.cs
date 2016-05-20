@@ -7,6 +7,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
+using Microsoft.AspNet.Identity;
+using System.Web.Security;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace SerwisAudiometryczny.Controllers
 {
@@ -19,10 +22,89 @@ namespace SerwisAudiometryczny.Controllers
             return View();
         }
 
-        //:TODO
+        /// <summary>
+        /// Metoda wyszukuje w bazie danych audiogramy spełniające określone warunki
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public ActionResult Search(int? page, AudiogramSearchViewModel model)
         {
-            return View();
+            var results = from t in db.AudiogramModels
+                       select t;
+
+            if (model.PatientName != null)
+            {
+                List<AudiogramModel> res = new List<AudiogramModel>();
+
+                foreach (var t in results)
+                {
+                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, string> (t.ID.ToString());
+                    string userName = user.Name;
+                    if (userName.Contains(model.PatientName))
+                    {
+                        res.Add(t);
+                    }
+                }
+                results = (IQueryable<AudiogramModel>)res;
+            }
+            
+            if (model.Diagnosis != null)
+            {
+                results = from t in results
+                       where t.Diagnosis.Contains(model.Diagnosis)
+                       select t;
+            }
+            if (model.Gender != null)
+            {
+                results = from t in results
+                       where t.Gender == (AudiogramModel.Genders)model.Gender
+                       select t;
+            }
+            if (model.ageFrom != null)
+            {
+                results = from t in results
+                       where t.Age >= model.ageFrom
+                       select t;
+            }
+            if (model.ageTo != null)
+            {
+                results = from t in results
+                       where t.Age <= model.ageTo
+                       select t;
+            }
+            if (model.PercentageHearingLossFrom != null)
+            {
+                results = from t in results
+                          where t.PercentageHearingLoss >= model.PercentageHearingLossFrom
+                          select t;
+            }
+            if (model.PercentageHearingLossTo != null)
+            {
+                results = from t in results
+                          where t.PercentageHearingLoss <= model.PercentageHearingLossTo
+                          select t;
+            }
+            if (model.isMusican != null)
+            {
+                results = from t in results
+                          where t.IsMusician == model.isMusican
+                          select t;
+            }
+            if (model.Patient != null)
+            {
+                results = from t in results
+                          where t.PatientID.ToString() == model.Patient.Id
+                          select t;
+            }
+            if (model.Editor != null)
+            {
+                results = from t in results
+                          where t.EditorID.ToString() == model.Editor.Id
+                          select t;
+            }
+            return View(results.OrderByDescending(x => x.ID).ToList());
+            
         }
 
         // GET: AudiogramModels

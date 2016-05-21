@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 
 namespace SerwisAudiometryczny.Models
 {
+    [Serializable]
     public class HearingLevel
     {
         /// <summary>
@@ -21,6 +23,7 @@ namespace SerwisAudiometryczny.Models
                 InternalLevels = String.Join(";", value.Select(p => p.ToString()).ToArray()); 
             } 
         }
+        [XmlIgnore]
         /// <summary>
         /// Zawiera pooddzielane średnikami kolejne częstotliwości.
         /// </summary>

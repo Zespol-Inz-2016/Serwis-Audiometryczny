@@ -7,6 +7,7 @@ using System.Data.Entity;
 
 namespace SerwisAudiometryczny.Models
 {
+    [Serializable]
     /// <summary>
     /// Model przechowywujący dane o zdarzeniu do zalogowania
     /// </summary>

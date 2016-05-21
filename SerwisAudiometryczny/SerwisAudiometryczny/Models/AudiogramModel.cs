@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SerwisAudiometryczny.Models
 {
+    [Serializable]
     public class AudiogramModel : BaseModel
     {
         /// <summary>

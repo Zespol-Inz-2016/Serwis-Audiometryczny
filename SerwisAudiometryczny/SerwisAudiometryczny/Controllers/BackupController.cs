@@ -33,8 +33,8 @@ namespace SerwisAudiometryczny.Controllers
         public FileResult SendFile()
         {
             Stream stream = databaseBackuper.Backup();
-            string contentType = MimeMapping.GetMimeMapping(Server.MapPath("~/App_Data/backup.sql"));
-            string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_SerwisAudiometryczny.sql";
+            string contentType = MimeMapping.GetMimeMapping(Server.MapPath("~/App_Data/backup.zip"));
+            string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_SerwisAudiometryczny.zip";
             FileStreamResult fileStreamResult = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };
    
             return fileStreamResult;

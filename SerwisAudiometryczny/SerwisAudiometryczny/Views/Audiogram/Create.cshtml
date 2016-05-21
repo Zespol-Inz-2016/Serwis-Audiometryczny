@@ -13,8 +13,10 @@
     .form-none{
         display: none;
     }
+    .musician-depended{
+        display: none;
+    }
 </style>
-
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -93,6 +95,18 @@
             </div>
         </div>
 
+        <div class="form-group musician-depended">
+            @Html.LabelFor(model => model.Instrument, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    <input class="text-box single-line" id="Instrument_Name" name="Instrument.Name" type="text" value="">
+                    <input class="text-box single-line" data-val="true" data-val-number="The field ID must be a number."
+                           data-val-required="Pole ID jest wymagane." id="Instrument_ID" name="Instrument.ID" type="number" value="">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Instrument_ID" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.PatientID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -111,7 +125,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input return="val();" type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -124,6 +138,21 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+        $('#IsMusician').on('change', function () {
+            alert('do dokonczenia - sprawdzanie instrumentow + pickowanie + dodawanie')
+            if (document.getElementById('IsMusician').checked) {
+                $('.musician-depended').show();
+            } else {
+                $('.musician-depended').hide();
+            }
+        })
+
+        $('form').on('submit', function () {
+            alert('do dodania customowa walidacja pol - na koniec to zrobie')
+            alert('przeniesc jeszcze wszystko na form do edycji trzeba bedzie')
+            //return false;
+        })
+
         var LeftFinal = document.getElementsByClassName('form-final-left')[0];
         var RightFinal = document.getElementsByClassName('form-final-right')[0];
         function functionLeft() {

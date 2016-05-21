@@ -4,6 +4,19 @@
     ViewBag.Title = "Details";
 }
 
+<style>
+    #LeftEarLevels > div:nth-child(1),
+    #RightEarLevels > div:nth-child(1){
+        display: none;
+    }
+    .dl-horizontal > dt:nth-child(1){
+        color: blue;
+    }
+    .dl-horizontal > dt:nth-child(3){
+        color: red;
+    }
+</style>
+
 <h2>Details</h2>
 
 <div>
@@ -74,6 +87,14 @@
 
                 <dd>
                     @Html.DisplayFor(model => model.IsMusician)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Instrument)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Instrument.Name)
                 </dd>
 
                 <dt>

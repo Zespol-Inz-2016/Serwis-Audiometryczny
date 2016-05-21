@@ -28,6 +28,7 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="page"></param>
         /// <param name="model"></param>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult Search(int? page, AudiogramSearchViewModel model)
         {
             var results = from t in db.AudiogramModels

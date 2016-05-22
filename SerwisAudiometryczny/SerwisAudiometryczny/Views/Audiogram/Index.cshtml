@@ -1,0 +1,102 @@
+﻿@model IEnumerable<SerwisAudiometryczny.Models.AudiogramModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create") &nbsp;&nbsp;&nbsp;
+    @Html.ActionLink("Search", "Search")
+</p>
+<div class="container-fluid"><div class="row">
+<table class="table row">
+    <tr>
+        <th><div></div>
+            @Html.DisplayNameFor(model => model.LeftEar)
+        </th>
+        <th><div></div>
+            @Html.DisplayNameFor(model => model.RightEar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Diagnosis)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nuisance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PercentageHearingLoss)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsMusician)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Instrument)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatientID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EditorID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LeftEar)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RightEar)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Diagnosis)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nuisance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Age)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PercentageHearingLoss)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsMusician)
+        </td>
+        <th>
+            @Html.DisplayFor(modelItem => item.Instrument)
+        </th>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatientID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EditorID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID })
+            @Html.ActionLink("Details", "Details", new { id=item.ID })
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table></div></div>
+
+<style>
+	tr > td:nth-child(1) > div:nth-child(1),
+	tr > td:nth-child(2) > div:nth-child(1){
+		display: none;
+	}
+</style>

@@ -1,0 +1,52 @@
+﻿@model PagedList.IPagedList<SerwisAudiometryczny.Models.LogModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Logi";
+}
+
+<h2></h2>
+
+<p>
+    @Html.ActionLink("Search", "Search")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Controller)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Action)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Time)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Controller)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Action)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))

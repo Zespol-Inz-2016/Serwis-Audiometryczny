@@ -44,6 +44,20 @@ namespace SerwisAudiometryczny.Models
         [Display(Name = "Numer telefonu")]
         public override string PhoneNumber { get; set; }
 
+        [Display(Name = "Nazwa użytkownika")]
+        public override string UserName
+        {
+            get
+            {
+                return base.UserName;
+            }
+
+            set
+            {
+                base.UserName = value;
+            }
+        }
+
         [Display(Name = "Audiogramy")]
         public ICollection<AudiogramModel> Audiograms { get; set; }
 

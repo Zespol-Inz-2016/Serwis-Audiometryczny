@@ -32,12 +32,14 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje hasło dostępu do konta użytkownika.
         /// </summary>
+        [DataType(DataType.Password)]
         [Display(Name = "Zmień hasło")]
         public string Password { get; set; }
 
         /// <summary>
         /// Opisuje potwierdzenie hasła dostępu do konta użytkownika.
         /// </summary>
+        [DataType(DataType.Password)]
         [Display(Name = "Powtórz nowe hasło")]
         public string ConfirmPassword { get; set; }
     }

@@ -22,3 +22,8 @@ select,
 textarea {
     max-width: 280px;
 }
+.asd {
+    background:rgba(0,0,0,0);
+    border:none;
+}
+

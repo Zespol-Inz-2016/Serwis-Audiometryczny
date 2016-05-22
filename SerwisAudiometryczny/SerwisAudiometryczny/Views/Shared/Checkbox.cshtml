@@ -1,0 +1,14 @@
+﻿@model SerwisAudiometryczny.Models.CheckboxModel
+<div class="checkbox">
+    <label>
+        @if (Model.Value)
+        {
+            <input id="@Model.Label" type="checkbox" checked name="@Model.Label" >
+        }
+        else
+        {
+            <input id="@Model.Label" type="checkbox" name="@Model.Label">
+        }
+        @Model.Label
+    </label>
+</div>

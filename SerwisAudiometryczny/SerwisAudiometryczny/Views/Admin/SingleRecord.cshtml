@@ -1,0 +1,15 @@
+﻿@model SerwisAudiometryczny.Models.ApplicationUser
+
+<div class="row">
+    <form action="~/Admin/Edit" method="post">
+        <div class="col-md-2"><input type="text" class="asd" name="Name" value="@Model.UserName" readonly/></div>
+        <div class="col-md-2">@Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Administrator, "Administrator"))</div>
+        <div class="col-md-2">@Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Patient, "Patient"))</div>
+        <div class="col-md-2">@Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Researcher, "Researcher"))</div>
+        <div class="col-md-2">@Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.User, "User"))</div>
+        <div class="col-md-1"><button name="Submit" type="submit" value="Save" class="btn btn-success">Save</button></div>
+    </form>
+</div>
+
+
+

@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using SerwisAudiometryczny.ActionFilters;
 
 namespace SerwisAudiometryczny
 {
@@ -8,6 +9,7 @@ namespace SerwisAudiometryczny
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new LogActionFilterAttribute());
         }
     }
 }

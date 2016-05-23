@@ -1,2 +1,8 @@
-﻿@Html.ActionLink("Pobierz", "SendFile")
-
+﻿@using (Html.BeginForm("SendFile", "BackupController"))
+{
+    <div class="container">
+        <div class="content">
+            <input type="submit" value="pobierz" class="btn btn-primary" />
+        </div>
+    </div>
+}

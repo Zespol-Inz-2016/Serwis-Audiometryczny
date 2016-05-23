@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace SerwisAudiometryczny.Models
 {
     [Serializable]
-    public class HearingLevel
+    public class HearingLevel:BaseModel
     {
         /// <summary>
         /// Opisuje poziomy słyszalności w dB.

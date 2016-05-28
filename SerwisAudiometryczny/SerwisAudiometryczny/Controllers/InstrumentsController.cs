@@ -14,6 +14,15 @@ namespace SerwisAudiometryczny.Controllers
     {
         private ModelsDbContext db = new ModelsDbContext();
 
+        public InstrumentsController()
+        {
+            db = new ModelsDbContext();
+        }
+
+        public InstrumentsController(ModelsDbContext dbContext)
+        {
+            db = dbContext;
+        }
         // GET: InstrumentModels
         public ActionResult Index(int? page)
         {

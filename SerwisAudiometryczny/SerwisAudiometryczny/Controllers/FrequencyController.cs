@@ -14,6 +14,15 @@ namespace SerwisAudiometryczny.Controllers
     {
         private ModelsDbContext db = new ModelsDbContext();
 
+        public FrequencyController()
+        {
+            db = new ModelsDbContext();
+        }
+
+        public FrequencyController(ModelsDbContext dbContext)
+        {
+            db = dbContext;
+        }
         // GET: FrequencyModels
         public ActionResult Index(int? page)
         {

@@ -17,6 +17,16 @@ namespace SerwisAudiometryczny.Controllers
     {
         private ModelsDbContext db = new ModelsDbContext();
 
+        public AudiogramController()
+        {
+            db = new ModelsDbContext();
+        }
+
+        public AudiogramController(ModelsDbContext dbContext)
+        {
+            db = dbContext;
+        }
+
         public ActionResult Search()
         {
             return View();

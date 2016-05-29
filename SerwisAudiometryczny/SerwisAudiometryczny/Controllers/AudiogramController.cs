@@ -121,7 +121,8 @@ namespace SerwisAudiometryczny.Controllers
         // GET: AudiogramModels
         public ActionResult Index(int? page)
         {
-            return View(db.AudiogramModels.ToList());
+            var results = from a in db.AudiogramModels where a.EditorID == Convert.ToInt32(User.Identity.GetUserId()) || a.PatientID == Convert.ToInt32(User.Identity.GetUserId()) select a;
+            return View(results.OrderByDescending(x => x.ID).ToList());
         }
 
         // GET: AudiogramModels/Details/5
@@ -132,11 +133,13 @@ namespace SerwisAudiometryczny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null)
+            if (audiogramModel == null || (audiogramModel.EditorID != Convert.ToInt32(User.Identity.GetUserId()) && audiogramModel.PatientID != Convert.ToInt32(User.Identity.GetUserId())))
             {
                 return HttpNotFound();
             }
-            return View(audiogramModel);
+            AudiogramDisplayViewModel audiogramDisplay = new AudiogramDisplayViewModel();
+            audiogramDisplay.Audiogram = audiogramModel;
+            return View(audiogramDisplay);
         }
 
         // GET: AudiogramModels/Create
@@ -170,7 +173,7 @@ namespace SerwisAudiometryczny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null)
+            if (audiogramModel == null || audiogramModel.EditorID != Convert.ToInt32(User.Identity.GetUserId()))
             {
                 return HttpNotFound();
             }

@@ -6,6 +6,9 @@ using System.Web;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// Model częstotliwości.
+    /// </summary>
     [Serializable]
     public class FrequencyModel : BaseModel
     {

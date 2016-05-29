@@ -6,6 +6,9 @@ using System.Web;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// Model instrumentu.
+    /// </summary>
     [Serializable]
     public class InstrumentModel : BaseModel
     {

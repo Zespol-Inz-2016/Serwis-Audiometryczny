@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// Model poziomów słyszalności.
+    /// </summary>
     [Serializable]
     public class HearingLevel
     {

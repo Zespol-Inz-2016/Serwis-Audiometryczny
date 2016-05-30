@@ -233,6 +233,7 @@
     <Compile Include="Controllers\InstrumentsController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\UserManagementController.cs" />
+    <Compile Include="Helpers\IdentityHelper.cs" />
     <Compile Include="Models\AccountEditViewModel.cs" />
     <Compile Include="Models\AudiogramCreateEditViewModel.cs" />
     <Compile Include="Models\AudiogramDisplayViewModel.cs" />

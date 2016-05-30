@@ -350,8 +350,9 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Log\Search.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
-    <Content Include="Views\Admin\SingleRecord.cshtml" />
+    <Content Include="Views\Shared\SingleRecord.cshtml" />
     <Content Include="Views\Shared\Checkbox.cshtml" />
+    <Content Include="Views\UserManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

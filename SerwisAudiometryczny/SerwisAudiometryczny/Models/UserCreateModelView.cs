@@ -24,9 +24,26 @@ namespace SerwisAudiometryczny.Models
         /// Opisuje hasło dostępu do konta użytkownika.
         /// </summary>
         public string Password { get; set; }
+        ///// <summary>
+        ///// Opisuje typ użytkownika.
+        ///// </summary>
+        //public string Role { get; set; }
+
         /// <summary>
-        /// Opisuje typ użytkownika.
+        /// Rola administratora.
         /// </summary>
-        public string Role { get; set; }
+        public bool Administrator { get; set; }
+        /// <summary>
+        /// Rola użytkownika
+        /// </summary>
+        public bool User { get; set; }
+        /// <summary>
+        /// Rola badacza
+        /// </summary>
+        public bool Researcher { get; set; }
+        /// <summary>
+        /// Rola pacjenta
+        /// </summary>
+        public bool Patient { get; set; }
     }
 }

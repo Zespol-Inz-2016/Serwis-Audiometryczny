@@ -18,7 +18,6 @@ namespace SerwisAudiometryczny.Helpers
             string password = "Qwerty_123!";
 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
             ApplicationUser user = userManager.FindByName(userName);
             if (user == null)

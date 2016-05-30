@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 namespace SerwisAudiometryczny.Models
 {
     public class UserEditModelView
-    {
+    {        
+        /// <summary>
+        /// Id dla użytkownika
+        /// </summary>
+        public string Guid { get; set; }
         /// <summary>
         /// Opisuje imię użytkownika.
         /// </summary>
@@ -24,9 +28,5 @@ namespace SerwisAudiometryczny.Models
         /// Opisuje hasło dostępu do konta użytkownika.
         /// </summary>
         public string Password { get; set; }
-        /// <summary>
-        /// Opisuje typ użytkownika.
-        /// </summary>
-        public string Role { get; set; }
     }
 }

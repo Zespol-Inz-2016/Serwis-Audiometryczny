@@ -9,9 +9,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
+using SerwisAudiometryczny.ActionFilters;
 
 namespace SerwisAudiometryczny.Controllers
 {
+    [IsAdministratorAttribute]
     public class UserManagementController : Controller
     {
         ApplicationDbContext db = ApplicationDbContext.Create();
@@ -31,7 +33,7 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Administrator = model.Administrator,Address = model.Address, User = model.User,Researcher = model.Researcher,Patient = model.Patient };
+                var user = new ApplicationUser {Name = model.Name, UserName = model.Email, Email = model.Email, Administrator = model.Administrator,Address = model.Address, User = model.User,Researcher = model.Researcher,Patient = model.Patient };
                 ApplicationDbContext context = new ApplicationDbContext();
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
@@ -53,15 +55,50 @@ namespace SerwisAudiometryczny.Controllers
         //{
         //    return View();
         //}
-
-        public ActionResult EditUser(int? id)
+        
+        public ActionResult EditUser(string myGuid)
         {
-            return View();
+
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == myGuid);
+            if (currentUser == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            UserEditModelView model = new UserEditModelView() {Guid = myGuid, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email };
+            ViewBag.UserName = currentUser.UserName;
+            return View(model);
         }
+
+        [HttpPost]
+        public ActionResult ResetUserPassword(UserEditModelView model)
+        {
+
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Guid);
+            if (currentUser == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            userManager.RemovePassword(model.Guid);
+
+            userManager.AddPassword(model.Guid, model.Password);
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public ActionResult EditUser(UserEditModelView model)
         {
-            return View();
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Guid);
+            if (currentUser == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            currentUser.Address = model.Address;
+            currentUser.Email = model.Email;
+            currentUser.Name = model.Name;
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult EditRole(FormCollection form)
@@ -91,6 +128,8 @@ namespace SerwisAudiometryczny.Controllers
                     CurrentUser.Researcher = false;
                     CurrentUser.User = false;
                     break;
+                case "Edit":
+                    return RedirectToAction("EditUser", new { myGuid = CurrentUser.Id });
                 default:
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -98,7 +137,7 @@ namespace SerwisAudiometryczny.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+       
         private bool FormParser(string value)
         {
             if (value == "on")

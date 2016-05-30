@@ -1,18 +1,15 @@
-﻿using System;
-using System.Web;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Collections.Specialized;
+﻿using System.Web;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
 using System.IO.Compression;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// Klasa służąca do wykonania kopii zapasowej bazy danych (serializacja do XML).
+    /// </summary>
     public class DatabaseBackuper
     {
         /// <summary>
@@ -22,6 +19,7 @@ namespace SerwisAudiometryczny.Models
         public Stream Backup()
         {
             ModelsDbContext dbContext = new ModelsDbContext();
+            ApplicationDbContext applicationDbContext = new ApplicationDbContext();
 
             string zipPath = HttpContext.Current.Server.MapPath("~/App_Data/backup.zip");
             string backupPath = HttpContext.Current.Server.MapPath("~/App_Data/Backup");
@@ -36,10 +34,15 @@ namespace SerwisAudiometryczny.Models
             serializeXMLFromObject(dbContext.InstrumentModels.ToList(), "instrumentModels");
             // Kopia zapasowa częstotliwości
             serializeXMLFromObject(dbContext.FrequencyModels.ToList(), "frequencyModels");
+            // Kopia zapasowa kont użytkowników
+            serializeXMLFromObject(applicationDbContext.Users.ToList(), "users");
 
-            ZipFile.CreateFromDirectory(backupPath, zipPath);
+            if (File.Exists(zipPath))
+                File.Delete(zipPath); // jeśli istnieje archiwum backup.zip to go usuwamy, aby móc utworzyć nowe
+            ZipFile.CreateFromDirectory(backupPath, zipPath); // tworzenie archiwum
             Directory.Delete(backupPath, true); // usunięcie tymczasowego katalogu Backup wraz z zawartością
 
+            // zwrócenie archiwum .zip z plikami XML oraz usunięcie go z serwera
             return new FileStream(zipPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.DeleteOnClose);
         }
 
@@ -61,20 +64,23 @@ namespace SerwisAudiometryczny.Models
         public void Restore(Stream stream)
         {
             ModelsDbContext dbContext = new ModelsDbContext();
-            dbContext.Database.Delete();
+            ApplicationDbContext applicationDbContext = new ApplicationDbContext();
+            dbContext.Database.Delete(); // usunięcie wszystkich obiektów modeli
+            applicationDbContext.Database.Delete(); // usunięcie wszystkich użytkowników
+            applicationDbContext.Database.CreateIfNotExists(); // utworzenie bazy użytkowników 
 
             string zipPath = HttpContext.Current.Server.MapPath("~/App_Data/backup.zip");
             string backupPath = HttpContext.Current.Server.MapPath("~/App_Data/Backup");
             if (!Directory.Exists(backupPath))
-                Directory.CreateDirectory(backupPath);
+                Directory.CreateDirectory(backupPath); // tworzenie tymczasowego katalogu Backup
 
-            // utworzenie archiwum przesłanego w streamie na serwerze
+            // utworzenie archiwum przesłanego w streamie na serwerze 
             using (FileStream fileStream = new FileStream(zipPath, FileMode.Create))
             {
                 stream.CopyTo(fileStream);
             }
             ZipFile.ExtractToDirectory(zipPath, backupPath); // rozpakowanie archiwum do katalogu Backup
-            
+
             // Przywracanie logów
             List<LogModel> listOfLogModels = deserializeXMLToObject<LogModel>("logModels");
             listOfLogModels.ForEach(item => dbContext.LogModels.Add(item));
@@ -95,8 +101,13 @@ namespace SerwisAudiometryczny.Models
             listOfFrequencyModels.ForEach(item => dbContext.FrequencyModels.Add(item));
             dbContext.SaveChanges();
 
+            // Przywracanie użytkowników
+            List<ApplicationUser> lisfOfUsers = deserializeXMLToObject<ApplicationUser>("users");
+            lisfOfUsers.ForEach(item => applicationDbContext.Users.Add(item));
+            applicationDbContext.SaveChanges();
+
             // usunięcie plików tymczasowych potrzebnych do przywrócenia bazy
-            Directory.Delete(backupPath, true); 
+            Directory.Delete(backupPath, true);
             File.Delete(zipPath);
         }
 
@@ -107,10 +118,9 @@ namespace SerwisAudiometryczny.Models
             using (Stream reader = new FileStream(path, FileMode.Open))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<T>));
-                list = (List<T>) xmlSerializer.Deserialize(reader);
+                list = (List<T>)xmlSerializer.Deserialize(reader);
             }
             return list;
         }
     }
-
 }

@@ -42,7 +42,7 @@ namespace SerwisAudiometryczny.Controllers
         public ActionResult Search(int? page, AudiogramSearchViewModel model)
         {
             var results = from t in db.AudiogramModels
-                       select t;
+                          select t;
 
             if (model.PatientName != null)
             {
@@ -50,7 +50,7 @@ namespace SerwisAudiometryczny.Controllers
 
                 foreach (var t in results)
                 {
-                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, string> (t.ID.ToString());
+                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, string>(t.ID.ToString());
                     string userName = user.Name;
                     if (userName.Contains(model.PatientName))
                     {
@@ -59,30 +59,30 @@ namespace SerwisAudiometryczny.Controllers
                 }
                 results = (IQueryable<AudiogramModel>)res;
             }
-            
+
             if (model.Diagnosis != null)
             {
                 results = from t in results
-                       where t.Diagnosis.Contains(model.Diagnosis)
-                       select t;
+                          where t.Diagnosis.Contains(model.Diagnosis)
+                          select t;
             }
             if (model.Gender != null)
             {
                 results = from t in results
-                       where t.Gender == (AudiogramModel.Genders)model.Gender
-                       select t;
+                          where t.Gender == (AudiogramModel.Genders)model.Gender
+                          select t;
             }
             if (model.ageFrom != null)
             {
                 results = from t in results
-                       where t.Age >= model.ageFrom
-                       select t;
+                          where t.Age >= model.ageFrom
+                          select t;
             }
             if (model.ageTo != null)
             {
                 results = from t in results
-                       where t.Age <= model.ageTo
-                       select t;
+                          where t.Age <= model.ageTo
+                          select t;
             }
             if (model.PercentageHearingLossFrom != null)
             {
@@ -115,14 +115,13 @@ namespace SerwisAudiometryczny.Controllers
                           select t;
             }
             return View(results.OrderByDescending(x => x.ID).ToList());
-            
+
         }
 
         // GET: AudiogramModels
         public ActionResult Index(int? page)
         {
-            var results = from a in db.AudiogramModels where a.EditorID == Convert.ToInt32(User.Identity.GetUserId()) || a.PatientID == Convert.ToInt32(User.Identity.GetUserId()) select a;
-            return View(results.OrderByDescending(x => x.ID).ToList());
+            return View();
         }
 
         // GET: AudiogramModels/Details/5
@@ -139,6 +138,13 @@ namespace SerwisAudiometryczny.Controllers
             }
             AudiogramDisplayViewModel audiogramDisplay = new AudiogramDisplayViewModel();
             audiogramDisplay.Audiogram = audiogramModel;
+
+            var datab = ApplicationDbContext.Create();
+            string EditorID = User.Identity.GetUserId();
+            ApplicationUser currentUser = datab.Users.FirstOrDefault(x => x.Id == EditorID);
+            audiogramDisplay.Editor = currentUser;
+
+
             return View(audiogramDisplay);
         }
 
@@ -177,7 +183,10 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return HttpNotFound();
             }
-            return View(audiogramModel);
+            AudiogramCreateEditViewModel audiogramEdit = new AudiogramCreateEditViewModel();
+            audiogramEdit.Audiogram = audiogramModel;
+           // audiogramEdit
+            return View(audiogramEdit);
         }
 
         // POST: AudiogramModels/Edit/5

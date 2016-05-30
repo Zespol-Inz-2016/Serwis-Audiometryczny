@@ -17,7 +17,7 @@ namespace SerwisAudiometryczny.Controllers
     /// </summary>
     public class LogController : Controller
     {
-        private ModelsDbContext db = new ModelsDbContext();
+        private ModelsDbContext db;
 
         public LogController()
         {

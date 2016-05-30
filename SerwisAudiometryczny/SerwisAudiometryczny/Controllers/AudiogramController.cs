@@ -15,7 +15,7 @@ namespace SerwisAudiometryczny.Controllers
 {
     public class AudiogramController : Controller
     {
-        private ModelsDbContext db = new ModelsDbContext();
+        private ModelsDbContext db;
 
         public AudiogramController()
         {
@@ -121,7 +121,7 @@ namespace SerwisAudiometryczny.Controllers
         // GET: AudiogramModels
         public ActionResult Index(int? page)
         {
-            return View();
+            return View(db.AudiogramModels.ToList());
         }
 
         // GET: AudiogramModels/Details/5

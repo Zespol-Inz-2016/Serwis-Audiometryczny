@@ -12,7 +12,7 @@ namespace SerwisAudiometryczny.Controllers
 {
     public class FrequencyController : Controller
     {
-        private ModelsDbContext db = new ModelsDbContext();
+        private ModelsDbContext db;
 
         public FrequencyController()
         {

@@ -343,9 +343,6 @@
     <Content Include="Views\Backup\Export.cshtml" />
     <Content Include="Views\Backup\Import.cshtml" />
     <Content Include="Views\UserManagement\CreateUser.cshtml" />
-    <Content Include="Views\UserManagement\DeactivateUser.cshtml" />
-    <Content Include="Views\UserManagement\DeactivateUserConfirmed.cshtml" />
-    <Content Include="Views\UserManagement\EditUser.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Log\Search.cshtml" />

@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net;
 
 namespace SerwisAudiometryczny.Controllers
 {
     public class UserManagementController : Controller
     {
+        ApplicationDbContext db = ApplicationDbContext.Create();
         //public ApplicationUserManager UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
         public ActionResult Index()
         {
-            ApplicationDbContext db = ApplicationDbContext.Create();
+
             return View(db.Users.ToList());
             //return View();
         }
@@ -42,24 +44,68 @@ namespace SerwisAudiometryczny.Controllers
             return View();
         }
 
-        public ActionResult DeactivateUser(int? id)
-        {
-            return View();
-        }
+        //public ActionResult DeactivateUser(int? id)
+        //{
+        //    return View();
+        //}
 
-        public ActionResult DeactivateUserConfirmed(int id)
-        {
-            return View();
-        }
+        //public ActionResult DeactivateUserConfirmed(int id)
+        //{
+        //    return View();
+        //}
 
         public ActionResult EditUser(int? id)
         {
             return View();
         }
-
+        [HttpPost]
         public ActionResult EditUser(UserEditModelView model)
         {
             return View();
+        }
+
+        public ActionResult EditRole(FormCollection form)
+        {
+            string name = form["Name"];
+            string submit = form["Submit"];
+            bool administrator = FormParser(form["Administrator"]);
+            bool patient = FormParser(form["Patient"]);
+            bool researcher = FormParser(form["Researcher"]);
+            bool user = FormParser(form["User"]);
+            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == name);
+            if (CurrentUser == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            switch (submit)
+            {
+                case "Save":
+                    CurrentUser.Administrator = administrator;
+                    CurrentUser.Patient = patient;
+                    CurrentUser.Researcher = researcher;
+                    CurrentUser.User = user;
+                    break;
+                case "Deactivate":
+                    CurrentUser.Administrator = false;
+                    CurrentUser.Patient = false;
+                    CurrentUser.Researcher = false;
+                    CurrentUser.User = false;
+                    break;
+                default:
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        private bool FormParser(string value)
+        {
+            if (value == "on")
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

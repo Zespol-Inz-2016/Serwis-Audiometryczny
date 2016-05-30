@@ -16,48 +16,48 @@ namespace SerwisAudiometryczny.Controllers
         {
             return View(db.Users.ToList());
         }
-        public ActionResult Edit(FormCollection form)
-        {
-            string name = form["Name"];
-            string submit = form["Submit"];
-            bool administrator = FormParser(form["Administrator"]);
-            bool patient = FormParser(form["Patient"]);
-            bool researcher = FormParser(form["Researcher"]);
-            bool user = FormParser(form["User"]);
-            var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == name);
-            if (CurrentUser == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            switch (submit)
-            {
-                case "Save":
-                    CurrentUser.Administrator = administrator;
-                    CurrentUser.Patient = patient;
-                    CurrentUser.Researcher = researcher;
-                    CurrentUser.User = user;
-                    break;
-                default:
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //public ActionResult Edit(FormCollection form)
+        //{
+        //    string name = form["Name"];
+        //    string submit = form["Submit"];
+        //    bool administrator = FormParser(form["Administrator"]);
+        //    bool patient = FormParser(form["Patient"]);
+        //    bool researcher = FormParser(form["Researcher"]);
+        //    bool user = FormParser(form["User"]);
+        //    var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == name);
+        //    if (CurrentUser == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    switch (submit)
+        //    {
+        //        case "Save":
+        //            CurrentUser.Administrator = administrator;
+        //            CurrentUser.Patient = patient;
+        //            CurrentUser.Researcher = researcher;
+        //            CurrentUser.User = user;
+        //            break;
+        //        default:
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
 
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         // GET: InstrumentModels/Create
         public ActionResult Create()
         {
             return View();
         }
-        private bool FormParser(string value)
-        {
-            if (value == "on")
-            {
-                return true;
-            }
-            return false;
-        }
+        //private bool FormParser(string value)
+        //{
+        //    if (value == "on")
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
     }
     

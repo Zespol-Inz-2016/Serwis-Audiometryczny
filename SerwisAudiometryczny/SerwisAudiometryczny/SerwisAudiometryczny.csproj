@@ -350,6 +350,7 @@
     <Content Include="Views\Shared\SingleRecord.cshtml" />
     <Content Include="Views\Shared\Checkbox.cshtml" />
     <Content Include="Views\UserManagement\Index.cshtml" />
+    <Content Include="Views\Audiogram\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

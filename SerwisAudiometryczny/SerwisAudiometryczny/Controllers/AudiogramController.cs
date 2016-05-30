@@ -132,7 +132,7 @@ namespace SerwisAudiometryczny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null || (audiogramModel.EditorID != Convert.ToInt32(User.Identity.GetUserId()) && audiogramModel.PatientID != Convert.ToInt32(User.Identity.GetUserId())))
+            if (audiogramModel == null || (audiogramModel.EditorID != User.Identity.GetUserId() && audiogramModel.PatientID != User.Identity.GetUserId()))
             {
                 return HttpNotFound();
             }
@@ -140,9 +140,11 @@ namespace SerwisAudiometryczny.Controllers
             audiogramDisplay.Audiogram = audiogramModel;
 
             var datab = ApplicationDbContext.Create();
-            string EditorID = User.Identity.GetUserId();
-            ApplicationUser currentUser = datab.Users.FirstOrDefault(x => x.Id == EditorID);
-            audiogramDisplay.Editor = currentUser;
+            ApplicationUser Editor = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.EditorID);
+            audiogramDisplay.Editor = Editor;
+
+            ApplicationUser Patient = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.PatientID);
+            audiogramDisplay.Patient = Patient;
 
 
             return View(audiogramDisplay);
@@ -179,13 +181,12 @@ namespace SerwisAudiometryczny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null || audiogramModel.EditorID != Convert.ToInt32(User.Identity.GetUserId()))
+            if (audiogramModel == null || audiogramModel.EditorID != User.Identity.GetUserId())
             {
                 return HttpNotFound();
             }
             AudiogramCreateEditViewModel audiogramEdit = new AudiogramCreateEditViewModel();
             audiogramEdit.Audiogram = audiogramModel;
-           // audiogramEdit
             return View(audiogramEdit);
         }
 

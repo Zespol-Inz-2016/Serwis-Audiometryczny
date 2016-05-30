@@ -15,7 +15,7 @@ namespace SerwisAudiometryczny.Controllers
 {
     public class AudiogramController : Controller
     {
-        private ModelsDbContext db = new ModelsDbContext();
+        private ModelsDbContext db;
 
         public AudiogramController()
         {

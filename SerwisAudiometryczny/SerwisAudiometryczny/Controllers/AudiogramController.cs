@@ -121,7 +121,7 @@ namespace SerwisAudiometryczny.Controllers
         // GET: AudiogramModels
         public ActionResult Index(int? page)
         {
-            return View();
+            return View(db.AudiogramModels.ToList());
         }
 
         // GET: AudiogramModels/Details/5

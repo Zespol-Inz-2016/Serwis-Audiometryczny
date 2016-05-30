@@ -68,10 +68,10 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje, do którego pacjenta należy ten audiogram.
         /// </summary>
-        public int PatientID { get; set; }
+        public string PatientID { get; set; }
         /// <summary>
         /// Opisuje, który lekarz(edytor) dodał ten audiogram.
         /// </summary>
-        public int EditorID { get; set; }
+        public string EditorID { get; set; }
     }
 }

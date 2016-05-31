@@ -141,11 +141,30 @@ namespace SerwisAudiometryczny.Controllers
 
             var datab = ApplicationDbContext.Create();
             ApplicationUser Editor = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.EditorID);
+            if (Editor==null)
+            {
+                return HttpNotFound();
+            }
             audiogramDisplay.Editor = Editor;
 
             ApplicationUser Patient = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.PatientID);
+            if (Patient == null)
+            {
+                return HttpNotFound();
+            }
             audiogramDisplay.Patient = Patient;
 
+            FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+            if (FrequencyModelArray==null)
+            {
+                return HttpNotFound();
+            }
+            int[] FrequencyIntArray = new int[FrequencyModelArray.Length];
+            for (int i = 0; i < FrequencyModelArray.Length; i++)
+            {
+                FrequencyIntArray[i] = FrequencyModelArray[i].Frequency;
+            }
+            audiogramDisplay.Frequencies = FrequencyIntArray;
 
             return View(audiogramDisplay);
         }
@@ -187,6 +206,26 @@ namespace SerwisAudiometryczny.Controllers
             }
             AudiogramCreateEditViewModel audiogramEdit = new AudiogramCreateEditViewModel();
             audiogramEdit.Audiogram = audiogramModel;
+
+            List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+            if (InstrumentModelList==null)
+            {
+                return HttpNotFound();
+            }
+            audiogramEdit.Instruments = InstrumentModelList;
+
+            FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+            if (FrequencyModelArray == null)
+            {
+                return HttpNotFound();
+            }
+            int[] FrequencyIntArray = new int[FrequencyModelArray.Length];
+            for (int i = 0; i < FrequencyModelArray.Length; i++)
+            {
+                FrequencyIntArray[i] = FrequencyModelArray[i].Frequency;
+            }
+            audiogramEdit.Frequencies = FrequencyIntArray;
+
             return View(audiogramEdit);
         }
 
@@ -195,11 +234,12 @@ namespace SerwisAudiometryczny.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,LeftEar,RightEar,Diagnosis,Sex,Nuisance,Age,PercentageHearingLoss,IsMusician,PatientID,EditorID")] AudiogramModel audiogramModel)
+        public ActionResult Edit([Bind(Include = "ID,LeftEar,RightEar,Diagnosis,Sex,Nuisance,Age,PercentageHearingLoss,IsMusician,PatientID,EditorID")] AudiogramModel audiogramModel, [Bind(Include = "NewInstrument")] InstrumentModel instrumentModel)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(audiogramModel).State = EntityState.Modified;
+                db.InstrumentModels.Add(instrumentModel);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

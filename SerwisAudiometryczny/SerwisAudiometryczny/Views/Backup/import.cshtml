@@ -1,4 +1,4 @@
-﻿@using (Html.BeginForm("/Backup/Import"))
+﻿@using (Html.BeginForm("Import", "Backup", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="container">
         <div class="content">

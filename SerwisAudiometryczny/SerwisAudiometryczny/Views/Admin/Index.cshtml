@@ -1,1 +1,21 @@
-﻿
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<div class="col-lg-offset-4 col-lg-4 col-lg-offset-4">
+<h2>Admin panel</h2>
+</div>
+<div class="container">
+    <div class="col-lg-offset-4 col-lg-4 col-lg-offset-4">
+
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="user-manager" formaction="/Account/Details">user manager</button>
+                <button type="submit" class="btn btn-primary" id="backup" formaction="/Backup/Import">backup</button>
+                <button type="submit" class="btn btn-primary" id="logs" formaction="/Log/Index">logs</button>
+            </div>
+        }
+    </div>
+</div>
+

@@ -27,3 +27,10 @@ textarea {
     border:none;
 }
 
+.content{
+    margin-top:70px;
+    margin:20px;
+   margin-left:auto;
+   margin-right:auto;
+   width:50%;
+}

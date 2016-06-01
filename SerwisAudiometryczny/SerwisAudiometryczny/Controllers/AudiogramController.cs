@@ -139,19 +139,13 @@ namespace SerwisAudiometryczny.Controllers
             AudiogramDisplayViewModel audiogramDisplay = new AudiogramDisplayViewModel();
             audiogramDisplay.Audiogram = audiogramModel;
 
+            //Może być null. Wyświetlić brak edytora.
             var datab = ApplicationDbContext.Create();
             ApplicationUser Editor = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.EditorID);
-            if (Editor==null)
-            {
-                return HttpNotFound();
-            }
             audiogramDisplay.Editor = Editor;
 
+            //Może być null. Wyświetlić brak pacjenta.
             ApplicationUser Patient = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.PatientID);
-            if (Patient == null)
-            {
-                return HttpNotFound();
-            }
             audiogramDisplay.Patient = Patient;
 
             FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();

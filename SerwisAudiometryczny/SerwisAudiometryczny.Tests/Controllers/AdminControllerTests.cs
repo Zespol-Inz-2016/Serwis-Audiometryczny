@@ -27,5 +27,7 @@ namespace SerwisAudiometryczny.Controllers.Tests
             ViewResult result = controller.Create() as ViewResult;
             Assert.IsNotNull(result);
         }
+
+        //narazie tyle bo reszta kodu znajduje się w komentarzu
     }
 }

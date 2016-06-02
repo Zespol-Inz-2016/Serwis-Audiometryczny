@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdminControllerTests.cs" />
     <Compile Include="Controllers\BackupControllerTests.cs" />
     <Compile Include="Controllers\LogControllerTests.cs" />
     <Compile Include="Models\LogModelTests.cs" />

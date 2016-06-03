@@ -16,8 +16,11 @@ namespace SerwisAudiometryczny.Controllers.Tests
         public void IndexTest()
         {
             AdminController controller = new AdminController();
+
             ViewResult result = controller.Index() as ViewResult;
+
             Assert.IsNotNull(result);
+
         }
 
         [TestMethod()]
@@ -28,6 +31,5 @@ namespace SerwisAudiometryczny.Controllers.Tests
             Assert.IsNotNull(result);
         }
 
-        //narazie tyle bo reszta kodu znajduje się w komentarzu
     }
 }

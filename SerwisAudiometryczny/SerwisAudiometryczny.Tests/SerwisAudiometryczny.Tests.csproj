@@ -85,6 +85,7 @@
     <Compile Include="Controllers\AdminControllerTests.cs" />
     <Compile Include="Controllers\BackupControllerTests.cs" />
     <Compile Include="Controllers\LogControllerTests.cs" />
+    <Compile Include="Controllers\UserManagementControllerTests.cs" />
     <Compile Include="Models\LogModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />

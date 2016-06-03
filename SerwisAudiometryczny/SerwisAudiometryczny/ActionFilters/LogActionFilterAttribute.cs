@@ -5,6 +5,7 @@ using System.Web.Routing;
 using System.IO;
 using SerwisAudiometryczny.Models;
 using SerwisAudiometryczny.Controllers;
+using Microsoft.AspNet.Identity;
 
 namespace SerwisAudiometryczny.ActionFilters
 {
@@ -36,10 +37,10 @@ namespace SerwisAudiometryczny.ActionFilters
             RouteData route_data = filterContext.RouteData;
             LogModel log = new LogModel();
 
-            if (filterContext.RouteData.DataTokens.ContainsKey("userid"))
-                log.UserId = (int)route_data.Values["userid"];
+            if (filterContext.HttpContext.User.Identity.IsAuthenticated)
+                log.UserId = filterContext.HttpContext.User.Identity.GetUserId<int>();
             else
-                log.UserId = -1;
+                log.UserId = null;
             log.Controller = (string)route_data.Values["controller"];
             log.Action = (string)route_data.Values["action"];
             log.Time = start_time;

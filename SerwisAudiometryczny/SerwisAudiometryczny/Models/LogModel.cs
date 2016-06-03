@@ -16,7 +16,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Zmienna przechowywująca numer indentyfikacyjny użytkownika
         /// </summary>
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// Zmienna przechowywująca gdzie zrobiono

@@ -9,6 +9,9 @@ using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
 using PagedList;
 using SerwisAudiometryczny.ActionFilters;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Web.Security;
 
 namespace SerwisAudiometryczny.Controllers
 {
@@ -34,12 +37,14 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="page">Określa numer strony</param>
         /// <returns></returns>
         // GET: Log
+        [IsAdministrator]
         public ActionResult Index(int? page)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             return View(db.LogModels.OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
+            //return View(db.LogModels.Where(x => x.UserId == User.Identity.GetUserId<int>()).OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
         }
         /// <summary>
         /// Zwraca widok wyszukiwarki

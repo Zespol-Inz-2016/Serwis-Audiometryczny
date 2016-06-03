@@ -43,17 +43,17 @@ namespace SerwisAudiometryczny.Controllers.Tests
             Stream stream = databaseBackuper.Backup();
             string contentType = MimeMapping.GetMimeMapping(Server.ToString());
             string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_SerwisAudiometryczny.zip";
-            FileStreamResult fileStreamResult = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };
+            FileStreamResult aktualny = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };
 
-            FileResult wynik = TestSend.SendFile() as FileResult;
-            Assert.AreEqual(wynik,fileStreamResult);
+            FileResult oczekiwany = TestSend.SendFile() as FileResult;
+
+            Assert.AreSame(oczekiwany, aktualny);
         }
 
         [TestMethod()]
-        public void CreateTest()
+        public void CreateTest(FormCollection collection)
         {
             BackupController TestCreate = new BackupController();
-            FormCollection collection = new FormCollection();
             ViewResult wynik = TestCreate.Create(collection) as ViewResult;
 
             Assert.IsNotNull(wynik);
@@ -71,11 +71,10 @@ namespace SerwisAudiometryczny.Controllers.Tests
         }
 
         [TestMethod()]
-        public void EditTest2()
+        public void EditTest2(FormCollection collect)
         {
             BackupController TestEdit = new BackupController();
             int PodaneID = 2; //należy podać ID 
-            FormCollection collect = new FormCollection();
             ViewResult wynik = TestEdit.Edit(PodaneID,collect) as ViewResult;
 
             Assert.IsNotNull(wynik);
@@ -89,15 +88,18 @@ namespace SerwisAudiometryczny.Controllers.Tests
             int PodaneID = 5;
             ViewResult wynik = TestDelete.Delete(PodaneID) as ViewResult;
 
+            Assert.IsNotNull(wynik);
+
         }
 
         [TestMethod()]
-        public void DeleteTest2()
+        public void DeleteTest2(FormCollection collect)
         {
             BackupController TestDelete = new BackupController();
             int PodaneID = 3;
-            FormCollection collect = new FormCollection();
             ViewResult wynik = TestDelete.Delete(PodaneID, collect) as ViewResult;
+
+            Assert.IsNotNull(wynik);
 
         }
     }

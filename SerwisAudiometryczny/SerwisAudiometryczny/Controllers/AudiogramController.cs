@@ -50,7 +50,7 @@ namespace SerwisAudiometryczny.Controllers
 
                 foreach (var t in results)
                 {
-                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, string>(t.ID.ToString());
+                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, int>(t.ID);
                     string userName = user.Name;
                     if (userName.Contains(model.PatientName))
                     {
@@ -105,13 +105,13 @@ namespace SerwisAudiometryczny.Controllers
             if (model.Patient != null)
             {
                 results = from t in results
-                          where t.PatientID.ToString() == model.Patient.Id
+                          where t.PatientID == model.Patient.Id
                           select t;
             }
             if (model.Editor != null)
             {
                 results = from t in results
-                          where t.EditorID.ToString() == model.Editor.Id
+                          where t.EditorID == model.Editor.Id
                           select t;
             }
             return View(results.OrderByDescending(x => x.ID).ToList());
@@ -132,7 +132,7 @@ namespace SerwisAudiometryczny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null || (audiogramModel.EditorID != User.Identity.GetUserId() && audiogramModel.PatientID != User.Identity.GetUserId()))
+            if (audiogramModel == null || (audiogramModel.EditorID != User.Identity.GetUserId<int>() && audiogramModel.PatientID != User.Identity.GetUserId<int>()))
             {
                 return HttpNotFound();
             }
@@ -194,7 +194,7 @@ namespace SerwisAudiometryczny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null || audiogramModel.EditorID != User.Identity.GetUserId())
+            if (audiogramModel == null || audiogramModel.EditorID != User.Identity.GetUserId<int>())
             {
                 return HttpNotFound();
             }

@@ -35,7 +35,7 @@ namespace SerwisAudiometryczny.Controllers
             {
                 var user = new ApplicationUser {Name = model.Name, UserName = model.Email, Email = model.Email, Administrator = model.Administrator,Address = model.Address, User = model.User,Researcher = model.Researcher,Patient = model.Patient };
                 ApplicationDbContext context = new ApplicationDbContext();
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
 
                 IdentityResult userResult = userManager.Create(user, model.Password);
                 return RedirectToAction("Index", "UserManagement");
@@ -56,15 +56,15 @@ namespace SerwisAudiometryczny.Controllers
         //    return View();
         //}
         
-        public ActionResult EditUser(string myGuid)
+        public ActionResult EditUser(int myId)
         {
 
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == myGuid);
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == myId);
             if (currentUser == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserEditModelView model = new UserEditModelView() {Guid = myGuid, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email };
+            UserEditModelView model = new UserEditModelView() {Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email };
             ViewBag.UserName = currentUser.UserName;
             return View(model);
         }
@@ -73,22 +73,22 @@ namespace SerwisAudiometryczny.Controllers
         public ActionResult ResetUserPassword(UserEditModelView model)
         {
 
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Guid);
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Id);
             if (currentUser == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            userManager.RemovePassword(model.Guid);
+            userManager.RemovePassword(model.Id);
 
-            userManager.AddPassword(model.Guid, model.Password);
+            userManager.AddPassword(model.Id, model.Password);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public ActionResult EditUser(UserEditModelView model)
         {
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Guid);
+            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Id);
             if (currentUser == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

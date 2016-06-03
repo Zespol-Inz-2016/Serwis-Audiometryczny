@@ -19,7 +19,7 @@ namespace SerwisAudiometryczny.ActionFilters
             }
             
             var db = ApplicationDbContext.Create();
-            string currentUserId = httpContext.User.Identity.GetUserId();
+            int currentUserId = httpContext.User.Identity.GetUserId<int>();
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
             return currentUser.Administrator;
         }

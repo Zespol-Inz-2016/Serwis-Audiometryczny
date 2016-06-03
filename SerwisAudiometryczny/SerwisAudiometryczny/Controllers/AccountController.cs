@@ -102,7 +102,7 @@ namespace SerwisAudiometryczny.Controllers
 
         public ActionResult Edit()
         {
-            ApplicationUser user = UserManager.FindById<ApplicationUser, string>(User.Identity.GetUserId());
+            ApplicationUser user = UserManager.FindById<ApplicationUser, int>(User.Identity.GetUserId<int>());
             AccountEditViewModel model = new AccountEditViewModel();
             model.Name = user.Name;
             model.Address = user.Address;
@@ -115,20 +115,20 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = UserManager.FindById<ApplicationUser, string>(User.Identity.GetUserId());
+                ApplicationUser user = UserManager.FindById<ApplicationUser, int>(User.Identity.GetUserId<int>());
                 user.Name = model.Name;
                 user.Address = model.Address;
                 user.Email = model.Email;
                 user.UserName = model.Email;
 
-                UserManager.SetEmail<ApplicationUser, string>(User.Identity.GetUserId(), model.Email);
-                UserManager.Update<ApplicationUser, string>(user);
+                UserManager.SetEmail<ApplicationUser, int>(User.Identity.GetUserId<int>(), model.Email);
+                UserManager.Update(user);
                 if (model.Password.CompareTo(model.ConfirmPassword) == 0)
                 {
-                    UserManager.RemovePassword(User.Identity.GetUserId());
+                    UserManager.RemovePassword<ApplicationUser,int>(User.Identity.GetUserId<int>());
                     UserManager.AddPassword(user.Id, model.Password);
                 }
-                UserManager.Update<ApplicationUser, string>(user);
+                UserManager.Update<ApplicationUser, int>(user);
             }
             return View(model);
         }
@@ -139,7 +139,7 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser model = UserManager.FindById<ApplicationUser, string>(User.Identity.GetUserId());
+            ApplicationUser model = UserManager.FindById<ApplicationUser, int>(User.Identity.GetUserId<int>());
             return View(model);
         }
 

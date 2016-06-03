@@ -129,7 +129,7 @@ namespace SerwisAudiometryczny.Controllers
                     CurrentUser.User = false;
                     break;
                 case "Edit":
-                    return RedirectToAction("EditUser", new { myGuid = CurrentUser.Id });
+                    return RedirectToAction("EditUser", new { myId = CurrentUser.Id });
                 default:
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

@@ -166,6 +166,21 @@ namespace SerwisAudiometryczny.Controllers
         // GET: AudiogramModels/Create
         public ActionResult Create()
         {
+            //AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
+            //audiogramCreate.Audiogram = new AudiogramModel();
+            //audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
+            //FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+            //if (FrequencyModelArray == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //audiogramCreate.Frequencies = new int[FrequencyModelArray.Length];
+            //for (int i = 0; i < FrequencyModelArray.Length; i++)
+            //{
+            //    audiogramCreate.Frequencies[i] = FrequencyModelArray[i].Frequency;
+            //}
+
+            //return View(audiogramCreate);
             return View();
         }
 
@@ -213,12 +228,11 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return HttpNotFound();
             }
-            int[] FrequencyIntArray = new int[FrequencyModelArray.Length];
+            audiogramEdit.Frequencies = new int[FrequencyModelArray.Length];
             for (int i = 0; i < FrequencyModelArray.Length; i++)
             {
-                FrequencyIntArray[i] = FrequencyModelArray[i].Frequency;
+                audiogramEdit.Frequencies[i] = FrequencyModelArray[i].Frequency;
             }
-            audiogramEdit.Frequencies = FrequencyIntArray;
 
             return View(audiogramEdit);
         }

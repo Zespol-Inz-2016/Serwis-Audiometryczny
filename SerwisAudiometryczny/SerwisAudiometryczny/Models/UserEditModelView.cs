@@ -11,7 +11,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Id dla użytkownika
         /// </summary>
-        public string Guid { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Opisuje imię użytkownika.
         /// </summary>

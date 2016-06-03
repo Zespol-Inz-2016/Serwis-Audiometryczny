@@ -50,7 +50,7 @@ namespace SerwisAudiometryczny.Controllers
 
                 foreach (var t in results)
                 {
-                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, string>(t.ID.ToString());
+                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, int>(t.ID);
                     string userName = user.Name;
                     if (userName.Contains(model.PatientName))
                     {
@@ -105,13 +105,13 @@ namespace SerwisAudiometryczny.Controllers
             if (model.Patient != null)
             {
                 results = from t in results
-                          where t.PatientID.ToString() == model.Patient.Id
+                          where t.PatientID == model.Patient.Id
                           select t;
             }
             if (model.Editor != null)
             {
                 results = from t in results
-                          where t.EditorID.ToString() == model.Editor.Id
+                          where t.EditorID == model.Editor.Id
                           select t;
             }
             return View(results.OrderByDescending(x => x.ID).ToList());
@@ -132,7 +132,7 @@ namespace SerwisAudiometryczny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null || (audiogramModel.EditorID != User.Identity.GetUserId() && audiogramModel.PatientID != User.Identity.GetUserId()))
+            if (audiogramModel == null || (audiogramModel.EditorID != User.Identity.GetUserId<int>() && audiogramModel.PatientID != User.Identity.GetUserId<int>()))
             {
                 return HttpNotFound();
             }
@@ -166,6 +166,21 @@ namespace SerwisAudiometryczny.Controllers
         // GET: AudiogramModels/Create
         public ActionResult Create()
         {
+            //AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
+            //audiogramCreate.Audiogram = new AudiogramModel();
+            //audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
+            //FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+            //if (FrequencyModelArray == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //audiogramCreate.Frequencies = new int[FrequencyModelArray.Length];
+            //for (int i = 0; i < FrequencyModelArray.Length; i++)
+            //{
+            //    audiogramCreate.Frequencies[i] = FrequencyModelArray[i].Frequency;
+            //}
+
+            //return View(audiogramCreate);
             return View();
         }
 
@@ -194,7 +209,7 @@ namespace SerwisAudiometryczny.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null || audiogramModel.EditorID != User.Identity.GetUserId())
+            if (audiogramModel == null || audiogramModel.EditorID != User.Identity.GetUserId<int>())
             {
                 return HttpNotFound();
             }
@@ -213,12 +228,11 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return HttpNotFound();
             }
-            int[] FrequencyIntArray = new int[FrequencyModelArray.Length];
+            audiogramEdit.Frequencies = new int[FrequencyModelArray.Length];
             for (int i = 0; i < FrequencyModelArray.Length; i++)
             {
-                FrequencyIntArray[i] = FrequencyModelArray[i].Frequency;
+                audiogramEdit.Frequencies[i] = FrequencyModelArray[i].Frequency;
             }
-            audiogramEdit.Frequencies = FrequencyIntArray;
 
             return View(audiogramEdit);
         }

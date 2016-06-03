@@ -56,7 +56,24 @@ namespace SerwisAudiometryczny.Models
         /// </summary>
         [Required(ErrorMessage = "Proszę podać procent utraty słuchu.")]
         [Range(typeof(float), "0","100")]
-        public float PercentageHearingLoss { get; set; }
+        public float PercentageHearingLoss
+        {
+            get
+            {
+                float[] leftear = LeftEar.Levels;
+                float[] rightear = RightEar.Levels;
+                //pobieram czestotliwosci od 500Hz do 3000Hz
+                float sumleft = leftear[2] + leftear[3] + leftear[4] + leftear[5];
+                float sumright = rightear[2] + rightear[3] + rightear[4] + rightear[5];
+                return (Math.Min(sumleft,sumright)*5 + Math.Max(sumright,sumleft)) /6;
+                //Źródło wzoru:
+                //http://law.justia.com/codes/maryland/2010/labor-and-employment/title-9/subtitle-6/9-650
+            }
+            set
+            {
+            }
+
+        }
         /// <summary>
         /// Opisuje, czy pacjent jest muzykiem.
         /// </summary>
@@ -68,10 +85,10 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje, do którego pacjenta należy ten audiogram.
         /// </summary>
-        public string PatientID { get; set; }
+        public int PatientID { get; set; }
         /// <summary>
         /// Opisuje, który lekarz(edytor) dodał ten audiogram.
         /// </summary>
-        public string EditorID { get; set; }
+        public int EditorID { get; set; }
     }
 }

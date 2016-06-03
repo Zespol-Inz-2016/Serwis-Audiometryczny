@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 namespace SerwisAudiometryczny.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class ApplicationUser : IdentityUser, IXmlSerializable
+    public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>, IXmlSerializable
     {
         private ModelsDbContext dbContext;
         private ApplicationDbContext applicationDbContext;
@@ -71,7 +71,7 @@ namespace SerwisAudiometryczny.Models
         public ICollection<ApplicationUser> SensitiveDataAccess { get; set; }
 
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -89,7 +89,7 @@ namespace SerwisAudiometryczny.Models
             reader.MoveToContent();
             reader.ReadStartElement();
 
-            Id = reader.ReadElementString("Id");
+            Id = int.Parse(reader.ReadElementString("Id"));
             UserName = reader.ReadElementString("NazwaUzytkownika");
             SecurityStamp = reader.ReadElementString("Zabezpieczenie");
             PasswordHash = reader.ReadElementString("Haslo");
@@ -120,7 +120,7 @@ namespace SerwisAudiometryczny.Models
         public void WriteXml(XmlWriter writer)
         {
             // Serializacja danych o koncie
-            writer.WriteElementString("Id", Id);
+            writer.WriteElementString("Id", Id.ToString());
             writer.WriteElementString("NazwaUzytkownika", UserName);
             writer.WriteElementString("Zabezpieczenie", SecurityStamp);
             writer.WriteElementString("Haslo", PasswordHash);
@@ -155,11 +155,38 @@ namespace SerwisAudiometryczny.Models
             */
         }
     }
+    public class CustomUserRole : IdentityUserRole<int> { }
+    public class CustomUserClaim : IdentityUserClaim<int> { }
+    public class CustomUserLogin : IdentityUserLogin<int> { }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class CustomRole : IdentityRole<int, CustomUserRole>
+    {
+        public CustomRole() { }
+        public CustomRole(string name) { Name = name; }
+    }
+
+    public class CustomUserStore : UserStore<ApplicationUser, CustomRole, int,
+        CustomUserLogin, CustomUserRole, CustomUserClaim>
+    {
+        public CustomUserStore(ApplicationDbContext context)
+            : base(context)
+        {
+        }
+    }
+
+    public class CustomRoleStore : RoleStore<CustomRole, int, CustomUserRole>
+    {
+        public CustomRoleStore(ApplicationDbContext context)
+            : base(context)
+        {
+        }
+    }
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, CustomRole,
+    int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
         }
         

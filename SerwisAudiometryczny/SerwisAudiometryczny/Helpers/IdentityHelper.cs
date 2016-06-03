@@ -12,12 +12,12 @@ namespace SerwisAudiometryczny.Helpers
     public class IdentityHelper
     {
 
-        internal static void SeedIdentities(DbContext context)
+        internal static void SeedIdentities(ApplicationDbContext context)
         {
             string userName = "admin@admin.com";
             string password = "Qwerty_123!";
 
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
 
             ApplicationUser user = userManager.FindByName(userName);
             if (user == null)

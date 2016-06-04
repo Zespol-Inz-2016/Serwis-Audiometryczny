@@ -15,7 +15,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Metoda wykonująca kopię zapasową bazy danych (serializacja do XML).
         /// </summary>
-        /// <returns>Stream zawierający archiwum z plikami xml</returns>
+        /// <returns>Stream zawierający archiwum z plikami XML</returns>
         public Stream Backup()
         {
             ModelsDbContext dbContext = new ModelsDbContext();
@@ -73,12 +73,14 @@ namespace SerwisAudiometryczny.Models
             string backupPath = HttpContext.Current.Server.MapPath("~/App_Data/Backup");
             if (!Directory.Exists(backupPath))
                 Directory.CreateDirectory(backupPath); // tworzenie tymczasowego katalogu Backup
+            if (File.Exists(zipPath))
+                File.Delete(zipPath); // jeśli istnieje jakies archiwum backup.zip to je najpierw usuwamy
 
             // utworzenie archiwum przesłanego w streamie na serwerze 
             using (FileStream fileStream = new FileStream(zipPath, FileMode.Create))
             {
                 stream.CopyTo(fileStream);
-            }
+            }   
             ZipFile.ExtractToDirectory(zipPath, backupPath); // rozpakowanie archiwum do katalogu Backup
 
             // Przywracanie logów

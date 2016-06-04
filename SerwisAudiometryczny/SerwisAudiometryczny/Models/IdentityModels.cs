@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using System.Linq;
 
 namespace SerwisAudiometryczny.Models
 {
@@ -84,8 +85,13 @@ namespace SerwisAudiometryczny.Models
             return (null);
         }
 
+        /// <summary>
+        /// Generuje obiekt z jego reprezentacji XML
+        /// </summary>
+        /// <param name="reader"></param>
         public void ReadXml(XmlReader reader)
         {
+            string value = "";
             reader.MoveToContent();
             reader.ReadStartElement();
 
@@ -93,30 +99,42 @@ namespace SerwisAudiometryczny.Models
             UserName = reader.ReadElementString("NazwaUzytkownika");
             SecurityStamp = reader.ReadElementString("Zabezpieczenie");
             PasswordHash = reader.ReadElementString("Haslo");
-            Administrator = reader.ReadElementString("Administrator") == "true" ? true : false;
-            User = reader.ReadElementString("Uzytkownik") == "true" ? true : false;
-            Researcher = reader.ReadElementString("Badacz") == "true" ? true : false;
-            Patient = reader.ReadElementString("Pacjent") == "true" ? true : false;
-            Name = reader.ReadElementString("ImieNazwisko");
-            Address = reader.ReadElementString("Adres");
+            Administrator = reader.ReadElementString("Administrator") == "True" ? true : false;
+            User = reader.ReadElementString("Uzytkownik") == "True" ? true : false;
+            Researcher = reader.ReadElementString("Badacz") == "True" ? true : false;
+            Patient = reader.ReadElementString("Pacjent") == "True" ? true : false;
+                value = reader.ReadElementString("ImieNazwisko");
+            Name = value != "" ? value : null;
+                value = reader.ReadElementString("Adres");
+            Address = value != "" ? value : null;
             Email = reader.ReadElementString("Email");
-            PhoneNumber = reader.ReadElementString("NumerTelefonu");
+            EmailConfirmed = reader.ReadElementString("PotwierdzonyEmail") == "True" ? true : false;
+                value = reader.ReadElementString("NumerTelefonu");
+            PhoneNumber = value != "" ? value : null;
 
-            // TODO:
+            // TODO: 
             /*
-            while (reader.Name != "AudiogramId")
+            if (reader.Name == "AudiogramId")
+                Audiograms = new List<AudiogramModel>();
+            while (reader.Name == "AudiogramId")
             {
-                // TODO:
+                int audiogramId = int.Parse(reader.ReadElementString());
+                AudiogramModel x = dbContext.AudiogramModels.ToList().Find(item => item.ID == audiogramId);
+                Audiograms.Add(x);
             } 
-
-            while (reader.Name != "DostepWrazliweId")
+            while (reader.Name == "DostepWrazliweId")
             {
                 // TODO:
             }
             */
+
             reader.Read();
         }
 
+        /// <summary>
+        /// Konwertuje obiekt na jego reprezentację XML.
+        /// </summary>
+        /// <param name="writer"></param>
         public void WriteXml(XmlWriter writer)
         {
             // Serializacja danych o koncie
@@ -131,6 +149,7 @@ namespace SerwisAudiometryczny.Models
             writer.WriteElementString("ImieNazwisko", Name);
             writer.WriteElementString("Adres", Address);
             writer.WriteElementString("Email", Email);
+            writer.WriteElementString("PotwierdzonyEmail", EmailConfirmed.ToString());
             writer.WriteElementString("NumerTelefonu", PhoneNumber);
 
             // TODO:
@@ -144,6 +163,7 @@ namespace SerwisAudiometryczny.Models
                 }
             }
 
+            /*
             // Serializacja dostępu do danych wrażliwych jeśli takowe istnieją (tylko Id)
             if (SensitiveDataAccess != null)
             {

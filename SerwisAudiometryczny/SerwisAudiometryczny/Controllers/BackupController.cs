@@ -5,31 +5,60 @@ using System.Web;
 using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
 using System.IO;
+using SerwisAudiometryczny.ActionFilters;
 
 namespace SerwisAudiometryczny.Controllers
-{
+{ 
+    /// <summary>
+    /// Klasa służąca do wykonywania kopii zapasowej bazy danych 
+    /// (serializacja do plików XML).
+    /// </summary>
+    [IsAdministrator]
     public class BackupController : Controller
     {
         DatabaseBackuper databaseBackuper = new DatabaseBackuper();
-
+        
+        /// <summary>
+        /// Widok strony służącej do przywracania bazy danych.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Import()
         {
             return View();
         }
 
+        /// <summary>
+        /// Przywraca bazę danych z przesłanej kopii zapasowej.
+        /// </summary>
+        /// <param name="backup">Kopia zapasowa bazy danych</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase backup)
         {
-            databaseBackuper.Restore(backup.InputStream);
-            ViewBag.Message = "Pomyślnie przywrócono bazę danych!";
+            if (backup != null)
+            {
+                databaseBackuper.Restore(backup.InputStream);
+                ViewBag.Message = "Pomyślnie przywrócono bazę danych!";
+            }
+            else
+                ViewBag.Message = "Nie przesłano pliku!";
+
             return View();
         }
 
+        /// <summary>
+        /// Widok strony służącej do wykonania kopii zapasowej bazy danych.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Export()
         {
             return View();
         }
 
+        /// <summary>
+        /// Wysyła administatorowi wykonaną kopię zapasową bazy danych.
+        /// </summary>
+        /// <returns>Archiwum (.zip) ze wszystkimi plikami XML.</returns>
         public FileResult SendFile()
         {
             Stream stream = databaseBackuper.Backup();
@@ -38,66 +67,6 @@ namespace SerwisAudiometryczny.Controllers
             FileStreamResult fileStreamResult = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };
    
             return fileStreamResult;
-        }
-
-        // POST: Backup/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Backup/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Backup/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Backup/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Backup/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

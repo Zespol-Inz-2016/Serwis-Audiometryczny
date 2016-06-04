@@ -21,10 +21,12 @@ namespace SerwisAudiometryczny.Controllers
     public class LogController : Controller
     {
         private ModelsDbContext db;
+        private ApplicationDbContext dba;
 
         public LogController()
         {
             db = new ModelsDbContext();
+            dba = new ApplicationDbContext();
         }
 
         public LogController(ModelsDbContext dbContext)
@@ -37,20 +39,27 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="page">Określa numer strony</param>
         /// <returns></returns>
         // GET: Log
-        [IsAdministrator]
         public ActionResult Index(int? page)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            return View(db.LogModels.OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
-            //return View(db.LogModels.Where(x => x.UserId == User.Identity.GetUserId<int>()).OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
+            int currentUserId = User.Identity.GetUserId<int>();
+            ApplicationUser currentUser = dba.Users.FirstOrDefault(x => x.Id == currentUserId);
+
+            if (currentUser != null && currentUser.Administrator)
+                return View(db.LogModels.OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
+            if (currentUser == null)
+                return new ViewResult { ViewName = "Unauthorized" };
+
+            return View(db.LogModels.Where(x => x.UserId == currentUserId).OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
         }
         /// <summary>
         /// Zwraca widok wyszukiwarki
         /// </summary>
         /// <returns></returns>
         // GET: Search
+        [IsAdministrator]
         public ActionResult Search()
         {
             return View();
@@ -61,6 +70,7 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="model">Określa zmienne z modelu LogSearchViewModel</param>
         /// <returns></returns>
         // POST: Search
+        [IsAdministrator]
         [HttpPost]
         public ActionResult Search(LogSearchViewModel model)
         {

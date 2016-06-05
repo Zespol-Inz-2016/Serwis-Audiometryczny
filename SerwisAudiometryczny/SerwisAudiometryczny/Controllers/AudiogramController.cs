@@ -117,14 +117,19 @@ namespace SerwisAudiometryczny.Controllers
             return View(results.OrderByDescending(x => x.ID).ToList());
 
         }
-
-        // GET: AudiogramModels
+        /// <summary>
+        /// Metoda wyświetlająca wszystkie dostępne użytkownikowi audiogramy.
+        /// </summary>
+        /// <param name="page"></param>
         public ActionResult Index(int? page)
         {
             return View(db.AudiogramModels.ToList());
         }
 
-        // GET: AudiogramModels/Details/5
+        /// <summary>
+        /// Metoda przekazująca do widoku Details AudiogramDisplayViewModel.
+        /// </summary>
+        /// <param name="page"></param>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -163,7 +168,9 @@ namespace SerwisAudiometryczny.Controllers
             return View(audiogramDisplay);
         }
 
-        // GET: AudiogramModels/Create
+        /// <summary>
+        /// Metoda przekazująca do widoku Create AudiogramCreateEditViewModel.
+        /// </summary>
         public ActionResult Create()
         {
             AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
@@ -191,18 +198,14 @@ namespace SerwisAudiometryczny.Controllers
             return View(audiogramCreate);
         }
 
-        // POST: AudiogramModels/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Metoda odbierająca z widoku Create AudiogramCreateEditViewModel.
+        /// </summary>
+        /// <param name = "audiogramCreate" ></ param >
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(AudiogramCreateEditViewModel audiogramCreate)
         {
-            /*
-            tu wypierdala błąd na modelu, jak da się AudiogramCreateEditViewModel na actionResult 
-            to przestaje wywalać błąd o złym modelu ale potem db.AudiogramModels.Add(audiogramModel.Audiogram); jest puste
-            !do obczajenia i poprawy!
-              */
             if (ModelState.IsValid)
             {
                 db.AudiogramModels.Add(audiogramCreate.Audiogram);
@@ -223,7 +226,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(audiogramCreate);
         }
 
-        // GET: AudiogramModels/Edit/5
+        /// <summary>
+        /// Metoda przekazująca do widoku Edit AudiogramCreateEditViewModel.
+        /// </summary>
+        /// <param name = "id" ></ param >
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -259,9 +265,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(audiogramEdit);
         }
 
-        // POST: AudiogramModels/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Metoda odbierająca z widoku Edit AudiogramCreateEditViewModel.
+        /// </summary>
+        /// <param name = "audiogramEdit" ></ param >
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(AudiogramCreateEditViewModel audiogramEdit)
@@ -294,7 +301,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(audiogramEdit);
         }
 
-        // GET: AudiogramModels/Delete/5
+        /// <summary>
+        /// Metoda sprawdzająca możliwość usunięcia i usuwająca audiogram.
+        /// </summary>
+        /// <param name = "id" ></ param >
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -309,7 +319,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(audiogramModel);
         }
 
-        // POST: AudiogramModels/Delete/5
+        /// <summary>
+        /// Metoda zapisująca usunięcie audiogramu audiogramu.
+        /// </summary>
+        /// <param name = "id" ></ param >
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

@@ -169,6 +169,14 @@ namespace SerwisAudiometryczny.Controllers
             AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
             audiogramCreate.Audiogram = new AudiogramModel();
             audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
+
+            List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+            if (InstrumentModelList == null)
+            {
+                return HttpNotFound();
+            }
+            audiogramCreate.Instruments = InstrumentModelList;
+
             FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
             if (FrequencyModelArray == null)
             {

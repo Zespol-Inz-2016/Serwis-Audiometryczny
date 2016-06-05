@@ -10,8 +10,8 @@ using SerwisAudiometryczny.ActionFilters;
 namespace SerwisAudiometryczny.Controllers
 { 
     /// <summary>
-    /// Klasa służąca do wykonywania kopii zapasowej bazy danych 
-    /// (serializacja do plików XML).
+    /// Kontroler służący do wykonywania kopii zapasowej bazy danych 
+    /// oraz jej przywracania.
     /// </summary>
     [IsAdministrator]
     public class BackupController : Controller
@@ -30,7 +30,7 @@ namespace SerwisAudiometryczny.Controllers
         /// <summary>
         /// Przywraca bazę danych z przesłanej kopii zapasowej.
         /// </summary>
-        /// <param name="backup">Kopia zapasowa bazy danych</param>
+        /// <param name="backup">Kopia zapasowa bazy danych.</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase backup)

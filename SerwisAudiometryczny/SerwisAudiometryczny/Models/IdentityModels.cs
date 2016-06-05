@@ -86,7 +86,7 @@ namespace SerwisAudiometryczny.Models
         }
 
         /// <summary>
-        /// Generuje obiekt z jego reprezentacji XML
+        /// Generuje obiekt z jego reprezentacji XML.
         /// </summary>
         /// <param name="reader"></param>
         public void ReadXml(XmlReader reader)

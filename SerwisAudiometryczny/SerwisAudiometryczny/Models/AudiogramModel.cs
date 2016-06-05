@@ -58,8 +58,10 @@ namespace SerwisAudiometryczny.Models
         [Range(typeof(float), "0","100")]
         public float PercentageHearingLoss
         {
-            get
+            get; set;
+            /*get
             {
+                ;
                 float[] leftear = LeftEar.Levels;
                 float[] rightear = RightEar.Levels;
                 //pobieram czestotliwosci od 500Hz do 3000Hz
@@ -71,7 +73,7 @@ namespace SerwisAudiometryczny.Models
             }
             set
             {
-            }
+            }*/
 
         }
         /// <summary>

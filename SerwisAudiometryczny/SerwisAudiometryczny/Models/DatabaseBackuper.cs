@@ -8,14 +8,15 @@ using System.IO.Compression;
 namespace SerwisAudiometryczny.Models
 {
     /// <summary>
-    /// Klasa służąca do wykonania kopii zapasowej bazy danych (serializacja do XML).
+    /// Klasa służąca do wykonania kopii zapasowej bazy danych lub
+    /// jej przywrócenia z danej kopii zapasowej (serializacja/deserializacja XML).
     /// </summary>
     public class DatabaseBackuper
     {
         /// <summary>
         /// Metoda wykonująca kopię zapasową bazy danych (serializacja do XML).
         /// </summary>
-        /// <returns>Stream zawierający archiwum z plikami XML</returns>
+        /// <returns>Stream zawierający archiwum z plikami XML.</returns>
         public Stream Backup()
         {
             ModelsDbContext dbContext = new ModelsDbContext();

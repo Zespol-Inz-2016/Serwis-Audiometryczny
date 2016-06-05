@@ -26,10 +26,6 @@ namespace SerwisAudiometryczny.Models
         public ModelsDbContext() : base("DefaultConnection")//Połaczenie z danym connectionstringiem
         {
         }
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-        }
         public DbSet<AudiogramModel> AudiogramModels { get; set; }
         public DbSet<LogModel> LogModels { get; set; }
         public DbSet<InstrumentModel> InstrumentModels { get; set; }

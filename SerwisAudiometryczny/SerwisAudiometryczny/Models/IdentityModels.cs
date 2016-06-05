@@ -219,5 +219,9 @@ namespace SerwisAudiometryczny.Models
             base.OnModelCreating(modelBuilder);
 
         }
+        public DbSet<AudiogramModel> AudiogramModels { get; set; }
+        public DbSet<LogModel> LogModels { get; set; }
+        public DbSet<InstrumentModel> InstrumentModels { get; set; }
+        public DbSet<FrequencyModel> FrequencyModels { get; set; }
     }
 }

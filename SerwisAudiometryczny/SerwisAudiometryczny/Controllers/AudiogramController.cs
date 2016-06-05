@@ -166,21 +166,21 @@ namespace SerwisAudiometryczny.Controllers
         // GET: AudiogramModels/Create
         public ActionResult Create()
         {
-            //AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
-            //audiogramCreate.Audiogram = new AudiogramModel();
+            AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
+            audiogramCreate.Audiogram = new AudiogramModel();
             //audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
-            //FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
-            //if (FrequencyModelArray == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //audiogramCreate.Frequencies = new int[FrequencyModelArray.Length];
-            //for (int i = 0; i < FrequencyModelArray.Length; i++)
-            //{
-            //    audiogramCreate.Frequencies[i] = FrequencyModelArray[i].Frequency;
-            //}
+            FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+            if (FrequencyModelArray == null)
+            {
+                return HttpNotFound();
+            }
+            audiogramCreate.Frequencies = new int[FrequencyModelArray.Length];
+            for (int i = 0; i < FrequencyModelArray.Length; i++)
+            {
+               audiogramCreate.Frequencies[i] = FrequencyModelArray[i].Frequency;
+            }
 
-            //return View(audiogramCreate);
+            return View(audiogramCreate);
             return View();
         }
 
@@ -189,11 +189,16 @@ namespace SerwisAudiometryczny.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,LeftEar,RightEar,Diagnosis,Sex,Nuisance,Age,PercentageHearingLoss,IsMusician,PatientID,EditorID")] AudiogramModel audiogramModel)
+        public ActionResult Create([Bind(Include = "ID,LeftEar,RightEar,Diagnosis,Sex,Nuisance,Age,PercentageHearingLoss,IsMusician,PatientID,EditorID")] AudiogramCreateEditViewModel audiogramModel)
         {
+            /*
+            tu wypierdala błąd na modelu, jak da się AudiogramCreateEditViewModel na actionResult 
+            to przestaje wywalać błąd o złym modelu ale potem db.AudiogramModels.Add(audiogramModel.Audiogram); jest puste
+            !do obczajenia i poprawy!
+              */
             if (ModelState.IsValid)
             {
-                db.AudiogramModels.Add(audiogramModel);
+                db.AudiogramModels.Add(audiogramModel.Audiogram);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

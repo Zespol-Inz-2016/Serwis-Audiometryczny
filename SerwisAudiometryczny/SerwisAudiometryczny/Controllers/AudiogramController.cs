@@ -168,7 +168,7 @@ namespace SerwisAudiometryczny.Controllers
         {
             AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
             audiogramCreate.Audiogram = new AudiogramModel();
-            //audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
+            audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
             FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
             if (FrequencyModelArray == null)
             {
@@ -181,7 +181,6 @@ namespace SerwisAudiometryczny.Controllers
             }
 
             return View(audiogramCreate);
-            return View();
         }
 
         // POST: AudiogramModels/Create
@@ -189,7 +188,7 @@ namespace SerwisAudiometryczny.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,LeftEar,RightEar,Diagnosis,Sex,Nuisance,Age,PercentageHearingLoss,IsMusician,PatientID,EditorID")] AudiogramCreateEditViewModel audiogramModel)
+        public ActionResult Create(AudiogramCreateEditViewModel audiogramCreate)
         {
             /*
             tu wypierdala błąd na modelu, jak da się AudiogramCreateEditViewModel na actionResult 
@@ -198,12 +197,22 @@ namespace SerwisAudiometryczny.Controllers
               */
             if (ModelState.IsValid)
             {
-                db.AudiogramModels.Add(audiogramModel.Audiogram);
+                db.AudiogramModels.Add(audiogramCreate.Audiogram);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(audiogramModel);
+            audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
+            FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+            if (FrequencyModelArray == null)
+            {
+                return HttpNotFound();
+            }
+            audiogramCreate.Frequencies = new int[FrequencyModelArray.Length];
+            for (int i = 0; i < FrequencyModelArray.Length; i++)
+            {
+                audiogramCreate.Frequencies[i] = FrequencyModelArray[i].Frequency;
+            }
+            return View(audiogramCreate);
         }
 
         // GET: AudiogramModels/Edit/5
@@ -247,16 +256,34 @@ namespace SerwisAudiometryczny.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,LeftEar,RightEar,Diagnosis,Sex,Nuisance,Age,PercentageHearingLoss,IsMusician,PatientID,EditorID")] AudiogramModel audiogramModel, [Bind(Include = "NewInstrument")] InstrumentModel instrumentModel)
+        public ActionResult Edit(AudiogramCreateEditViewModel audiogramEdit)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(audiogramModel).State = EntityState.Modified;
-                db.InstrumentModels.Add(instrumentModel);
+                db.Entry(audiogramEdit.Audiogram).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(audiogramModel);
+
+            List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+            if (InstrumentModelList == null)
+            {
+                return HttpNotFound();
+            }
+            audiogramEdit.Instruments = InstrumentModelList;
+
+            FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+            if (FrequencyModelArray == null)
+            {
+                return HttpNotFound();
+            }
+            audiogramEdit.Frequencies = new int[FrequencyModelArray.Length];
+            for (int i = 0; i < FrequencyModelArray.Length; i++)
+            {
+                audiogramEdit.Frequencies[i] = FrequencyModelArray[i].Frequency;
+            }
+
+            return View(audiogramEdit);
         }
 
         // GET: AudiogramModels/Delete/5

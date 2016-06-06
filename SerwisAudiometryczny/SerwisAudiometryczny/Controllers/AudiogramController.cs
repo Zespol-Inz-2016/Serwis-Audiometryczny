@@ -13,6 +13,9 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace SerwisAudiometryczny.Controllers
 {
+    /// <summary>
+    /// Klasa obługująca audiogramy i ich przypisywanie do pacjentów. Przekazuje dane związanie z audiogramami do widoków. Dziedziczy po Controller.
+    /// </summary>
     public class AudiogramController : Controller
     {
         private ModelsDbContext db;

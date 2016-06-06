@@ -30,9 +30,9 @@
             @Html.LabelFor(model => model.Audiogram.LeftEar, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Audiogram.LeftEar, new { htmlAttributes = new { @class = "form-control form-nonex form-final-left" } })
-                <!--@for (var i = 0; i < Model.Frequencies.Length; i++)
+                @for (var i = 0; i < Model.Frequencies.Length; i++)
                 {<input class="form-control form-adv form-left" max="120" min="-10" type="number" /> }
-                -->@Html.ValidationMessageFor(model => model.Audiogram.LeftEar, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Audiogram.LeftEar, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -40,9 +40,9 @@
             @Html.LabelFor(model => model.Audiogram.RightEar, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Audiogram.RightEar, new { htmlAttributes = new { @class = "form-control form-nonex form-final-right" } })
-                <!--@for (var i = 0; i < Model.Frequencies.Length; i++)
+                @for (var i = 0; i < Model.Frequencies.Length; i++)
                 {<input class="form-control form-adv form-right" type="number" /> }
-                -->@Html.ValidationMessageFor(model => model.Audiogram.RightEar, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Audiogram.RightEar, "", new { @class = "text-danger" })
             </div>
         </div>
 

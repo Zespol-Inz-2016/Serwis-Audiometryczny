@@ -11,6 +11,9 @@ using Microsoft.AspNet.Identity;
 using System.Web.Security;
 using Microsoft.AspNet.Identity.Owin;
 
+/// <summary>
+/// Przestrzeń nazw dla kontrolerów.
+/// </summary>
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
@@ -126,9 +129,37 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="page"></param>
         public ActionResult Index(int? page)
         {
-            return View(db.AudiogramModels.ToList());
-        }
+            var datab = ApplicationDbContext.Create();
+            int userid = User.Identity.GetUserId<int>();
+            ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
+            if (CurrentUser.Researcher)
+            {
+                return View(db.AudiogramModels.ToList());
+            }
+            if (CurrentUser.User && CurrentUser.Patient)
+            {
+                var results = from t in db.AudiogramModels
+                              where t.EditorID == userid || t.PatientID == userid
+                              select t;
+                return View(results.ToList());
+            }
+            if (CurrentUser.User)
+            {
+                var results = from t in db.AudiogramModels
+                              where t.EditorID == userid
+                              select t;
+                return View(results.ToList());
+            }
+            if (CurrentUser.Patient)
+            {
+                var results = from t in db.AudiogramModels
+                              where t.PatientID == userid
+                              select t;
+                return View(results.ToList());
+            }
+            return new ViewResult { ViewName = "Unauthorized" };
 
+        }
         /// <summary>
         /// Metoda przekazująca do widoku Details AudiogramDisplayViewModel.
         /// </summary>
@@ -139,36 +170,42 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null || (audiogramModel.EditorID != User.Identity.GetUserId<int>() && audiogramModel.PatientID != User.Identity.GetUserId<int>()))
-            {
-                return HttpNotFound();
-            }
-            AudiogramDisplayViewModel audiogramDisplay = new AudiogramDisplayViewModel();
-            audiogramDisplay.Audiogram = audiogramModel;
-
-            //Może być null. Wyświetlić brak edytora.
             var datab = ApplicationDbContext.Create();
-            ApplicationUser Editor = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.EditorID);
-            audiogramDisplay.Editor = Editor;
+            int userid = User.Identity.GetUserId<int>();
+            ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
 
-            //Może być null. Wyświetlić brak pacjenta.
-            ApplicationUser Patient = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.PatientID);
-            audiogramDisplay.Patient = Patient;
-
-            FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
-            if (FrequencyModelArray==null)
+            AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
+            if (audiogramModel == null)
             {
                 return HttpNotFound();
             }
-            int[] FrequencyIntArray = new int[FrequencyModelArray.Length];
-            for (int i = 0; i < FrequencyModelArray.Length; i++)
-            {
-                FrequencyIntArray[i] = FrequencyModelArray[i].Frequency;
-            }
-            audiogramDisplay.Frequencies = FrequencyIntArray;
 
-            return View(audiogramDisplay);
+            if (CurrentUser.Researcher || (CurrentUser.User && audiogramModel.EditorID == CurrentUser.Id) || (CurrentUser.Patient && audiogramModel.PatientID == CurrentUser.Id))
+            {
+                AudiogramDisplayViewModel audiogramDisplay = new AudiogramDisplayViewModel();
+                audiogramDisplay.Audiogram = audiogramModel;
+
+                ApplicationUser Editor = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.EditorID);
+                audiogramDisplay.Editor = Editor;
+
+                ApplicationUser Patient = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.PatientID);
+                audiogramDisplay.Patient = Patient;
+
+                FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+                if (FrequencyModelArray == null)
+                {
+                    return HttpNotFound();
+                }
+                int[] FrequencyIntArray = new int[FrequencyModelArray.Length];
+                for (int i = 0; i < FrequencyModelArray.Length; i++)
+                {
+                    FrequencyIntArray[i] = FrequencyModelArray[i].Frequency;
+                }
+                audiogramDisplay.Frequencies = FrequencyIntArray;
+
+                return View(audiogramDisplay);
+            }
+            return new ViewResult { ViewName = "Unauthorized" };
         }
 
         /// <summary>
@@ -176,29 +213,38 @@ namespace SerwisAudiometryczny.Controllers
         /// </summary>
         public ActionResult Create()
         {
-            AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
-            audiogramCreate.Audiogram = new AudiogramModel();
-            audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
+            var datab = ApplicationDbContext.Create();
+            int userid = User.Identity.GetUserId<int>();
+            ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
 
-            List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
-            if (InstrumentModelList == null)
+            if (CurrentUser.User)
             {
-                return HttpNotFound();
-            }
-            audiogramCreate.Instruments = InstrumentModelList;
+                AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
+                audiogramCreate.Audiogram = new AudiogramModel();
+                audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
 
-            FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
-            if (FrequencyModelArray == null)
-            {
-                return HttpNotFound();
-            }
-            audiogramCreate.Frequencies = new int[FrequencyModelArray.Length];
-            for (int i = 0; i < FrequencyModelArray.Length; i++)
-            {
-               audiogramCreate.Frequencies[i] = FrequencyModelArray[i].Frequency;
-            }
+                List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+                if (InstrumentModelList == null)
+                {
+                    return HttpNotFound();
+                }
+                audiogramCreate.Instruments = InstrumentModelList;
 
-            return View(audiogramCreate);
+                FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+                if (FrequencyModelArray == null)
+                {
+                    return HttpNotFound();
+                }
+                audiogramCreate.Frequencies = new int[FrequencyModelArray.Length];
+                for (int i = 0; i < FrequencyModelArray.Length; i++)
+                {
+                    audiogramCreate.Frequencies[i] = FrequencyModelArray[i].Frequency;
+                }
+
+                return View(audiogramCreate);
+            }
+            return new ViewResult { ViewName = "Unauthorized" };
+
         }
 
         /// <summary>
@@ -211,6 +257,11 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (audiogramCreate.NewInstrument != null)
+                {
+                    db.InstrumentModels.Add(audiogramCreate.NewInstrument);
+                    audiogramCreate.Audiogram.Instrument = db.InstrumentModels.FirstOrDefault(x => x.Name == audiogramCreate.NewInstrument.Name);
+                }
                 db.AudiogramModels.Add(audiogramCreate.Audiogram);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -239,33 +290,41 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null || audiogramModel.EditorID != User.Identity.GetUserId<int>())
-            {
-                return HttpNotFound();
-            }
-            AudiogramCreateEditViewModel audiogramEdit = new AudiogramCreateEditViewModel();
-            audiogramEdit.Audiogram = audiogramModel;
+            var datab = ApplicationDbContext.Create();
+            int userid = User.Identity.GetUserId<int>();
+            ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
 
-            List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
-            if (InstrumentModelList==null)
+            if (CurrentUser.User)
             {
-                return HttpNotFound();
-            }
-            audiogramEdit.Instruments = InstrumentModelList;
+                AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
+                if (audiogramModel == null)
+                {
+                    return HttpNotFound();
+                }
+                AudiogramCreateEditViewModel audiogramEdit = new AudiogramCreateEditViewModel();
+                audiogramEdit.Audiogram = audiogramModel;
 
-            FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
-            if (FrequencyModelArray == null)
-            {
-                return HttpNotFound();
-            }
-            audiogramEdit.Frequencies = new int[FrequencyModelArray.Length];
-            for (int i = 0; i < FrequencyModelArray.Length; i++)
-            {
-                audiogramEdit.Frequencies[i] = FrequencyModelArray[i].Frequency;
-            }
+                List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+                if (InstrumentModelList == null)
+                {
+                    return HttpNotFound();
+                }
+                audiogramEdit.Instruments = InstrumentModelList;
 
-            return View(audiogramEdit);
+                FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
+                if (FrequencyModelArray == null)
+                {
+                    return HttpNotFound();
+                }
+                audiogramEdit.Frequencies = new int[FrequencyModelArray.Length];
+                for (int i = 0; i < FrequencyModelArray.Length; i++)
+                {
+                    audiogramEdit.Frequencies[i] = FrequencyModelArray[i].Frequency;
+                }
+
+                return View(audiogramEdit);
+            }
+            return new ViewResult { ViewName = "Unauthorized" };
         }
 
         /// <summary>
@@ -278,6 +337,11 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (audiogramEdit.NewInstrument != null)
+                {
+                    db.InstrumentModels.Add(audiogramEdit.NewInstrument);
+                    audiogramEdit.Audiogram.Instrument = db.InstrumentModels.FirstOrDefault(x => x.Name == audiogramEdit.NewInstrument.Name);
+                }
                 db.Entry(audiogramEdit.Audiogram).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -305,7 +369,7 @@ namespace SerwisAudiometryczny.Controllers
         }
 
         /// <summary>
-        /// Metoda sprawdzająca możliwość usunięcia i usuwająca audiogram.
+        /// Metoda sprawdzająca możliwość usunięcia i wysyłająca żądanie usunięcia audiogramu.
         /// </summary>
         /// <param name = "id" ></ param >
         public ActionResult Delete(int? id)
@@ -314,16 +378,24 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var datab = ApplicationDbContext.Create();
+            int userid = User.Identity.GetUserId<int>();
+            ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
+
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (audiogramModel == null)
+            if (CurrentUser.User && CurrentUser.Id == audiogramModel.EditorID)
             {
-                return HttpNotFound();
+                if (audiogramModel == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(audiogramModel);
             }
-            return View(audiogramModel);
+            return new ViewResult { ViewName = "Unauthorized" };
         }
 
         /// <summary>
-        /// Metoda zapisująca usunięcie audiogramu audiogramu.
+        /// Metoda usuwająca audiogram.
         /// </summary>
         /// <param name = "id" ></ param >
         [HttpPost, ActionName("Delete")]

@@ -7,6 +7,9 @@ using System.Web;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 
+/// <summary>
+/// Przestrzeń nazw dla modeli.
+/// </summary>
 namespace SerwisAudiometryczny.Models
 {
     /// <summary>

@@ -10,6 +10,9 @@ using SerwisAudiometryczny.Models;
 
 namespace SerwisAudiometryczny.Controllers
 {
+    /// <summary>
+    /// Klasa obsługująca modele Instrumentów. Dziedziczy po Controller.
+    /// </summary>
     public class InstrumentsController : Controller
     {
         private ModelsDbContext db;
@@ -23,13 +26,19 @@ namespace SerwisAudiometryczny.Controllers
         {
             db = dbContext;
         }
-        // GET: InstrumentModels
+        /// <summary>
+        /// Metoda wyświetlająca spis wszystkich InstrumentModel.
+        /// </summary>
+        /// <param name="page"></param>
         public ActionResult Index(int? page)
         {
             return View(db.InstrumentModels.ToList());
         }
 
-        // GET: InstrumentModels/Details/5
+        /// <summary>
+        /// Metoda przekazująca InstrumentModel do widoku Details.
+        /// </summary>
+        /// <param name="id"></param>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -44,15 +53,18 @@ namespace SerwisAudiometryczny.Controllers
             return View(instrumentModel);
         }
 
-        // GET: InstrumentModels/Create
+        /// <summary>
+        /// Metoda wyświetlająca widok /Instruments/Create.
+        /// </summary>
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: InstrumentModels/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Metoda odbierająca InstrumentModel z widoku Create.
+        /// </summary>
+        /// <param name = "model" ></ param >
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name")] InstrumentModel instrumentModel)
@@ -67,7 +79,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(instrumentModel);
         }
 
-        // GET: InstrumentModels/Edit/5
+        /// <summary>
+        /// Metoda przekazująca InstrumentModel do widoku Edit.
+        /// </summary>
+        /// <param name = "id" ></ param >
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,9 +97,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(instrumentModel);
         }
 
-        // POST: InstrumentModels/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Metoda odbierająca InstrumentModel z widoku Edit.
+        /// </summary>
+        /// <param name = "model" ></ param >
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name")] InstrumentModel instrumentModel)
@@ -98,7 +114,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(instrumentModel);
         }
 
-        // GET: InstrumentModels/Delete/5
+        /// <summary>
+        /// Metoda sprawdzająca możliwość usunięcia i wysyłająca żądanie usunięcia InstrumentModel.
+        /// </summary>
+        /// <param name = "id" ></ param >
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -113,7 +132,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(instrumentModel);
         }
 
-        // POST: InstrumentModels/Delete/5
+        /// <summary>
+        /// Metoda usuwająca InstrumentModel.
+        /// </summary>
+        /// <param name = "id" ></ param >
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

@@ -11,9 +11,11 @@ using Microsoft.AspNet.Identity;
 using System.Web.Security;
 using Microsoft.AspNet.Identity.Owin;
 
-/// <summary>
-/// Przestrzeń nazw dla kontrolerów.
-/// </summary>
+/*! \namespace SerwisAudiometryczny.Controllers
+    \brief Przestrzeń nazw dla kontrolerów.
+
+    Przestrzeń nazw zawierająca wszystkie kontrolery w programie.
+*/
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>

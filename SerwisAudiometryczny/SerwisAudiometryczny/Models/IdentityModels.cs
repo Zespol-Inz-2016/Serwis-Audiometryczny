@@ -18,6 +18,9 @@ using System.IO;
 namespace SerwisAudiometryczny.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    /// <summary>
+    /// Klasa reprezentująca użytkownika.
+    /// </summary>
     public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>, IXmlSerializable, ISecured
     {
         public class AplicationUserConfig : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ApplicationUser>
@@ -58,6 +61,9 @@ namespace SerwisAudiometryczny.Models
 
 
         private string name;
+        /// <summary>
+        /// Opisuje imię i nazwisko użytkownika.
+        /// </summary>
         [NotMapped]
         [Display(Name = "Imię i Nazwisko")]
         public string Name
@@ -85,6 +91,9 @@ namespace SerwisAudiometryczny.Models
         }
 
         private string address;
+        /// <summary>
+        /// Opisuje adres zamieszkania użytkownika.
+        /// </summary>
         [NotMapped]
         [Display(Name = "Adres")]
         public string Address
@@ -113,6 +122,9 @@ namespace SerwisAudiometryczny.Models
 
         [EmailAddress]
         private string email;
+        /// <summary>
+        /// Opisuje adres e-mail użytkownika.
+        /// </summary>
         [Display(Name = "Email")]
         public override string Email
         {
@@ -126,6 +138,9 @@ namespace SerwisAudiometryczny.Models
             }
         }
 
+        /// <summary>
+        /// Opisuje numer telefonu użytkownika.
+        /// </summary>
         [NotMapped]
         [Display(Name = "Numer telefonu")]
         public override string PhoneNumber
@@ -153,6 +168,9 @@ namespace SerwisAudiometryczny.Models
             }
         }
 
+        /// <summary>
+        /// Opisuje nazwę użytkownika.
+        /// </summary>
         [Display(Name = "Nazwa użytkownika")]
         public override string UserName
         {
@@ -196,10 +214,10 @@ namespace SerwisAudiometryczny.Models
             string value = "";
             reader.MoveToContent();
             reader.ReadStartElement();
-
+            
             //Deserializacja danych o koncie 
             Id = int.Parse(reader.ReadElementString("Id"));
-            UserName = reader.ReadElementString("NazwaUzytkownika");
+            base.UserName = reader.ReadElementString("NazwaUzytkownika");
             SecurityStamp = reader.ReadElementString("Zabezpieczenie");
             PasswordHash = reader.ReadElementString("Haslo");
             Administrator = reader.ReadElementString("Administrator") == "True" ? true : false;
@@ -207,13 +225,13 @@ namespace SerwisAudiometryczny.Models
             Researcher = reader.ReadElementString("Badacz") == "True" ? true : false;
             Patient = reader.ReadElementString("Pacjent") == "True" ? true : false;
             value = reader.ReadElementString("ImieNazwisko");
-            Name = value != "" ? value : null;
+            name = value != "" ? value : null;
             value = reader.ReadElementString("Adres");
-            Address = value != "" ? value : null;
-            Email = reader.ReadElementString("Email");
+            DBAdress = value != "" ? value : null;
+            email = reader.ReadElementString("Email");
             EmailConfirmed = reader.ReadElementString("PotwierdzonyEmail") == "True" ? true : false;
             value = reader.ReadElementString("NumerTelefonu");
-            PhoneNumber = value != "" ? value : null;
+            DBPhoneNumber = value != "" ? value : null;
 
             // TODO: 
             /*
@@ -233,18 +251,18 @@ namespace SerwisAudiometryczny.Models
         {
             // Serializacja danych o koncie
             writer.WriteElementString("Id", Id.ToString());
-            writer.WriteElementString("NazwaUzytkownika", UserName);
+            writer.WriteElementString("NazwaUzytkownika", base.UserName);
             writer.WriteElementString("Zabezpieczenie", SecurityStamp);
             writer.WriteElementString("Haslo", PasswordHash);
             writer.WriteElementString("Administrator", Administrator.ToString());
             writer.WriteElementString("Uzytkownik", User.ToString());
             writer.WriteElementString("Badacz", Researcher.ToString());
             writer.WriteElementString("Pacjent", Patient.ToString());
-            writer.WriteElementString("ImieNazwisko", Name);
-            writer.WriteElementString("Adres", Address);
-            writer.WriteElementString("Email", Email);
+            writer.WriteElementString("ImieNazwisko", name);
+            writer.WriteElementString("Adres", DBAdress);
+            writer.WriteElementString("Email", email);
             writer.WriteElementString("PotwierdzonyEmail", EmailConfirmed.ToString());
-            writer.WriteElementString("NumerTelefonu", PhoneNumber);
+            writer.WriteElementString("NumerTelefonu", DBPhoneNumber);
 
             // TODO:
             /*

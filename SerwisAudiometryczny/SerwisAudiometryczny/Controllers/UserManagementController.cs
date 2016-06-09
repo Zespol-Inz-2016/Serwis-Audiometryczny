@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
 using SerwisAudiometryczny.ActionFilters;
 
@@ -46,13 +43,13 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {Name = model.Name, UserName = model.Email, Email = model.Email, Administrator = model.Administrator,Address = model.Address, User = model.User,Researcher = model.Researcher,Patient = model.Patient };
+                var user = new ApplicationUser {Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, Administrator = model.Administrator,Address = model.Address, User = model.User,Researcher = model.Researcher,Patient = model.Patient };
                 ApplicationDbContext context = new ApplicationDbContext();
                 var userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
 
                 IdentityResult userResult = userManager.Create(user, model.Password);
+                db.SaveChanges();
                 return RedirectToAction("Index", "UserManagement");
-                //}
             }
 
             // If we got this far, something failed, redisplay form
@@ -80,7 +77,7 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserEditModelView model = new UserEditModelView() {Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email };
+            UserEditModelView model = new UserEditModelView() {Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email, PhoneNumber = currentUser.PhoneNumber };
             ViewBag.UserName = currentUser.UserName;
             return View(model);
         }
@@ -118,6 +115,7 @@ namespace SerwisAudiometryczny.Controllers
             currentUser.Address = model.Address;
             currentUser.Email = model.Email;
             currentUser.Name = model.Name;
+            currentUser.PhoneNumber = model.PhoneNumber;
             db.SaveChanges();
 
             return RedirectToAction("Index");

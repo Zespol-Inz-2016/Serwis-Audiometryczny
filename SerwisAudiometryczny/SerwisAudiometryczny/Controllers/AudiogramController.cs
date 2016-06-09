@@ -134,30 +134,33 @@ namespace SerwisAudiometryczny.Controllers
             var datab = ApplicationDbContext.Create();
             int userid = User.Identity.GetUserId<int>();
             ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
-            if (CurrentUser.Researcher)
+            if (CurrentUser != null)
             {
-                return View(db.AudiogramModels.ToList());
-            }
-            if (CurrentUser.User && CurrentUser.Patient)
-            {
-                var results = from t in db.AudiogramModels
-                              where t.EditorID == userid || t.PatientID == userid
-                              select t;
-                return View(results.ToList());
-            }
-            if (CurrentUser.User)
-            {
-                var results = from t in db.AudiogramModels
-                              where t.EditorID == userid
-                              select t;
-                return View(results.ToList());
-            }
-            if (CurrentUser.Patient)
-            {
-                var results = from t in db.AudiogramModels
-                              where t.PatientID == userid
-                              select t;
-                return View(results.ToList());
+                if (CurrentUser.Researcher)
+                {
+                    return View(db.AudiogramModels.ToList());
+                }
+                if (CurrentUser.User && CurrentUser.Patient)
+                {
+                    var results = from t in db.AudiogramModels
+                                  where t.EditorID == userid || t.PatientID == userid
+                                  select t;
+                    return View(results.ToList());
+                }
+                if (CurrentUser.User)
+                {
+                    var results = from t in db.AudiogramModels
+                                  where t.EditorID == userid
+                                  select t;
+                    return View(results.ToList());
+                }
+                if (CurrentUser.Patient)
+                {
+                    var results = from t in db.AudiogramModels
+                                  where t.PatientID == userid
+                                  select t;
+                    return View(results.ToList());
+                }
             }
             return new ViewResult { ViewName = "Unauthorized" };
 
@@ -182,7 +185,7 @@ namespace SerwisAudiometryczny.Controllers
                 return HttpNotFound();
             }
 
-            if (CurrentUser.Researcher || (CurrentUser.User && audiogramModel.EditorID == CurrentUser.Id) || (CurrentUser.Patient && audiogramModel.PatientID == CurrentUser.Id))
+            if (CurrentUser != null && (CurrentUser.Researcher || (CurrentUser.User && audiogramModel.EditorID == CurrentUser.Id) || (CurrentUser.Patient && audiogramModel.PatientID == CurrentUser.Id)))
             {
                 AudiogramDisplayViewModel audiogramDisplay = new AudiogramDisplayViewModel();
                 audiogramDisplay.Audiogram = audiogramModel;
@@ -219,7 +222,7 @@ namespace SerwisAudiometryczny.Controllers
             int userid = User.Identity.GetUserId<int>();
             ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
 
-            if (CurrentUser.User)
+            if (CurrentUser != null && CurrentUser.User)
             {
                 AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
                 audiogramCreate.Audiogram = new AudiogramModel();
@@ -296,7 +299,7 @@ namespace SerwisAudiometryczny.Controllers
             int userid = User.Identity.GetUserId<int>();
             ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
 
-            if (CurrentUser.User)
+            if (CurrentUser != null && CurrentUser.User)
             {
                 AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
                 if (audiogramModel == null)
@@ -385,7 +388,7 @@ namespace SerwisAudiometryczny.Controllers
             ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
 
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (CurrentUser.User && CurrentUser.Id == audiogramModel.EditorID)
+            if (CurrentUser != null && (CurrentUser.User && CurrentUser.Id == audiogramModel.EditorID))
             {
                 if (audiogramModel == null)
                 {

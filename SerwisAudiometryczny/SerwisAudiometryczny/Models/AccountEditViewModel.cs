@@ -22,24 +22,31 @@ namespace SerwisAudiometryczny.Models
         public string Address { get; set; }
 
         /// <summary>
+        /// Opisuje numer telefonu użytkownika.
+        /// </summary>        
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Numer telefonu")]
+        public string PhoneNumber { get; set; }
+
+        /// <summary>
         /// Opisuje adres mailowy konta użytkownika.
         /// </summary>        
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
-        [EmailAddress]
         public string Email { get; set; }
 
         /// <summary>
         /// Opisuje hasło dostępu do konta użytkownika.
         /// </summary>
         [DataType(DataType.Password)]
-        [Display(Name = "Zmień hasło")]
+        [Display(Name = "Nowe hasło")]
         public string Password { get; set; }
 
         /// <summary>
         /// Opisuje potwierdzenie hasła dostępu do konta użytkownika.
         /// </summary>
         [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Hasła nie pasują do siebie.")]
         [Display(Name = "Powtórz nowe hasło")]
         public string ConfirmPassword { get; set; }
     }

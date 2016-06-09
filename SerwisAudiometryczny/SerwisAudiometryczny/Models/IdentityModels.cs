@@ -39,18 +39,33 @@ namespace SerwisAudiometryczny.Models
         [Display(Name = "Pacjent")]
         public bool Patient { get; set; }
 
+        /// <summary>
+        /// Imie i nazwisko
+        /// </summary>
         [Display(Name = "Imię i Nazwisko")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Adres użytkownika
+        /// </summary>
         [Display(Name = "Adres")]
         public string Address { get; set; }
 
+        /// <summary>
+        /// Email użytkownika
+        /// </summary>
         [Display(Name = "Email")]
         public override string Email { get; set; }
 
+        /// <summary>
+        /// Rola pacjenta
+        /// </summary>
         [Display(Name = "Numer telefonu")]
         public override string PhoneNumber { get; set; }
 
+        /// <summary>
+        /// Nazwa użytkownika
+        /// </summary>
         [Display(Name = "Nazwa użytkownika")]
         public override string UserName
         {
@@ -64,14 +79,21 @@ namespace SerwisAudiometryczny.Models
                 base.UserName = value;
             }
         }
-
+        /// <summary>
+        /// Kolekcja audiogramów przypisanych do użytkownika
+        /// </summary>
         [Display(Name = "Audiogramy")]
         public ICollection<AudiogramModel> Audiograms { get; set; }
 
+        /// <summary>
+        /// Kolekcja dostępu do danych wrażliwych innych użytkowników
+        /// </summary>
         [Display(Name = "Dostęp do danych wrażliwych")]
         public ICollection<ApplicationUser> SensitiveDataAccess { get; set; }
 
-
+        /// <summary>
+        /// Tworzenie naszego cookie
+        /// </summary>
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

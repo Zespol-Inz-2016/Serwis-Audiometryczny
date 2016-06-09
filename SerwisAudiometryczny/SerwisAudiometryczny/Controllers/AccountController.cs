@@ -13,6 +13,9 @@ using System.Net;
 
 namespace SerwisAudiometryczny.Controllers
 {
+    /// <summary>
+    /// Klasa obługująca użytkowników, dziedziczy po Controller
+    /// </summary>
     [Authorize]
     public class AccountController : Controller
     {
@@ -22,7 +25,9 @@ namespace SerwisAudiometryczny.Controllers
         public AccountController()
         {
         }
-
+        /// <summary>
+        /// Kontruktor
+        /// </summary>
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -52,7 +57,10 @@ namespace SerwisAudiometryczny.Controllers
                 _userManager = value;
             }
         }
-
+        /// <summary>
+        /// Metoda odpowiedzialna za przygotowanie do logowania
+        /// </summary>
+        /// <param name="returnUrl">Odnosnik url</param>
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -60,7 +68,12 @@ namespace SerwisAudiometryczny.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
+        /// <summary>
+        /// Metoda odpowiedzialna za logowanie
+        /// </summary>
+        /// <param name="returnUrl">Odnosnik url</param>
+        /// <param name="model">Model użytkownika z widoku</param>
+        // GET: /Account/Login
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -89,7 +102,9 @@ namespace SerwisAudiometryczny.Controllers
                     return View(model);
             }
         }
-
+        /// <summary>
+        /// Metoda odpowiedzialna za wylogowywanie
+        /// </summary>
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -99,7 +114,9 @@ namespace SerwisAudiometryczny.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        /// <summary>
+        /// Metoda przygotowywujaca edycje użytkownika
+        /// </summary>
         public ActionResult Edit()
         {
             ApplicationUser user = UserManager.FindById<ApplicationUser, int>(User.Identity.GetUserId<int>());
@@ -109,7 +126,10 @@ namespace SerwisAudiometryczny.Controllers
             model.Email = user.Email;
             return View(model);
         }
-
+        /// <summary>
+        /// Metoda odpowiedzialna za edycje użytkownika
+        /// </summary>
+        /// <param name="model">Model użytkownika z widoku</param>
         [HttpPost]
         public ActionResult Edit(AccountEditViewModel model)
         {
@@ -132,7 +152,9 @@ namespace SerwisAudiometryczny.Controllers
             }
             return View(model);
         }
-
+        /// <summary>
+        /// Metoda zwracająca szczegóły użytkownika
+        /// </summary>
         public ActionResult Details()
         {
             if (User.Identity.Name == null)

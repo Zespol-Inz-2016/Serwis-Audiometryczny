@@ -1,45 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
 using SerwisAudiometryczny.ActionFilters;
 
 namespace SerwisAudiometryczny.Controllers
 {
+    /// <summary>
+    /// Klasa obługująca zarządzanie użytkowników, dziedziczy po Controller
+    /// </summary>
     [IsAdministratorAttribute]
     public class UserManagementController : Controller
     {
         ApplicationDbContext db = ApplicationDbContext.Create();
         //public ApplicationUserManager UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+        /// <summary>
+        /// Metoda wyświetlająca spis wszystkich użytkowników
+        /// </summary>
         public ActionResult Index()
         {
 
             return View(db.Users.ToList());
             //return View();
         }
+        /// <summary>
+        /// Metoda przygotowywujaca do tworzenia użytkowników
+        /// </summary>
         public ActionResult CreateUser()
         {
             return View();
         }
+        /// <summary>
+        /// Metoda tworząca użytkowników
+        /// </summary>
+        ///  /// <param name="model">Model użytkownika z widoku</param>
         [HttpPost]
         public async Task<ActionResult> CreateUser(UserCreateModelView model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {Name = model.Name, UserName = model.Email, Email = model.Email, Administrator = model.Administrator,Address = model.Address, User = model.User,Researcher = model.Researcher,Patient = model.Patient };
+                var user = new ApplicationUser {Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, Administrator = model.Administrator,Address = model.Address, User = model.User,Researcher = model.Researcher,Patient = model.Patient };
                 ApplicationDbContext context = new ApplicationDbContext();
                 var userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
 
                 IdentityResult userResult = userManager.Create(user, model.Password);
+                db.SaveChanges();
                 return RedirectToAction("Index", "UserManagement");
-                //}
             }
 
             // If we got this far, something failed, redisplay form
@@ -55,7 +65,10 @@ namespace SerwisAudiometryczny.Controllers
         //{
         //    return View();
         //}
-        
+        /// <summary>
+        /// Metoda edytujaca uwworzonego wczesniej uzytkownika
+        /// </summary>
+        ///  /// <param name="myId">Id użytkownika</param>
         public ActionResult EditUser(int myId)
         {
 
@@ -64,11 +77,14 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserEditModelView model = new UserEditModelView() {Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email };
+            UserEditModelView model = new UserEditModelView() {Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email, PhoneNumber = currentUser.PhoneNumber };
             ViewBag.UserName = currentUser.UserName;
             return View(model);
         }
-
+        /// <summary>
+        /// Metoda resetująca hasło
+        /// </summary>
+        ///  /// <param name="model">Model użytkownika z widoku</param>
         [HttpPost]
         public ActionResult ResetUserPassword(UserEditModelView model)
         {
@@ -84,7 +100,10 @@ namespace SerwisAudiometryczny.Controllers
             userManager.AddPassword(model.Id, model.Password);
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// Metoda edytujaca użytkownika
+        /// </summary>
+        ///  /// <param name="model">Model użytkownika z widoku</param>
         [HttpPost]
         public ActionResult EditUser(UserEditModelView model)
         {
@@ -96,16 +115,20 @@ namespace SerwisAudiometryczny.Controllers
             currentUser.Address = model.Address;
             currentUser.Email = model.Email;
             currentUser.Name = model.Name;
+            currentUser.PhoneNumber = model.PhoneNumber;
             db.SaveChanges();
 
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// Metoda edytujaca role uzytkownika
+        /// </summary>
+        ///  /// <param name="form">Zawartosc formularza z widoku</param>
         public ActionResult EditRole(FormCollection form)
         {
             string name = form["Name"];
             string submit = form["Submit"];
-            bool administrator = FormParser(form["Administrator"]);
+            bool administrator = FormParser(form["Admin"]);
             bool patient = FormParser(form["Patient"]);
             bool researcher = FormParser(form["Researcher"]);
             bool user = FormParser(form["User"]);

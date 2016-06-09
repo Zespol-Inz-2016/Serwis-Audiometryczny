@@ -16,7 +16,7 @@ using System.Web.Security;
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
-    /// Kontroler logów
+    /// Klasa obsługująca logowanie akcji użytkowników, dziedzicząca po Controller
     /// </summary>
     public class LogController : Controller
     {
@@ -34,7 +34,7 @@ namespace SerwisAudiometryczny.Controllers
             db = dbContext;
         }
         /// <summary>
-        /// Zwraca widok strony głównej logów
+        /// Zwraca widok strony głównej logów z uwzględnieniem aktualnego użytkownika
         /// </summary>
         /// <param name="page">Określa numer strony</param>
         /// <returns></returns>
@@ -109,5 +109,5 @@ namespace SerwisAudiometryczny.Controllers
 
             return View(logs.OrderByDescending(x => x.Time).ToList());
         }
-    }       
+    }
 }

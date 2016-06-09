@@ -10,17 +10,14 @@ using Microsoft.AspNet.Identity;
 namespace SerwisAudiometryczny.ActionFilters
 {
     /// <summary>
-    /// Filter akcji
+    /// Klasa filtruj¹ca, zapisuje akcje u¿ytkowników do bazy danych
     /// </summary>
     public class LogActionFilterAttribute : ActionFilterAttribute
     {
-        /// <summary>
-        /// Zmienna przechowywuj¹ca czas rozpoczêcia akcji
-        /// </summary>
         protected DateTime start_time;
 
         /// <summary>
-        /// Kiedy zacze³a siê akcja zapisujemy datê rozpoczêcia
+        /// Przypisuje czas rozpoczêcia akcji do zmiennej start_time
         /// </summary>
         /// <param name="filterContext">Akcja która siê rozpoczê³a</param>
         public override void OnResultExecuting(ResultExecutingContext filterContext)
@@ -29,9 +26,9 @@ namespace SerwisAudiometryczny.ActionFilters
         }
 
         /// <summary>
-        /// Kiedy wykonano akcjê zapisujemy j¹ do logów
+        /// Pobiera ID aktualnego u¿ytkownika, kontroler, akcjê i datê zdarzenia, po czym wywo³ujê metodê zapisuj¹c¹ dany log do bazy
         /// </summary>
-        /// <param name="filterContext">Akcja która siê zakoñczy³a</param>
+        /// <param name="filterContext">Akcja, która siê zakoñczy³a</param>
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
             RouteData route_data = filterContext.RouteData;

@@ -166,12 +166,8 @@ namespace SerwisAudiometryczny.Models
             }
         }
 
-        [Display(Name = "Audiogramy")]
-        public ICollection<AudiogramModel> Audiograms { get; set; }
-
         [Display(Name = "Dostęp do danych wrażliwych")]
         public ICollection<ApplicationUser> SensitiveDataAccess { get; set; }
-
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
@@ -201,6 +197,7 @@ namespace SerwisAudiometryczny.Models
             reader.MoveToContent();
             reader.ReadStartElement();
 
+            //Deserializacja danych o koncie 
             Id = int.Parse(reader.ReadElementString("Id"));
             UserName = reader.ReadElementString("NazwaUzytkownika");
             SecurityStamp = reader.ReadElementString("Zabezpieczenie");
@@ -220,20 +217,11 @@ namespace SerwisAudiometryczny.Models
 
             // TODO: 
             /*
-            if (reader.Name == "AudiogramId")
-                Audiograms = new List<AudiogramModel>();
-            while (reader.Name == "AudiogramId")
-            {
-                int audiogramId = int.Parse(reader.ReadElementString());
-                AudiogramModel x = dbContext.AudiogramModels.ToList().Find(item => item.ID == audiogramId);
-                Audiograms.Add(x);
-            } 
             while (reader.Name == "DostepWrazliweId")
             {
                 // TODO:
             }
             */
-
             reader.Read();
         }
 
@@ -259,16 +247,6 @@ namespace SerwisAudiometryczny.Models
             writer.WriteElementString("NumerTelefonu", PhoneNumber);
 
             // TODO:
-            /*
-            // Serializacja audiogramów jeśli takowe istnieją (tylko Id)
-            if (Audiograms != null)
-            {
-                foreach (AudiogramModel item in Audiograms)
-                {
-                    writer.WriteElementString("AudiogramId", item.ID.ToString());
-                }
-            }
-
             /*
             // Serializacja dostępu do danych wrażliwych jeśli takowe istnieją (tylko Id)
             if (SensitiveDataAccess != null)

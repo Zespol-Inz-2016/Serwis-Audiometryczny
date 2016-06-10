@@ -76,7 +76,9 @@
             @Html.DisplayFor(modelItem => item.IsMusician)
         </td>
         <th>
-            @Html.DisplayFor(modelItem => item.Instrument)
+            @Html.DisplayFor(modelItem => item.Instrument )
+            @Html.DisplayFor(modelItem => item.Instrument.ID)
+            @Html.DisplayFor(modelItem => item.Instrument.Name)
         </th>
         <td>
             @Html.DisplayFor(modelItem => item.PatientID)

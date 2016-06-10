@@ -10,6 +10,7 @@ using SerwisAudiometryczny.Models;
 using Microsoft.AspNet.Identity;
 using System.Web.Security;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Routing;
 
 /*! \namespace SerwisAudiometryczny.Controllers
     \brief Przestrzeń nazw dla kontrolerów.
@@ -18,6 +19,7 @@ using Microsoft.AspNet.Identity.Owin;
 */
 namespace SerwisAudiometryczny.Controllers
 {
+    
     /// <summary>
     /// Klasa obługująca audiogramy i ich przypisywanie do pacjentów. Przekazuje dane związanie z audiogramami do widoków. Dziedziczy po Controller.
     /// </summary>
@@ -134,6 +136,7 @@ namespace SerwisAudiometryczny.Controllers
             var datab = ApplicationDbContext.Create();
             int userid = User.Identity.GetUserId<int>();
             ApplicationUser CurrentUser = datab.Users.FirstOrDefault(x => x.Id == userid);
+
             if (CurrentUser != null)
             {
                 if (CurrentUser.Researcher)
@@ -212,7 +215,6 @@ namespace SerwisAudiometryczny.Controllers
             }
             return new ViewResult { ViewName = "Unauthorized" };
         }
-
         /// <summary>
         /// Metoda przekazująca do widoku Create AudiogramCreateEditViewModel.
         /// </summary>
@@ -260,17 +262,29 @@ namespace SerwisAudiometryczny.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(AudiogramCreateEditViewModel audiogramCreate)
         {
-            if (ModelState.IsValid)
+            if ( ModelState.IsValid )
             {
-                if (audiogramCreate.NewInstrument != null)
+                if (audiogramCreate.Audiogram.IsMusician == true)
                 {
-                    db.InstrumentModels.Add(audiogramCreate.NewInstrument);
-                    audiogramCreate.Audiogram.Instrument = db.InstrumentModels.FirstOrDefault(x => x.Name == audiogramCreate.NewInstrument.Name);
+                    if (audiogramCreate.NewInstrument != null)
+                    {
+                        db.InstrumentModels.Add(audiogramCreate.NewInstrument);
+                        audiogramCreate.Audiogram.Instrument = db.InstrumentModels.FirstOrDefault(x => x.Name == audiogramCreate.NewInstrument.Name);
+                    }
+                    audiogramCreate.Audiogram.Instrument.Name = db.InstrumentModels.FirstOrDefault(x => x.ID == audiogramCreate.Audiogram.Instrument.ID).Name;
                 }
                 db.AudiogramModels.Add(audiogramCreate.Audiogram);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+            if (InstrumentModelList == null)
+            {
+                return HttpNotFound();
+            }
+            audiogramCreate.Instruments = InstrumentModelList;
+
             audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
             FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
             if (FrequencyModelArray == null)

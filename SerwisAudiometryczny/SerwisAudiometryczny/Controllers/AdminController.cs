@@ -10,16 +10,14 @@ namespace SerwisAudiometryczny.Controllers
     /// </summary>
     [IsAdministrator]
     public class AdminController : Controller
-    {
-        ApplicationDbContext db = ApplicationDbContext.Create();
-        
+    {       
         /// <summary>
-        /// Metoda wyświetlająca wszystkich użytkowników.
+        /// Metoda wyświetlająca panel administratora.
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View();
         }
     }
 }

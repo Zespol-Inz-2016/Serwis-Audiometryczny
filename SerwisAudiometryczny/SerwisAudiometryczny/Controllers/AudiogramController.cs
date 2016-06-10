@@ -266,12 +266,16 @@ namespace SerwisAudiometryczny.Controllers
             {
                 if (audiogramCreate.Audiogram.IsMusician == true)
                 {
-                    if (audiogramCreate.NewInstrument != null)
+                    InstrumentModel instrument = db.InstrumentModels.FirstOrDefault<InstrumentModel>(x => x.Name == audiogramCreate.Audiogram.Instrument.Name);
+                    if (instrument == null)
                     {
-                        db.InstrumentModels.Add(audiogramCreate.NewInstrument);
-                        audiogramCreate.Audiogram.Instrument = db.InstrumentModels.FirstOrDefault(x => x.Name == audiogramCreate.NewInstrument.Name);
+                        db.InstrumentModels.Add(audiogramCreate.Audiogram.Instrument);
+                        db.SaveChanges();
                     }
-                    audiogramCreate.Audiogram.Instrument.Name = db.InstrumentModels.FirstOrDefault(x => x.ID == audiogramCreate.Audiogram.Instrument.ID).Name;
+                    else
+                    {
+                        audiogramCreate.Audiogram.Instrument = instrument;
+                    }
                 }
                 db.AudiogramModels.Add(audiogramCreate.Audiogram);
                 db.SaveChanges();

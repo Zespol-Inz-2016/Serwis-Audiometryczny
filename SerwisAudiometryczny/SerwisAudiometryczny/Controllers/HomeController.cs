@@ -1,30 +1,29 @@
 ﻿using SerwisAudiometryczny.ActionFilters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SerwisAudiometryczny.Controllers
 {
+    /// <summary>
+    /// Klasa obsługująca stronę startową, dziedziczy po Controller.
+    /// </summary>
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Metoda wyświetlająca stronę startową.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View();
         }
-        [IsAdministratorAttribute]
+
+        /// <summary>
+        /// Metoda wyświetlająca informacje o aplikacji.
+        /// </summary>
+        /// <returns></returns>
+        [IsAdministrator]
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }

@@ -21,6 +21,7 @@
         display: none;
     }
 </style>
+
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -103,9 +104,7 @@
             @Html.LabelFor(model => model.Audiogram.IsMusician, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.Audiogram.IsMusician)
-                    <!--input class="check-box" id="Audiogram_IsMusician" name="Audiogram.IsMusician" type="checkbox"-->
-                    @Html.ValidationMessageFor(model => model.Audiogram.IsMusician, "", new { @class = "text-danger" })
+                    @Html.CheckBox("Audiogram.IsMusician")
                 </div>
             </div>
         </div>
@@ -123,13 +122,13 @@
                             </div>
                             <input onchange="changeInstr()" type="radio" name="InstrumentVariant" value="existing" />Existing instrument-->
                             <div id="exist_instr">
-                                <input class="text-box single-line" id="Audiogram_Instrument_ID" name="Audiogram.Instrument.ID" type="number" />
+                                <input class="text-box single-line form-none" id="Audiogram_Instrument_ID" name="Audiogram.Instrument.ID" type="number" />
                                 <input class="text-box single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text" />
                                 <select id="Audiogram_Instrument_ID_NAME" name="Audiogram.Instrument.ID" onchange="wymiennik()">
-                                    <option></option>
+                                    <option id="pick_instrument" disabled selected>Pick instrument</option>
                                     @foreach (var item in Model.Instruments)
                                     {
-                                        <option value="@item.ID">@item.Name</option>
+                                        <option value="@item.Name" data-id="@item.ID">@item.Name</option>
                                     }
                                 </select>
                             </div>
@@ -243,6 +242,7 @@
             if (document.getElementById('Audiogram_IsMusician').checked) {
                 $('.musician-depended').show();
                 document.getElementById('Audiogram_Instrument_ID').disabled = '';
+                document.getElementById('Audiogram_Instrument_ID').value = 0;
                 document.getElementById('Audiogram_Instrument_Name').disabled = '';
             } else {
                 $('.musician-depended').hide();
@@ -251,7 +251,19 @@
             }
         }
         $('#Audiogram_IsMusician').on('change', isMusician);
-
+        $('#Audiogram_Instrument_Name').keyup(function () {
+            var czy_jest = false;
+            for (var i = 0; i < document.getElementById('Audiogram_Instrument_ID_NAME').length; i++) {
+                if (document.getElementById('Audiogram_Instrument_ID_NAME')[i].value.indexOf(document.getElementById('Audiogram_Instrument_Name').value) != -1) {
+                    czy_jest = true;
+                }
+            }
+            if (czy_jest == false) {
+                var temp = document.getElementById('Audiogram_Instrument_Name').value;
+                document.getElementById('Audiogram_Instrument_ID_NAME').value = "Pick instrument";
+                document.getElementById('Audiogram_Instrument_Name').value = temp;
+            }
+        })
 
         $('#Audiogram_IsMusician').data('val', 'false');
         var LeftFinal = document.getElementsByClassName('form-final-left')[0];
@@ -277,9 +289,7 @@
                 if (i == 0) { string = allElements[i].value + ";"; }
                 else {
                     if (i == allElements.length - 1) { string = string + allElements[i].value; }
-                    else {
-                        string = string + allElements[i].value + ";";
-                    }
+                    else { string = string + allElements[i].value + ";"; }
                 }
             }
             RightFinal.value = string;
@@ -341,8 +351,8 @@
             document.getElementById("Audiogram_PercentageHearingLoss").value = parseInt(perc);
             document.getElementById("Audiogram_PercentageHearingLoss2").value = parseInt(perc);
         }
-        var wymiennik = function () {
-            document.getElementById('Audiogram_Instrument_ID').value = parseInt(document.getElementById('Audiogram_Instrument_ID_NAME').value);
+        var wymiennik = function (e) {
+            document.getElementById('Audiogram_Instrument_Name').value = document.getElementById('Audiogram_Instrument_ID_NAME').value;
         }
         window.onload = function () {
             isMusician();
@@ -356,8 +366,7 @@
             for (var i = 0; i < r.length; i++) {
                 allElements[i].value = r[i];
             }
-            document.getElementById('Audiogram_IsMusician').setAttribute('data-val', 'false');
-            document.getElementById('Audiogram_IsMusician').setAttribute('value', 'false');
+            //document.getElementById('Audiogram_IsMusician').removeAttribute('data-val');
         }();
     </script>
 

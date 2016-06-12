@@ -6,11 +6,18 @@
 
 <h2>Edit</h2>
 <style>
-    .form-adv {
+    .form-adv{
         display: inline;
         width: 70px;
     }
-    .form-none {
+    .form-none{
+        display: none;
+    }
+    .musician-depended{
+        display: none;
+    }
+    div.form-group:nth-child(3) > div:nth-child(2) > div:nth-child(1),
+    div.form-group:nth-child(4) > div:nth-child(2) > div:nth-child(1){
         display: none;
     }
 </style>
@@ -26,10 +33,19 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Audiogram.ID)
 
+        <hr style="border-color: red;" />
+
+        @foreach (var item in Model.Instruments)
+        {
+            <code>@item.Name</code>
+        }
+
+        <a href="#" class="btn btn-warning" onclick="wypleniacz();">Wypełniacz!!</a>
+        <hr style=" border-color red;" />
         <div class="form-group">
-            @Html.LabelFor(model => model.Audiogram.LeftEar, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Audiogram.LeftEar.Levels, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Audiogram.LeftEar, new { htmlAttributes = new { @class = "form-control form-nonex form-final-left" } })
+                @Html.EditorFor(model => model.Audiogram.LeftEar, new { htmlAttributes = new { @class = "form-control form-none form-final-left" } })
                 @for (var i = 0; i < Model.Frequencies.Length; i++)
                 {<input class="form-control form-adv form-left" max="120" min="-10" type="number" /> }
                 @Html.ValidationMessageFor(model => model.Audiogram.LeftEar, "", new { @class = "text-danger" })
@@ -39,7 +55,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Audiogram.RightEar, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Audiogram.RightEar, new { htmlAttributes = new { @class = "form-control form-nonex form-final-right" } })
+                @Html.EditorFor(model => model.Audiogram.RightEar, new { htmlAttributes = new { @class = "form-control form-none form-final-right" } })
                 @for (var i = 0; i < Model.Frequencies.Length; i++)
                 {<input class="form-control form-adv form-right" type="number" /> }
                 @Html.ValidationMessageFor(model => model.Audiogram.RightEar, "", new { @class = "text-danger" })
@@ -81,7 +97,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Audiogram.PercentageHearingLoss, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Audiogram.PercentageHearingLoss, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Audiogram.PercentageHearingLoss, new { htmlAttributes = new { @class = "form-control form-none" } })
+                <input class="form-control text-box single-line" id="Audiogram_PercentageHearingLoss2" type="text" disabled>
                 @Html.ValidationMessageFor(model => model.Audiogram.PercentageHearingLoss, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -90,21 +107,60 @@
             @Html.LabelFor(model => model.Audiogram.IsMusician, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.Audiogram.IsMusician)
-                    @Html.ValidationMessageFor(model => model.Audiogram.IsMusician, "", new { @class = "text-danger" })
+                    @Html.CheckBox("Audiogram.IsMusician")
                 </div>
             </div>
         </div>
 
-        <!--<div class="form-group">
-            @Html.LabelFor(model => model.Audiogram.Instrument, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group musician-depended">
+            @Html.LabelFor(model => model.Instruments, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.Audiogram.Instrument)
-                    @Html.ValidationMessageFor(model => model.Audiogram.Instrument, "", new { @class = "text-danger" })
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!--input onchange="changeInstr()" type="radio" name="InstrumentVariant" value="new" />New Instrument
+                        <div id="new_instr">
+                            <input class="text-box single-line" id="NewInstrument_Name" name="NewInstrument.Name" type="text">
+                            <input class="text-box single-line" id="NewInstrument_ID" name="NewInstrument.ID" type="number">
+                        </div>
+                        <input onchange="changeInstr()" type="radio" name="InstrumentVariant" value="existing" />Existing instrument-->
+                            <div id="exist_instr">
+                                <input class="text-box single-line form-none" id="Audiogram_Instrument_ID" name="Audiogram.Instrument.ID" type="number" />
+                                <input class="text-box single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text" />
+                                <select id="Audiogram_Instrument_ID_NAME" name="Audiogram.Instrument.ID" onchange="wymiennik()">
+                                    <option id="pick_instrument" disabled selected>Pick instrument</option>
+                                    @foreach (var item in Model.Instruments)
+                                    {
+                                        <option value="@item.Name" data-id="@item.ID">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <script>
+                                document.getElementById('Audiogram_Instrument_Name').value = "@Model.Instruments.First().Name";
+                            </script>
+                        </div>
+                    </div>
+                    <!--input class="form-control text-box single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text">
+                <input class="form-control text-box single-line" id="Audiogram_Instrument_ID" name="Audiogram.Instrument.ID" type="number"-->
+                    <!--@Html.EditorFor(model => model.Audiogram.Instrument, new { htmlAttributes = new { @class = "form-control" } })-->
+                    <!--input name="@Model.Audiogram.Instrument" id="@Model.Audiogram.Instrument" />
+                <input name="Audiogram.Instrument" id="Audiogram.Instrument"/>
+                <input name="model.Audiogram.Instrument" id="model.Audiogram.Instrument" />
+                <input name="Model.Audiogram.Instrument" id="Model.Audiogram.Instrument" />
+                <!--@Html.EditorFor(model => model.NewInstrument )
+                    @Html.DropDownListFor(model => model.Audiogram.Instrument ,
+                    new SelectList(Model.Instruments, "ID", "Name", Model.Instruments), new { @class = "DropDown Instrumentas" })
+
+                Html.EditorFor(model => model.Audiogram.Instrument, new { htmlAttributes = new { class = "form-control" } })
+                -->
+                    <!--
+                <input class="text-box single-line" id="Instrument_Name" name="Instrument.Name" type="text" value="">
+                <input class="text-box single-line"  id="Instrument_ID" name="Instrument.ID" type="number" value="">
+                -->
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Audiogram.Instrument" data-valmsg-replace="true"></span>
                 </div>
             </div>
-        </div>-->
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Audiogram.PatientID, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -136,7 +192,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+    <script>/*
         var LeftFinal = document.getElementsByClassName('form-final-left')[0];
         var RightFinal = document.getElementsByClassName('form-final-right')[0];
         function functionLeft() {
@@ -188,6 +244,156 @@
             for (var i = 0; i < r.length; i++) {
                 allElements[i].value = r[i];
             }
-        }();
+        }();*/
     </script>
+<script>
+        document.getElementById('Audiogram_Instrument_ID').disabled = 'disabled';
+        document.getElementById('Audiogram_Instrument_Name').disabled = 'disabled';
+        var isMusician = function() {
+            if (document.getElementById('Audiogram_IsMusician').checked) {
+                $('.musician-depended').show();
+                document.getElementById('Audiogram_Instrument_ID').disabled = '';
+                document.getElementById('Audiogram_Instrument_ID').value = 0;
+                document.getElementById('Audiogram_Instrument_Name').disabled = '';
+            } else {
+                $('.musician-depended').hide();
+                document.getElementById('Audiogram_Instrument_ID').disabled = 'disabled';
+                document.getElementById('Audiogram_Instrument_Name').disabled = 'disabled';
+            }
+        }
+        $('#Audiogram_IsMusician').on('change', isMusician);
+        $('#Audiogram_Instrument_Name').keyup(function () {
+            var czy_jest = false;
+            for (var i = 0; i < document.getElementById('Audiogram_Instrument_ID_NAME').length; i++) {
+                if (document.getElementById('Audiogram_Instrument_ID_NAME')[i].value.indexOf(document.getElementById('Audiogram_Instrument_Name').value) != -1) {
+                    czy_jest = true;
+                }
+            }
+            if (czy_jest == false) {
+                var temp = document.getElementById('Audiogram_Instrument_Name').value;
+                document.getElementById('Audiogram_Instrument_ID_NAME').value = "Pick instrument";
+                document.getElementById('Audiogram_Instrument_Name').value = temp;
+            }
+        })
+
+        $('#Audiogram_IsMusician').data('val', 'false');
+        var LeftFinal = document.getElementsByClassName('form-final-left')[0];
+        var RightFinal = document.getElementsByClassName('form-final-right')[0];
+        function functionLeft() {
+            var allElements = document.getElementsByClassName('form-left');
+            var string = "";
+            for (var i = 0; i < allElements.length; i++) {
+                if (i == 0) { string = allElements[i].value + ";"; }
+                else {
+                    if (i == allElements.length - 1) { string = string + allElements[i].value; }
+                    else {
+                        string = string + allElements[i].value + ";";
+                    }
+                }
+            }
+            LeftFinal.value = string;
+        }
+        function functionRight() {
+            var allElements = document.getElementsByClassName('form-right');
+            var string = "";
+            for (var i = 0; i < allElements.length; i++) {
+                if (i == 0) { string = allElements[i].value + ";"; }
+                else {
+                    if (i == allElements.length - 1) { string = string + allElements[i].value; }
+                    else { string = string + allElements[i].value + ";"; }
+                }
+            }
+            RightFinal.value = string;
+        }
+        var left = document.getElementsByClassName('form-left');
+        for (var i = 0; i < left.length; i++) {
+            left[i].addEventListener('change', functionLeft, false);
+            left[i].addEventListener('change', updatePercentageHearingLoss, false);
+        }
+        var right = document.getElementsByClassName('form-right');
+        for (var i = 0; i < right.length; i++) {
+            right[i].addEventListener('change', functionRight, false);
+            right[i].addEventListener('change', updatePercentageHearingLoss, false);
+        }
+        function isNumber (o) {
+            return ! isNaN (o-0) && o !== null && o !== "" && o !== false;
+        }
+        function updatePercentageHearingLoss() {
+            console.clear();
+            var tabOfFreq = [];
+            @foreach (var item in Model.Frequencies)
+            {
+                <text>tabOfFreq.push(@item)</text>
+            }
+            console.log(tabOfFreq);
+            var indexes = []
+              , leftear = []
+              , rightear = []
+              ;
+            for (var i = 0; i < tabOfFreq.length; i++) {
+                if ((tabOfFreq[i] >= 500) && (tabOfFreq[i] <= 3000)) {
+                    console.log("i: " + i + ", freq: " + tabOfFreq[i]);
+                    indexes.push(i);
+                }
+            }
+            var leftElems = $(".form-left");
+            var rigthElems = $(".form-right");
+
+            for (var i = 0; i < indexes.length; i++) {
+                leftear.push(leftElems[indexes[i]].value);
+                rightear.push(rigthElems[indexes[i]].value);
+            }
+            console.log(leftear);
+            console.log(rightear);
+
+            var sumleft = 0
+              , sumright = 0;
+
+            for (var i = 0; i < leftear.length; i++) {
+                sumleft += parseInt(leftear[i]);
+                console.log(parseInt(leftear[i]));
+                sumright += parseInt(rightear[i]);
+            }
+
+            console.log("sumleft: " + sumleft + ", sumright: " + sumright);
+            var perc = (Math.min(sumleft, sumright) * 5 + Math.max(sumleft, sumright)) / 6;
+            perc = (perc > 100) ? 100 : (perc < 0) ? 0 : perc;
+
+            document.getElementById("Audiogram_PercentageHearingLoss").value = parseInt(perc);
+            document.getElementById("Audiogram_PercentageHearingLoss2").value = parseInt(perc);
+        }
+        document.getElementById('Audiogram_PercentageHearingLoss2').value = document.getElementById('Audiogram_PercentageHearingLoss').value;
+        var wymiennik = function (e) {
+            document.getElementById('Audiogram_Instrument_Name').value = document.getElementById('Audiogram_Instrument_ID_NAME').value;
+        }
+        window.onload = function () {
+            isMusician();
+            var l = LeftFinal.value.split(';');
+            var allElements = document.getElementsByClassName('form-left');
+            for (var i = 0; i < l.length; i++) {
+                allElements[i].value = l[i];
+            }
+            var r = RightFinal.value.split(';');
+            var allElements = document.getElementsByClassName('form-right');
+            for (var i = 0; i < r.length; i++) {
+                allElements[i].value = r[i];
+            }
+            //document.getElementById('Audiogram_IsMusician').removeAttribute('data-val');
+        }();
+</script>
+
+
+<script>
+        var wypleniacz = function () {
+            for (var i = 0; i < document.getElementsByClassName('form-left').length; i++) {
+                document.getElementsByClassName('form-left')[i].value = 5;
+                document.getElementsByClassName('form-right')[i].value = 5;
+                document.getElementById('Audiogram_Diagnosis').value = "troche głuchy";
+                document.getElementById('Audiogram_Age').value = 5;
+                document.getElementById('Audiogram_PatientID').value = 1;
+                document.getElementById('Audiogram_PercentageHearingLoss').value = 5;
+                functionRight(); functionLeft();
+            }
+        }
+</script>
 }

@@ -40,7 +40,7 @@
                     <!--@Html.DisplayFor(model => model.Audiogram.LeftEar)-->
                     @foreach(var left in Model.Audiogram.LeftEar.Levels)
                     {
-                        <code class="le">@left</code>
+                        <code class="le code-elems">@left</code>
                     }
                 </dd>
 
@@ -52,10 +52,21 @@
                     <!--@Html.DisplayFor(model => model.Audiogram.RightEar)-->
                     @foreach(var right in Model.Audiogram.RightEar.Levels)
                     {
-                        <code class="ri">@right</code>
+                        <code class="ri code-elems">@right</code>
                     }
                 </dd>
-
+                <script>
+                    var elems = document.getElementsByClassName('code-elems');
+                    var _max = 0;
+                    for (var i = 0; i < elems.length; i++) {
+                        if (elems[i].offsetWidth > _max) {
+                            _max = elems[i].offsetWidth;
+                        }
+                    }
+                    for (var i = 0; i < elems.length; i++) {
+                        elems[i].style.width = _max + 'px';
+                    }
+                </script>
                 <dt>
                     @Html.DisplayNameFor(model => model.Audiogram.Diagnosis)
                 </dt>
@@ -268,6 +279,11 @@
 			context.fillText(this.checkpointY[n], 0, 0);
 			context.restore();
 		}
+		var value = Math.round(this.maxY - this.numYTicks * this.maxY / this.numYTicks);
+		context.save();
+		context.translate(this.x - this.padding, this.numYTicks * this.height / this.numYTicks + this.y);
+		context.fillText("[dB]", 0, 0);
+		context.restore();
 		context.restore();
 	};
 
@@ -345,7 +361,7 @@
 
         var frequ = [];
         @foreach (var freq in Model.Frequencies) {<text>frequ.push(@freq);</text>}
-	    frequ.sort(function (a, b) { return a - b }).push("");
+	    frequ.sort(function (a, b) { return a - b }).push("[HZ]");
 
 		var myAG = new AG({
 		    canvasId: "ag",

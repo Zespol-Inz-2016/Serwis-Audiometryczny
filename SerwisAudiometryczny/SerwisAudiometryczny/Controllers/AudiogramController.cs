@@ -217,6 +217,14 @@ namespace SerwisAudiometryczny.Controllers
                 }
                 audiogramDisplay.Frequencies = FrequencyIntArray;
 
+                List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+                if (InstrumentModelList == null)
+                {
+                    return HttpNotFound();
+                }
+                audiogramDisplay.Audiogram.Instrument.ID = InstrumentModelList.First().ID;
+                audiogramDisplay.Audiogram.Instrument.Name = InstrumentModelList.First().Name;
+
                 return View(audiogramDisplay);
             }
             return new ViewResult { ViewName = "Unauthorized" };
@@ -362,10 +370,19 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (audiogramEdit.NewInstrument != null)
+                if (audiogramEdit.Audiogram.IsMusician == true)
                 {
-                    db.InstrumentModels.Add(audiogramEdit.NewInstrument);
-                    audiogramEdit.Audiogram.Instrument = db.InstrumentModels.FirstOrDefault(x => x.Name == audiogramEdit.NewInstrument.Name);
+                    InstrumentModel instrument = db.InstrumentModels.FirstOrDefault<InstrumentModel>(x => x.Name == audiogramEdit.Audiogram.Instrument.Name);
+                    if (instrument == null)
+                    {
+                        db.InstrumentModels.Add(audiogramEdit.Audiogram.Instrument);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        audiogramEdit.Audiogram.Instrument = instrument;
+                        audiogramEdit.Audiogram.Instrument.ID = instrument.ID;
+                    }
                 }
                 db.Entry(audiogramEdit.Audiogram).State = EntityState.Modified;
                 db.SaveChanges();

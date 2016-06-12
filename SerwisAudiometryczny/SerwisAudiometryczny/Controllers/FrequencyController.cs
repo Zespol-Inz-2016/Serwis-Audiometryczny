@@ -10,6 +10,9 @@ using SerwisAudiometryczny.Models;
 
 namespace SerwisAudiometryczny.Controllers
 {
+    /// <summary>
+    /// Klasa obsługująca modele częstotliwości. Dziedziczy po Controller.
+    /// </summary>
     public class FrequencyController : Controller
     {
         private ModelsDbContext db;
@@ -23,13 +26,19 @@ namespace SerwisAudiometryczny.Controllers
         {
             db = dbContext;
         }
-        // GET: FrequencyModels
+        /// <summary>
+        /// Metoda wyświetlająca spis wszystkich FrequencyModel.
+        /// </summary>
+        /// <param name="page"></param>
         public ActionResult Index(int? page)
         {
             return View(db.FrequencyModels.ToList());
         }
 
-        // GET: FrequencyModels/Details/5
+        /// <summary>
+        /// Metoda przekazująca FrequencyModel do widoku Details.
+        /// </summary>
+        /// <param name="id"></param>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -44,15 +53,18 @@ namespace SerwisAudiometryczny.Controllers
             return View(frequencyModel);
         }
 
-        // GET: FrequencyModels/Create
+        /// <summary>
+        /// Metoda wyświetlająca widok /Frequency/Create.
+        /// </summary>
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: FrequencyModels/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Metoda odbierająca FrequencyModel z widoku Create.
+        /// </summary>
+        /// <param name = "model" ></ param >
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Frequency")] FrequencyModel model)
@@ -67,7 +79,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(model);
         }
 
-        // GET: FrequencyModels/Edit/5
+        /// <summary>
+        /// Metoda przekazująca FrequencyModel do widoku Edit.
+        /// </summary>
+        /// <param name = "id" ></ param >
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,9 +97,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(frequencyModel);
         }
 
-        // POST: FrequencyModels/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Metoda odbierająca FrequencyModel z widoku Edit.
+        /// </summary>
+        /// <param name = "model" ></ param >
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Frequency")] FrequencyModel model)
@@ -98,7 +114,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(model);
         }
 
-        // GET: FrequencyModels/Delete/5
+        /// <summary>
+        /// Metoda sprawdzająca możliwość usunięcia i wysyłająca żądanie usunięcia FrequencyModel.
+        /// </summary>
+        /// <param name = "id" ></ param >
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -113,7 +132,10 @@ namespace SerwisAudiometryczny.Controllers
             return View(frequencyModel);
         }
 
-        // POST: FrequencyModels/Delete/5
+        /// <summary>
+        /// Metoda usuwająca FrequencyModel.
+        /// </summary>
+        /// <param name = "id" ></ param >
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

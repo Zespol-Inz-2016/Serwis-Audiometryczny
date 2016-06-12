@@ -22,14 +22,5 @@ namespace SerwisAudiometryczny.Controllers.Tests
             Assert.IsNotNull(result);
 
         }
-
-        [TestMethod()]
-        public void CreateTest()
-        {
-            AdminController controller = new AdminController();
-            ViewResult result = controller.Create() as ViewResult;
-            Assert.IsNotNull(result);
-        }
-
     }
 }

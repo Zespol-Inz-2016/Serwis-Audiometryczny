@@ -1,21 +1,25 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Panel administratora";
 }
 
-<div class="col-lg-offset-4 col-lg-4 col-lg-offset-4">
-<h2>Admin panel</h2>
-</div>
 <div class="container">
-    <div class="col-lg-offset-4 col-lg-4 col-lg-offset-4">
-
-        @using (Html.BeginForm())
-        {
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" id="user-manager" formaction="/Account/Details">user manager</button>
-                <button type="submit" class="btn btn-primary" id="backup" formaction="/Backup/Import">backup</button>
-                <button type="submit" class="btn btn-primary" id="logs" formaction="/Log/Index">logs</button>
-            </div>
-        }
+    <div class="page-header text-center">
+		<h1>Panel administratora</h1>
     </div>
+
+    <div class="row text-center">
+		<a href="/UserManagement/Index" class="btn btn-primary btn-space">Zarządzanie użytkownikami</a> 
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary btn-space dropdown-toggle" data-toggle="dropdown">
+			 Baza danych <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="/Backup/Import">Importuj</a></li>	
+				<li><a href="/Backup/Export">Eksportuj</a></li>		
+			</ul>
+		</div>
+		<a href="/Log/Index" class="btn btn-primary">Logi</a> 
+    </div>
+
 </div>
 

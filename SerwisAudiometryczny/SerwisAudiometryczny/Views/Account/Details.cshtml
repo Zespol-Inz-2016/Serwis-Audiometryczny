@@ -6,84 +6,126 @@
 
 <h2>Szczegóły konta</h2>
 
-<div>
+
     @*<h4>ApplicationUser</h4>*@
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
+ 
+
+          </div class="Details-box-1">
+        
             @Html.DisplayNameFor(model => model.Administrator)
-        </dt>
-
-        <dd>
+     
+		   </div>
+		  
+		     </div class="Details-box-2">
+      
             @Html.DisplayFor(model => model.Administrator)
-        </dd>
+      
+		 </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
+		 <div style="clear:both">
+          
+		  </div class="Details-box-1">
+            
+			@Html.DisplayNameFor(model => model.User)
+        
+		 </div>
 
-        <dd>
+         </div class="Details-box-2">
+
             @Html.DisplayFor(model => model.User)
-        </dd>
+      
+	  	 </div>
 
-        <dt>
+		 <div style="clear:both">
+
+        </div class="Details-box-1">
+            
+
             @Html.DisplayNameFor(model => model.Researcher)
-        </dt>
+       
+	     
+		 </div>
 
-        <dd>
+		    </div class="Details-box-2">
+      
             @Html.DisplayFor(model => model.Researcher)
-        </dd>
+       
+	    </div>
 
-        <dt>
+		<div style="clear:both">
+
+		 </div class="Details-box-1">
+        
             @Html.DisplayNameFor(model => model.Patient)
-        </dt>
+       
+	      </div>
 
-        <dd>
+		   </div class="Details-box-2">
+      
+      
             @Html.DisplayFor(model => model.Patient)
-        </dd>
+       
+	         </div>
 
-        <dt>
+			 <div style="clear:both">
+
+      </div class="Details-box-1">
+
             @Html.DisplayNameFor(model => model.Name)
-        </dt>
+       
+	    </div>
 
-        <dd>
+		  </div class="Details-box-2">
+      
             @Html.DisplayFor(model => model.Name)
-        </dd>
+            </div>
 
-        <dt>
+			<div style="clear:both">
+
+          </div class="Details-box-1">
             @Html.DisplayNameFor(model => model.Address)
-        </dt>
+       
+	    </div>
 
-        <dd>
+         </div class="Details-box-2">
             @Html.DisplayFor(model => model.Address)
-        </dd>
+        </div>
 
-        <dt>
+		<div style="clear:both">
+
+       </div class="Details-box-1">
             @Html.DisplayNameFor(model => model.Email)
-        </dt>
+        </div>
 
-        <dd>
+       </div class="Details-box-2">
             @Html.DisplayFor(model => model.Email)
-        </dd>
+         </div>
 
-        <dt>
+		 <div style="clear:both">
+
+       </div class="Details-box-1">
             @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
+        </div>
 
-        <dd>
+        </div class="Details-box-2">
             @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
+         </div>
 
-        <dt>
+		 <div style="clear:both">
+
+        </div class="Details-box-1">
             @Html.DisplayNameFor(model => model.UserName)
-        </dt>
+         </div>
 
-        <dd>
+          </div class="Details-box-2">
             @Html.DisplayFor(model => model.UserName)
-        </dd>
+         </div>
 
-    </dl>
-</div>
+   <div style="clear:both">
+
+   </br>
+   </br>
+
 <p>
     @Html.ActionLink("Edycja danych", "Edit", new { id = Model.Id })
     @*@Html.ActionLink("Back to List", "Index")*@

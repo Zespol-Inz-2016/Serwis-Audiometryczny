@@ -10,40 +10,78 @@
     @Html.ActionLink("Create New", "Create") &nbsp;&nbsp;&nbsp;
     @Html.ActionLink("Search", "Search")
 </p>
+<a onclick="showfilters();" style="cursor: pointer;" class="btn btn-info" href="#">List of filters</a>
+<div id="all-filters" style="display:none;">
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="left-ear-filter" checked/> LeftEar</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="right-ear-filter" checked/> RightEar</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="diagnosis-filter" checked/> Diagnosis</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="gender-filter" checked/> Gender</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="nuisance-filter" checked/> Nuisance</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="age-filter" checked/> Age</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="percentage-hearing-loss-filter" checked/> PercentageHearingLoss</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="is-musician-filter" checked/> IsMusician</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="instrument-filter" checked/> Instrument</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="patient-id-filter"/> PatientID</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="editor-id-filter"/> EditorID</label>
+</div>
+<script>
+    var showfilters = function(){
+        var elem = document.getElementById('all-filters');
+        if (elem.style.display == 'none') {
+            elem.style.display = 'block';
+        }
+        else {
+            elem.style.display = 'none';
+        }
+    }
+    var filter = function (elem) {
+        var filtered_elems = document.getElementsByClassName(elem.id);
+        if (filtered_elems[0].style.display == 'none') {
+            for (var i = 0; i < filtered_elems.length; i++) {
+                filtered_elems[i].style.display = 'table-cell';
+            }
+        }
+        else {
+            for (var i = 0; i < filtered_elems.length; i++) {
+                filtered_elems[i].style.display = 'none';
+            }
+        }
+    }
+</script>
 <div class="container-fluid"><div class="row">
 <table class="table row">
     <tr>
-        <th><div></div>
+        <th class="left-ear-filter"><div></div>
             @Html.DisplayNameFor(model => model.LeftEar)
         </th>
-        <th><div></div>
+        <th class="right-ear-filter"><div></div>
             @Html.DisplayNameFor(model => model.RightEar)
         </th>
-        <th>
+        <th class="diagnosis-filter">
             @Html.DisplayNameFor(model => model.Diagnosis)
         </th>
-        <th>
+        <th class="gender-filter">
             @Html.DisplayNameFor(model => model.Gender)
         </th>
-        <th>
+        <th class="nuisance-filter">
             @Html.DisplayNameFor(model => model.Nuisance)
         </th>
-        <th>
+        <th class="age-filter">
             @Html.DisplayNameFor(model => model.Age)
         </th>
-        <th>
+        <th class="percentage-hearing-loss-filter">
             @Html.DisplayNameFor(model => model.PercentageHearingLoss)
         </th>
-        <th>
+        <th class="is-musician-filter">
             @Html.DisplayNameFor(model => model.IsMusician)
         </th>
-        <th>
+        <th class="instrument-filter">
             @Html.DisplayNameFor(model => model.Instrument)
         </th>
-        <th>
+        <th class="patient-id-filter" style="display:none;">
             @Html.DisplayNameFor(model => model.PatientID)
         </th>
-        <th>
+        <th class="editor-id-filter" style="display:none;">
             @Html.DisplayNameFor(model => model.EditorID)
         </th>
         <th></th>
@@ -51,37 +89,39 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        <td class="left-ear-filter">
             @Html.DisplayFor(modelItem => item.LeftEar)
         </td>
-        <td>
+        <td class="right-ear-filter">
             @Html.DisplayFor(modelItem => item.RightEar)
         </td>
-        <td>
+        <td class="diagnosis-filter">
             @Html.DisplayFor(modelItem => item.Diagnosis)
         </td>
-        <td>
+        <td class="gender-filter">
             @Html.DisplayFor(modelItem => item.Gender)
         </td>
-        <td>
+        <td class="nuisance-filter">
             @Html.DisplayFor(modelItem => item.Nuisance)
         </td>
-        <td>
+        <td class="age-filter">
             @Html.DisplayFor(modelItem => item.Age)
         </td>
-        <td>
+        <td class="percentage-hearing-loss-filter">
             @Html.DisplayFor(modelItem => item.PercentageHearingLoss)
         </td>
-        <td>
+        <td class="is-musician-filter">
             @Html.DisplayFor(modelItem => item.IsMusician)
         </td>
-        <th>
-            @Html.DisplayFor(modelItem => item.Instrument)
-        </th>
-        <td>
+        <td class="instrument-filter">
+            @Html.DisplayFor(modelItem => item.Instrument )
+            @Html.DisplayFor(modelItem => item.Instrument.ID)
+            @Html.DisplayFor(modelItem => item.Instrument.Name)
+        </td>
+        <td class="patient-id-filter" style="display:none;">
             @Html.DisplayFor(modelItem => item.PatientID)
         </td>
-        <td>
+        <td class="editor-id-filter" style="display:none;">
             @Html.DisplayFor(modelItem => item.EditorID)
         </td>
         <td>

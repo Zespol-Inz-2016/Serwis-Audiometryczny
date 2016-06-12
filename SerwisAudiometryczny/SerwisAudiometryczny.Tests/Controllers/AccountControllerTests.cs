@@ -1,24 +1,22 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SerwisAudiometryczny;
-using SerwisAudiometryczny.Controllers;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SerwisAudiometryczny.Models;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web;
+using Moq;
+using Microsoft.AspNet.Identity;
 
 namespace SerwisAudiometryczny.Controllers.Tests
 {
     [TestClass()]
     public class AccountControllerTests
-    {
+    {      
         AccountController controller;
+     
+
         [TestMethod()]
         public void LoginTest()
         {
+           
             controller = new AccountController();
             ViewResult view = controller.Login("//adres_serwera/sciezka_dostępu") as ViewResult;
             Assert.IsNotNull(view);
@@ -39,17 +37,23 @@ namespace SerwisAudiometryczny.Controllers.Tests
         [TestMethod()]
         public void LogOffTest()
         {
-            controller = new AccountController();
+            var userStore = new Mock<IUserStore<ApplicationUser>>();
+            var applicationSignInManager = new Mock<ApplicationSignInManager>();
+            var applicationUserManager = new Mock<ApplicationUserManager>(userStore.Object);
+            controller = new AccountController(applicationUserManager.Object,applicationSignInManager.Object);
             RedirectToRouteResult result = controller.LogOff() as RedirectToRouteResult;
             Assert.IsNotNull(result);
             Assert.AreEqual("Index", result.RouteValues["action"]);
             Assert.AreEqual("Home", result.RouteValues["action"]);
+
         }
 
         [TestMethod()]
         public void EditTest()
         {
-            controller = new AccountController();
+            var obj = new Mock<ApplicationSignInManager>();
+            var obj1 = new Mock<ApplicationUserManager>();
+            controller = new AccountController(obj1.Object,obj.Object);
             ViewResult view = controller.Edit() as ViewResult;
             AccountEditViewModel model = view.ViewData.Model as AccountEditViewModel;
             ApplicationUser user = new ApplicationUser();
@@ -59,8 +63,8 @@ namespace SerwisAudiometryczny.Controllers.Tests
             model.Name = user.Name;
             model.Address = user.Address;
             model.Email = user.Address;
-            Assert.AreEqual(model, view.ViewName);
-
+            obj1.VerifyAll();
+            obj.VerifyAll();
         }
 
 

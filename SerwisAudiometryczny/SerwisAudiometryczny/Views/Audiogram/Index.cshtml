@@ -10,7 +10,7 @@
     @Html.ActionLink("Create New", "Create") &nbsp;&nbsp;&nbsp;
     @Html.ActionLink("Search", "Search")
 </p>
-<a onclick="showfilters();" style="cursor: pointer;" class="btn btn-info" href="#">List of filters</a>
+<a onclick="showfilters();" style="cursor: pointer; margin-bottom:5px;" class="btn btn-info" href="#">List of filters</a>
 <div id="all-filters" style="display:none;">
     <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="left-ear-filter" checked/> LeftEar</label>
     <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="right-ear-filter" checked/> RightEar</label>
@@ -47,46 +47,55 @@
             }
         }
     }
-</script>
+</script>  
 <div class="container-fluid"><div class="row">
 <table class="table row">
     <tr>
-        <th class="left-ear-filter"><div></div>
+        <th class="left-ear-filter reg"><div></div>
             @Html.DisplayNameFor(model => model.LeftEar)
         </th>
-        <th class="right-ear-filter"><div></div>
+        <th class="right-ear-filter reg"><div></div>
             @Html.DisplayNameFor(model => model.RightEar)
         </th>
-        <th class="diagnosis-filter">
+        <th class="diagnosis-filter reg">
             @Html.DisplayNameFor(model => model.Diagnosis)
         </th>
-        <th class="gender-filter">
+        <th class="gender-filter reg">
             @Html.DisplayNameFor(model => model.Gender)
         </th>
-        <th class="nuisance-filter">
+        <th class="nuisance-filter reg">
             @Html.DisplayNameFor(model => model.Nuisance)
         </th>
-        <th class="age-filter">
+        <th class="age-filter reg">
             @Html.DisplayNameFor(model => model.Age)
         </th>
-        <th class="percentage-hearing-loss-filter">
+        <th class="percentage-hearing-loss-filter reg">
             @Html.DisplayNameFor(model => model.PercentageHearingLoss)
         </th>
-        <th class="is-musician-filter">
+        <th class="is-musician-filter reg">
             @Html.DisplayNameFor(model => model.IsMusician)
         </th>
-        <th class="instrument-filter">
+        <th class="instrument-filter reg">
             @Html.DisplayNameFor(model => model.Instrument)
         </th>
-        <th class="patient-id-filter" style="display:none;">
+        <th class="patient-id-filter reg" style="display:none;">
             @Html.DisplayNameFor(model => model.PatientID)
         </th>
-        <th class="editor-id-filter" style="display:none;">
+        <th class="editor-id-filter reg" style="display:none;">
             @Html.DisplayNameFor(model => model.EditorID)
         </th>
         <th></th>
     </tr>
-
+<script>
+    var elems_for_letters = document.querySelectorAll('.reg');
+    for (var i = 0; i < elems_for_letters.length; i++) {
+        elems_for_letters[i].innerHTML = elems_for_letters[i].innerHTML.replace(/([a-z])([A-Z])/g, '$1 $2');
+    }
+    elems_for_letters = document.querySelectorAll('.checkbox');
+    for (var i = 0; i < elems_for_letters.length; i++) {
+        elems_for_letters[i].innerHTML = elems_for_letters[i].innerHTML.replace(/([a-z])([A-Z])/g, '$1 $2');
+    }
+</script>
 @foreach (var item in Model) {
     <tr>
         <td class="left-ear-filter">

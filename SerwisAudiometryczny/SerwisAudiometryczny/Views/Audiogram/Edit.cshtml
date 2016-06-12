@@ -189,63 +189,9 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
+  
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>/*
-        var LeftFinal = document.getElementsByClassName('form-final-left')[0];
-        var RightFinal = document.getElementsByClassName('form-final-right')[0];
-        function functionLeft() {
-            var allElements = document.getElementsByClassName('form-left');
-            var string = "";
-            for (var i = 0; i < allElements.length; i++) {
-                if (i == 0) { string = allElements[i].value + ";"; }
-                else {
-                    if (i == allElements.length - 1) { string = string + allElements[i].value; }
-                    else {
-                        string = string + allElements[i].value + ";";
-                    }
-                }
-            }
-            LeftFinal.value = string;
-        }
-        function functionRight() {
-            var allElements = document.getElementsByClassName('form-right');
-            var string = "";
-            for (var i = 0; i < allElements.length; i++) {
-                if (i == 0) { string = allElements[i].value + ";"; }
-                else {
-                    if (i == allElements.length - 1) { string = string + allElements[i].value; }
-                    else {
-                        string = string + allElements[i].value + ";";
-                    }
-                }
-            }
-            RightFinal.value = string;
-        }
-        var left = document.getElementsByClassName('form-left');
-        for (var i = 0; i < left.length; i++) {
-            left[i].addEventListener('keyup', functionLeft, false);
-            left[i].addEventListener('change', functionLeft, false);
-        }
-        var right = document.getElementsByClassName('form-right');
-        for (var i = 0; i < right.length; i++) {
-            right[i].addEventListener('keyup', functionRight, false);
-            right[i].addEventListener('change', functionRight, false);
-        }
-        window.onload = function () {
-            var l = LeftFinal.value.split(';');
-            var allElements = document.getElementsByClassName('form-left');
-            for (var i = 0; i < l.length; i++) {
-                allElements[i].value = l[i];
-            }
-            var r = RightFinal.value.split(';');
-            var allElements = document.getElementsByClassName('form-right');
-            for (var i = 0; i < r.length; i++) {
-                allElements[i].value = r[i];
-            }
-        }();*/
-    </script>
 <script>
         document.getElementById('Audiogram_Instrument_ID').disabled = 'disabled';
         document.getElementById('Audiogram_Instrument_Name').disabled = 'disabled';
@@ -259,6 +205,8 @@
                 $('.musician-depended').hide();
                 document.getElementById('Audiogram_Instrument_ID').disabled = 'disabled';
                 document.getElementById('Audiogram_Instrument_Name').disabled = 'disabled';
+                document.getElementById('Audiogram_Instrument_Name').value = '';
+                document.getElementById('Audiogram_Instrument_ID').value = '';
             }
         }
         $('#Audiogram_IsMusician').on('change', isMusician);

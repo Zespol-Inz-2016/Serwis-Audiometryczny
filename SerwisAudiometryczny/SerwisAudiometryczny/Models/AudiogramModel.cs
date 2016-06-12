@@ -59,26 +59,7 @@ namespace SerwisAudiometryczny.Models
         /// </summary>
         [Required(ErrorMessage = "Proszę podać procent utraty słuchu.")]
         [Range(typeof(float), "0","100")]
-        public float PercentageHearingLoss
-        {
-            get; set;
-            /*get
-            {
-                ;
-                float[] leftear = LeftEar.Levels;
-                float[] rightear = RightEar.Levels;
-                //pobieram czestotliwosci od 500Hz do 3000Hz
-                float sumleft = leftear[2] + leftear[3] + leftear[4] + leftear[5];
-                float sumright = rightear[2] + rightear[3] + rightear[4] + rightear[5];
-                return (Math.Min(sumleft,sumright)*5 + Math.Max(sumright,sumleft)) /6;
-                //Źródło wzoru:
-                //http://law.justia.com/codes/maryland/2010/labor-and-employment/title-9/subtitle-6/9-650
-            }
-            set
-            {
-            }*/
-
-        }
+        public float PercentageHearingLoss { get; set; }
         /// <summary>
         /// Opisuje, czy pacjent jest muzykiem.
         /// </summary>

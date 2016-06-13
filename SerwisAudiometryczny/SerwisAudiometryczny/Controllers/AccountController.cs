@@ -94,7 +94,7 @@ namespace SerwisAudiometryczny.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("Error", "Nie udało się zalogować, sprawdź dane.");
                     return View(model);
             }
         }

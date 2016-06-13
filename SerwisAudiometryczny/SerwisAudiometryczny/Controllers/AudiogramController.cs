@@ -373,6 +373,20 @@ namespace SerwisAudiometryczny.Controllers
             return new ViewResult { ViewName = "Unauthorized" };
         }
 
+        private AudiogramModel RewriteAudiogram(AudiogramModel TrackedAudiogram, AudiogramModel ReceivedAudiogram)
+        {
+            TrackedAudiogram.Age = ReceivedAudiogram.Age;
+            TrackedAudiogram.Diagnosis = ReceivedAudiogram.Diagnosis;
+            TrackedAudiogram.Gender = ReceivedAudiogram.Gender;
+            TrackedAudiogram.IsMusician = ReceivedAudiogram.IsMusician;
+            TrackedAudiogram.LeftEar = ReceivedAudiogram.LeftEar;
+            TrackedAudiogram.RightEar = ReceivedAudiogram.RightEar;
+            TrackedAudiogram.PercentageHearingLoss = ReceivedAudiogram.PercentageHearingLoss;
+            TrackedAudiogram.Nuisance = ReceivedAudiogram.Nuisance;
+            TrackedAudiogram.PatientID = ReceivedAudiogram.PatientID;
+            return TrackedAudiogram;
+        }
+
         /// <summary>
         /// Metoda odbierająca z widoku Edit AudiogramCreateEditViewModel.
         /// </summary>
@@ -381,6 +395,8 @@ namespace SerwisAudiometryczny.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(AudiogramCreateEditViewModel audiogramEdit)
         {
+            AudiogramModel TrackedAudiogram = db.AudiogramModels.FirstOrDefault(x => x.ID == audiogramEdit.Audiogram.ID);
+            TrackedAudiogram = RewriteAudiogram(TrackedAudiogram, audiogramEdit.Audiogram);
             if (ModelState.IsValid)
             {
                 if (audiogramEdit.Audiogram.IsMusician == true)
@@ -390,18 +406,27 @@ namespace SerwisAudiometryczny.Controllers
                     {
                         db.InstrumentModels.Add(audiogramEdit.Audiogram.Instrument);
                         db.SaveChanges();
+                        TrackedAudiogram.Instrument = audiogramEdit.Audiogram.Instrument;
                     }
                     else
                     {
-                        audiogramEdit.Audiogram.Instrument = instrument;
+                        TrackedAudiogram.Instrument = instrument;
                     }
                 }
                 else
                 {
-                    audiogramEdit.Audiogram.Instrument = null;
+                    InstrumentModel instr = db.InstrumentModels.FirstOrDefault<InstrumentModel>(x => x.Name == null);
+                    if (instr == null)
+                    {
+                        TrackedAudiogram.Instrument = new InstrumentModel();
+                    }
+                    else
+                    {
+                        TrackedAudiogram.Instrument = instr;
+                    }
                 }
 
-                db.Entry(audiogramEdit.Audiogram).State = EntityState.Modified;
+                db.Entry(TrackedAudiogram).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return RedirectToAction("Index");

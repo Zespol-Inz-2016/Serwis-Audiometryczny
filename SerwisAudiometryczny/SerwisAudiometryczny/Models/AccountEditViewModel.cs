@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// Służy przekazaniu wszystkich informacji o koncie użytkownika do widoku edycji.
+    /// </summary>
     public class AccountEditViewModel
     {
         /// <summary>
-        /// Opisuje nazwę konta użytkownika.
+        /// Opisuje Imię i Nazwisko użytkownika.
         /// </summary>
         [Display(Name = "Imię i Nazwisko")]
         public string Name { get; set; }

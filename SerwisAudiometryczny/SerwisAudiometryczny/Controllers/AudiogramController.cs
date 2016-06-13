@@ -28,25 +28,37 @@ namespace SerwisAudiometryczny.Controllers
         private ModelsDbContext db;
         private ApplicationDbContext datab;
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         public AudiogramController()
         {
             db = new ModelsDbContext();
             datab = new ApplicationDbContext();
         }
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="appDbContext"></param>
         public AudiogramController(ModelsDbContext dbContext, ApplicationDbContext appDbContext)
         {
             db = dbContext;
             datab = appDbContext;
         }
 
+        /// <summary>
+        /// Metoda zwracająca widok wyszukiwarki audiogramów.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Search()
         {
             return View();
         }
 
         /// <summary>
-        /// Metoda wyszukuje w bazie danych audiogramy spełniające określone warunki
+        /// Metoda wyszukuje w bazie danych audiogramy spełniające określone warunki.
         /// </summary>
         /// <param name="page"></param>
         /// <param name="model"></param>
@@ -56,22 +68,6 @@ namespace SerwisAudiometryczny.Controllers
         {
             var results = from t in db.AudiogramModels
                           select t;
-
-            if (model.PatientName != null)
-            {
-                List<AudiogramModel> res = new List<AudiogramModel>();
-
-                foreach (var t in results)
-                {
-                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, int>(t.ID);
-                    string userName = user.Name;
-                    if (userName.Contains(model.PatientName))
-                    {
-                        res.Add(t);
-                    }
-                }
-                results = (IQueryable<AudiogramModel>)res;
-            }
 
             if (model.Diagnosis != null)
             {
@@ -127,7 +123,24 @@ namespace SerwisAudiometryczny.Controllers
                           where t.EditorID == model.Editor.Id
                           select t;
             }
-            return View(results.OrderByDescending(x => x.ID).ToList());
+
+            List<AudiogramModel> res = new List<AudiogramModel>();
+
+            if (model.PatientName != null)
+            {
+
+                foreach (var t in results)
+                {
+                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, int>(t.ID);
+                    string userName = user.Name;
+                    if (userName!=null && userName.Contains(model.PatientName))
+                    {
+                        res.Add(t);
+                    }
+                }
+            }
+
+            return View(res.OrderByDescending(x => x.ID).ToList());
 
         }
 

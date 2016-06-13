@@ -18,15 +18,23 @@ namespace SerwisAudiometryczny.Controllers
     {
         private ModelsDbContext db;
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         public InstrumentsController()
         {
             db = new ModelsDbContext();
         }
 
+        /// <summary>
+        /// Kontruktor
+        /// </summary>
+        /// <param name="dbContext"></param>
         public InstrumentsController(ModelsDbContext dbContext)
         {
             db = dbContext;
         }
+
         /// <summary>
         /// Metoda wyświetlająca spis wszystkich InstrumentModel.
         /// </summary>

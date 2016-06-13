@@ -18,15 +18,23 @@ namespace SerwisAudiometryczny.Controllers
     {
         private ModelsDbContext db;
 
+        /// <summary>
+        /// Kontruktor
+        /// </summary>
         public FrequencyController()
         {
             db = new ModelsDbContext();
         }
 
+        /// <summary>
+        /// Kontruktor
+        /// </summary>
+        /// <param name="dbContext"></param>
         public FrequencyController(ModelsDbContext dbContext)
         {
             db = dbContext;
         }
+
         /// <summary>
         /// Metoda wyświetlająca spis wszystkich FrequencyModel.
         /// </summary>

@@ -1,35 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using SerwisAudiometryczny.Models;
-using System.Data.Entity;
 
 namespace SerwisAudiometryczny.Models
 {
-    [Serializable]
     /// <summary>
     /// Model przechowywujący dane o zdarzeniu do zalogowania
     /// </summary>
+    [Serializable]
     public class LogModel : BaseModel
     {
         /// <summary>
-        /// Zmienna przechowywująca numer indentyfikacyjny użytkownika
+        /// Zmienna przechowywująca numer indentyfikacyjny użytkownika.
         /// </summary>
         public int? UserId { get; set; }
 
         /// <summary>
-        /// Zmienna przechowywująca gdzie zrobiono
+        /// Zmienna przechowywująca gdzie zrobiono.
         /// </summary>
         public string Controller { get; set; }
 
         /// <summary>
-        /// Zmienna przechowywująca co zrobiono 
+        /// Zmienna przechowywująca co zrobiono.
         /// </summary>
         public string Action { get; set; }
 
         /// <summary>
-        /// Zmienna przechowywująca czas o której coś zrobiono
+        /// Zmienna przechowywująca czas o której coś zrobiono.
         /// </summary>
         public DateTime? Time { get; set; }
 

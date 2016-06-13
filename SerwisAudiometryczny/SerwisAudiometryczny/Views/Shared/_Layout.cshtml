@@ -21,22 +21,6 @@
                 @Html.ActionLink("Serwis Audiometryczny", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" href="#">Administracja <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("My Base Object", "Index", "MyBaseModels")</li>
-                            <li>@Html.ActionLink("My Dict Sex", "Index", "DictSexModels")</li>
-                            <li>@Html.ActionLink("My Dict Diagnosis", "Index", "DictDiagnosisModels")</li>
-                            <li>@Html.ActionLink("My Nuisance Sex", "Index", "DictNuisanceModels")</li>
-                            <li>@Html.ActionLink("My Instrument Sex", "Index", "DictInstrumentModels")</li>
-                        </ul>
-                    </li>
-                    
-                    
-
-                </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

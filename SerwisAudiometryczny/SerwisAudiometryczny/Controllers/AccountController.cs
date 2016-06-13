@@ -10,7 +10,7 @@ using System.Net;
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
-    /// Klasa obługująca użytkowników, dziedziczy po Controller
+    /// Klasa obługująca użytkowników. Dziedziczy po Controller.
     /// </summary>
     [Authorize]
     public class AccountController : Controller
@@ -18,12 +18,17 @@ namespace SerwisAudiometryczny.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         public AccountController()
         {
         }
         /// <summary>
-        /// Kontruktor
+        /// Konstruktor
         /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -54,10 +59,9 @@ namespace SerwisAudiometryczny.Controllers
             }
         }
         /// <summary>
-        /// Metoda odpowiedzialna za przygotowanie do logowania
+        /// Metoda odpowiedzialna za przygotowanie do logowania.
         /// </summary>
-        /// <param name="returnUrl">Odnosnik url</param>
-        // GET: /Account/Login
+        /// <param name="returnUrl">Odnośnik URL</param>
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -65,9 +69,9 @@ namespace SerwisAudiometryczny.Controllers
             return View();
         }
         /// <summary>
-        /// Metoda odpowiedzialna za logowanie
+        /// Metoda odpowiedzialna za logowanie.
         /// </summary>
-        /// <param name="returnUrl">Odnosnik url</param>
+        /// <param name="returnUrl">Odnośnik URL</param>
         /// <param name="model">Model użytkownika z widoku</param>
         // GET: /Account/Login
         // POST: /Account/Login
@@ -94,12 +98,12 @@ namespace SerwisAudiometryczny.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("Error", "Nie udało się zalogować, sprawdź dane.");
                     return View(model);
             }
         }
         /// <summary>
-        /// Metoda odpowiedzialna za wylogowywanie
+        /// Metoda odpowiedzialna za wylogowywanie.
         /// </summary>
         // POST: /Account/LogOff
         [HttpPost]
@@ -111,7 +115,7 @@ namespace SerwisAudiometryczny.Controllers
         }
 
         /// <summary>
-        /// Metoda przygotowywujaca edycje użytkownika
+        /// Metoda przygotowywująca edycje użytkownika.
         /// </summary>
         public ActionResult Edit()
         {
@@ -124,7 +128,7 @@ namespace SerwisAudiometryczny.Controllers
             return View(model);
         }
         /// <summary>
-        /// Metoda odpowiedzialna za edycje użytkownika
+        /// Metoda odpowiedzialna za edycje użytkownika.
         /// </summary>
         /// <param name="model">Model użytkownika z widoku</param>
         [HttpPost]
@@ -152,7 +156,7 @@ namespace SerwisAudiometryczny.Controllers
             return View(model);
         }
         /// <summary>
-        /// Metoda zwracająca szczegóły użytkownika
+        /// Metoda zwracająca szczegóły użytkownika.
         /// </summary>
         public ActionResult Details()
         {

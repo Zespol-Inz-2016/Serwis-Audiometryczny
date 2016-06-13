@@ -39,6 +39,7 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="page">Określa numer strony</param>
         /// <returns></returns>
         // GET: Log
+        [Authorize(Roles="Administrator, Patient, Researcher, User")]
         public ActionResult Index(int? page)
         {
             int pageSize = 10;
@@ -59,7 +60,7 @@ namespace SerwisAudiometryczny.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: Search
-        [IsAdministrator]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Search()
         {
             return View();
@@ -70,7 +71,7 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="model">Określa zmienne z modelu LogSearchViewModel</param>
         /// <returns></returns>
         // POST: Search
-        [IsAdministrator]
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult Search(LogSearchViewModel model)
         {

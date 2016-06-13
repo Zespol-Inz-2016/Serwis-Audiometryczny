@@ -11,33 +11,33 @@ using SerwisAudiometryczny.ActionFilters;
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
-    /// Klasa obługująca zarządzanie użytkowników, dziedziczy po Controller
+    /// Klasa obługująca zarządzanie użytkownikami. Dziedziczy po Controller.
     /// </summary>
-    [IsAdministratorAttribute]
+    [IsAdministrator]
     public class UserManagementController : Controller
     {
         ApplicationDbContext db = ApplicationDbContext.Create();
         //public ApplicationUserManager UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
         /// <summary>
-        /// Metoda wyświetlająca spis wszystkich użytkowników
+        /// Metoda wyświetlająca spis wszystkich użytkowników.
         /// </summary>
         public ActionResult Index()
         {
-
             return View(db.Users.ToList());
-            //return View();
         }
+
         /// <summary>
-        /// Metoda przygotowywujaca do tworzenia użytkowników
+        /// Metoda przygotowywująca do tworzenia użytkowników.
         /// </summary>
         public ActionResult CreateUser()
         {
             return View();
         }
+
         /// <summary>
-        /// Metoda tworząca użytkowników
+        /// Metoda tworząca użytkowników.
         /// </summary>
-        ///  /// <param name="model">Model użytkownika z widoku</param>
+        /// <param name="model">Model użytkownika z widoku</param>
         [HttpPost]
         public async Task<ActionResult> CreateUser(UserCreateModelView model)
         {
@@ -66,12 +66,11 @@ namespace SerwisAudiometryczny.Controllers
         //    return View();
         //}
         /// <summary>
-        /// Metoda edytujaca uwworzonego wczesniej uzytkownika
+        /// Metoda edytująca użytkownika.
         /// </summary>
-        ///  /// <param name="myId">Id użytkownika</param>
+        /// <param name="myId">Id użytkownika</param>
         public ActionResult EditUser(int myId)
         {
-
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == myId);
             if (currentUser == null)
             {
@@ -82,13 +81,12 @@ namespace SerwisAudiometryczny.Controllers
             return View(model);
         }
         /// <summary>
-        /// Metoda resetująca hasło
+        /// Metoda resetująca hasło.
         /// </summary>
-        ///  /// <param name="model">Model użytkownika z widoku</param>
+        /// <param name="model">Model użytkownika z widoku</param>
         [HttpPost]
         public ActionResult ResetUserPassword(UserEditModelView model)
         {
-
             ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Id);
             if (currentUser == null)
             {
@@ -101,9 +99,9 @@ namespace SerwisAudiometryczny.Controllers
             return RedirectToAction("Index");
         }
         /// <summary>
-        /// Metoda edytujaca użytkownika
+        /// Metoda edytująca użytkownika.
         /// </summary>
-        ///  /// <param name="model">Model użytkownika z widoku</param>
+        /// <param name="model">Model użytkownika z widoku</param>
         [HttpPost]
         public ActionResult EditUser(UserEditModelView model)
         {
@@ -121,9 +119,9 @@ namespace SerwisAudiometryczny.Controllers
             return RedirectToAction("Index");
         }
         /// <summary>
-        /// Metoda edytujaca role uzytkownika
+        /// Metoda edytująca role użytkownika.
         /// </summary>
-        ///  /// <param name="form">Zawartosc formularza z widoku</param>
+        /// <param name="form">Zawartość formularza z widoku</param>
         public ActionResult EditRole(FormCollection form)
         {
             string name = form["Name"];

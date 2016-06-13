@@ -16,25 +16,33 @@ using System.Web.Security;
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
-    /// Klasa obsługująca logowanie akcji użytkowników, dziedzicząca po Controller
+    /// Klasa obsługująca logowanie akcji użytkowników. Dziedziczy po Controller.
     /// </summary>
     public class LogController : Controller
     {
         private ModelsDbContext db;
         private ApplicationDbContext dba;
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         public LogController()
         {
             db = new ModelsDbContext();
             dba = new ApplicationDbContext();
         }
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="dbContext"></param>
         public LogController(ModelsDbContext dbContext)
         {
             db = dbContext;
         }
+
         /// <summary>
-        /// Zwraca widok strony głównej logów z uwzględnieniem aktualnego użytkownika
+        /// Zwraca widok strony głównej logów z uwzględnieniem aktualnego użytkownika.
         /// </summary>
         /// <param name="page">Określa numer strony</param>
         /// <returns></returns>
@@ -55,7 +63,7 @@ namespace SerwisAudiometryczny.Controllers
             return View(db.LogModels.Where(x => x.UserId == currentUserId).OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
         }
         /// <summary>
-        /// Zwraca widok wyszukiwarki
+        /// Zwraca widok wyszukiwarki.
         /// </summary>
         /// <returns></returns>
         // GET: Search
@@ -65,7 +73,7 @@ namespace SerwisAudiometryczny.Controllers
             return View();
         }
         /// <summary>
-        /// Zwraca widok wyszukiwarki po wysłaniu zapytania
+        /// Zwraca widok wyszukiwarki po wysłaniu zapytania.
         /// </summary>
         /// <param name="model">Określa zmienne z modelu LogSearchViewModel</param>
         /// <returns></returns>

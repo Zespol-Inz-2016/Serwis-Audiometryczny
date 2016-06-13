@@ -7,7 +7,7 @@ using System.Linq;
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
-    /// Klasa obsługująca stronę startową, dziedziczy po Controller.
+    /// Klasa obsługująca stronę startową. Dziedziczy po Controller.
     /// </summary>
     public class HomeController : Controller
     {

@@ -28,25 +28,37 @@ namespace SerwisAudiometryczny.Controllers
         private ModelsDbContext db;
         private ApplicationDbContext datab;
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         public AudiogramController()
         {
             db = new ModelsDbContext();
             datab = new ApplicationDbContext();
         }
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="appDbContext"></param>
         public AudiogramController(ModelsDbContext dbContext, ApplicationDbContext appDbContext)
         {
             db = dbContext;
             datab = appDbContext;
         }
 
+        /// <summary>
+        /// Metoda zwracająca widok wyszukiwarki audiogramów.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Search()
         {
             return View();
         }
 
         /// <summary>
-        /// Metoda wyszukuje w bazie danych audiogramy spełniające określone warunki
+        /// Metoda wyszukuje w bazie danych audiogramy spełniające określone warunki.
         /// </summary>
         /// <param name="page"></param>
         /// <param name="model"></param>

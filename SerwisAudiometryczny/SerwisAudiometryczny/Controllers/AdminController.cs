@@ -6,7 +6,7 @@ using System.Web.Mvc;
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
-    /// Klasa obsługująca panel administratora, dziedziczy po Controller.
+    /// Klasa obsługująca panel administratora. Dziedziczy po Controller.
     /// </summary>
     [IsAdministrator]
     public class AdminController : Controller

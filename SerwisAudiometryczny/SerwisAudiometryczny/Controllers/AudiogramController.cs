@@ -162,25 +162,26 @@ namespace SerwisAudiometryczny.Controllers
             {
                 if (CurrentUser.Researcher)
                 {
-                    return View(db.AudiogramModels.ToList());
+                    return View(db.AudiogramModels.Include("Instrument").ToList());
                 }
                 if (CurrentUser.User && CurrentUser.Patient)
                 {
-                    var results = from t in db.AudiogramModels
+                    var results = from t in db.AudiogramModels.Include("Instrument")
                                   where t.EditorID == CurrentUser.Id || t.PatientID == CurrentUser.Id
                                   select t;
+                    
                     return View(results.ToList());
                 }
                 if (CurrentUser.User)
                 {
-                    var results = from t in db.AudiogramModels
+                    var results = from t in db.AudiogramModels.Include("Instrument")
                                   where t.EditorID == CurrentUser.Id
                                   select t;
                     return View(results.ToList());
                 }
                 if (CurrentUser.Patient)
                 {
-                    var results = from t in db.AudiogramModels
+                    var results = from t in db.AudiogramModels.Include("Instrument")
                                   where t.PatientID == CurrentUser.Id
                                   select t;
                     return View(results.ToList());
@@ -302,6 +303,10 @@ namespace SerwisAudiometryczny.Controllers
                         audiogramCreate.Audiogram.Instrument = instrument;
                     }
                 }
+                else
+                {
+                    audiogramCreate.Audiogram.Instrument = null;
+                }
                 db.AudiogramModels.Add(audiogramCreate.Audiogram);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -396,6 +401,10 @@ namespace SerwisAudiometryczny.Controllers
                         audiogramEdit.Audiogram.Instrument = instrument;
                         audiogramEdit.Audiogram.Instrument.ID = instrument.ID;
                     }
+                }
+                else
+                {
+                    audiogramEdit.Audiogram.Instrument = null;
                 }
                 db.Entry(audiogramEdit.Audiogram).State = EntityState.Modified;
                 db.SaveChanges();

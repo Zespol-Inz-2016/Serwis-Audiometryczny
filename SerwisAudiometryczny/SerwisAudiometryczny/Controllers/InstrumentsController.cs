@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
+using SerwisAudiometryczny.ActionFilters;
 
 namespace SerwisAudiometryczny.Controllers
 {
@@ -17,19 +18,28 @@ namespace SerwisAudiometryczny.Controllers
     {
         private ModelsDbContext db;
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         public InstrumentsController()
         {
             db = new ModelsDbContext();
         }
 
+        /// <summary>
+        /// Kontruktor
+        /// </summary>
+        /// <param name="dbContext"></param>
         public InstrumentsController(ModelsDbContext dbContext)
         {
             db = dbContext;
         }
+
         /// <summary>
         /// Metoda wyświetlająca spis wszystkich InstrumentModel.
         /// </summary>
         /// <param name="page"></param>
+        [IsAdministrator]
         public ActionResult Index(int? page)
         {
             return View(db.InstrumentModels.ToList());
@@ -39,6 +49,7 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda przekazująca InstrumentModel do widoku Details.
         /// </summary>
         /// <param name="id"></param>
+        [IsAdministrator]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -56,6 +67,7 @@ namespace SerwisAudiometryczny.Controllers
         /// <summary>
         /// Metoda wyświetlająca widok /Instruments/Create.
         /// </summary>
+        [IsAdministrator]
         public ActionResult Create()
         {
             return View();
@@ -83,6 +95,7 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda przekazująca InstrumentModel do widoku Edit.
         /// </summary>
         /// <param name = "id" ></ param >
+        [IsAdministrator]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -118,6 +131,7 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda sprawdzająca możliwość usunięcia i wysyłająca żądanie usunięcia InstrumentModel.
         /// </summary>
         /// <param name = "id" ></ param >
+        [IsAdministrator]
         public ActionResult Delete(int? id)
         {
             if (id == null)

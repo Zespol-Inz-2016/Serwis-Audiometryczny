@@ -75,7 +75,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Zmienna email
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Email jest wymagany.")]
         [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
@@ -83,7 +83,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Password
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Hasło jest wymagane.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

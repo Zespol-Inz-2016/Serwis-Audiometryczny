@@ -1,10 +1,13 @@
 ﻿using SerwisAudiometryczny.ActionFilters;
 using System.Web.Mvc;
+using SerwisAudiometryczny.Models;
+using Microsoft.AspNet.Identity;
+using System.Linq;
 
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
-    /// Klasa obsługująca stronę startową, dziedziczy po Controller.
+    /// Klasa obsługująca stronę startową. Dziedziczy po Controller.
     /// </summary>
     public class HomeController : Controller
     {
@@ -14,6 +17,13 @@ namespace SerwisAudiometryczny.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            var user = User.Identity.GetUserId<int>();
+            int currentUserId = User.Identity.GetUserId<int>();
+            ApplicationUser currentUser = ApplicationDbContext.Create().Users.FirstOrDefault(x => x.Id == currentUserId);
+
+            if (currentUser != null && currentUser.Administrator)
+                return View("~/Views/Admin/Index.cshtml");
+
             return View();
         }
 
@@ -21,7 +31,6 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda wyświetlająca informacje o aplikacji.
         /// </summary>
         /// <returns></returns>
-        [IsAdministrator]
         public ActionResult About()
         {
             return View();

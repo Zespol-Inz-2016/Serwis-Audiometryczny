@@ -57,22 +57,6 @@ namespace SerwisAudiometryczny.Controllers
             var results = from t in db.AudiogramModels
                           select t;
 
-            if (model.PatientName != null)
-            {
-                List<AudiogramModel> res = new List<AudiogramModel>();
-
-                foreach (var t in results)
-                {
-                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, int>(t.ID);
-                    string userName = user.Name;
-                    if (userName.Contains(model.PatientName))
-                    {
-                        res.Add(t);
-                    }
-                }
-                results = (IQueryable<AudiogramModel>)res;
-            }
-
             if (model.Diagnosis != null)
             {
                 results = from t in results
@@ -127,7 +111,24 @@ namespace SerwisAudiometryczny.Controllers
                           where t.EditorID == model.Editor.Id
                           select t;
             }
-            return View(results.OrderByDescending(x => x.ID).ToList());
+
+            List<AudiogramModel> res = new List<AudiogramModel>();
+
+            if (model.PatientName != null)
+            {
+
+                foreach (var t in results)
+                {
+                    ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, int>(t.ID);
+                    string userName = user.Name;
+                    if (userName!=null && userName.Contains(model.PatientName))
+                    {
+                        res.Add(t);
+                    }
+                }
+            }
+
+            return View(res.OrderByDescending(x => x.ID).ToList());
 
         }
 

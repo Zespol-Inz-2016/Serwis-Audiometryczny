@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using SerwisAudiometryczny.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,11 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SerwisAudiometryczny.Models;
-using Microsoft.AspNet.Identity;
-using System.Web.Security;
-using Microsoft.AspNet.Identity.Owin;
-using System.Web.Routing;
 
 /*! \namespace SerwisAudiometryczny.Controllers
     \brief Przestrzeń nazw dla kontrolerów.
@@ -19,7 +16,7 @@ using System.Web.Routing;
 */
 namespace SerwisAudiometryczny.Controllers
 {
-    
+
     /// <summary>
     /// Klasa obługująca audiogramy i ich przypisywanie do pacjentów. Przekazuje dane związanie z audiogramami do widoków. Dziedziczy po Controller.
     /// </summary>
@@ -133,7 +130,7 @@ namespace SerwisAudiometryczny.Controllers
                 {
                     ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, int>(t.ID);
                     string userName = user.Name;
-                    if (userName!=null && userName.Contains(model.PatientName))
+                    if (userName != null && userName.Contains(model.PatientName))
                     {
                         res.Add(t);
                     }
@@ -169,7 +166,7 @@ namespace SerwisAudiometryczny.Controllers
                     var results = from t in db.AudiogramModels.Include("Instrument")
                                   where t.EditorID == CurrentUser.Id || t.PatientID == CurrentUser.Id
                                   select t;
-                    
+
                     return View(results.ToList());
                 }
                 if (CurrentUser.User)
@@ -236,8 +233,6 @@ namespace SerwisAudiometryczny.Controllers
                 {
                     return HttpNotFound();
                 }
-                audiogramDisplay.Audiogram.Instrument.ID = InstrumentModelList.First().ID;
-                audiogramDisplay.Audiogram.Instrument.Name = InstrumentModelList.First().Name;
 
                 return View(audiogramDisplay);
             }
@@ -288,7 +283,7 @@ namespace SerwisAudiometryczny.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(AudiogramCreateEditViewModel audiogramCreate)
         {
-            if ( ModelState.IsValid )
+            if (ModelState.IsValid)
             {
                 if (audiogramCreate.Audiogram.IsMusician == true)
                 {
@@ -399,15 +394,16 @@ namespace SerwisAudiometryczny.Controllers
                     else
                     {
                         audiogramEdit.Audiogram.Instrument = instrument;
-                        audiogramEdit.Audiogram.Instrument.ID = instrument.ID;
                     }
                 }
                 else
                 {
                     audiogramEdit.Audiogram.Instrument = null;
                 }
+
                 db.Entry(audiogramEdit.Audiogram).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 

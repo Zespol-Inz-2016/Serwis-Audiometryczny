@@ -1,17 +1,33 @@
 ﻿@model SerwisAudiometryczny.Models.ApplicationUser
 
-<div class="row">
-    <form action="~/UserManagement/EditRole" method="post">
-        <div class="col-md-2"><input type="text" class="asd" name="Name" value="@Model.UserName" readonly/></div>
-        <div class="col-md-1">@Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Administrator, "Admin"))</div>
-        <div class="col-md-1">@Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Patient, "Patient"))</div>
-        <div class="col-md-1">@Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Researcher, "Researcher"))</div>
-        <div class="col-md-1">@Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.User, "User"))</div>
-        <div class="col-md-1"><button name="Submit" type="submit" value="Save" class="btn btn-success">Save</button></div>
-        <div class="col-md-1"><button name="Submit" type="submit" value="Edit" class="btn btn-primary">Edit</button></div>
-        <div class="col-md-1"><button name="Submit" type="submit" value="Deactivate" class="btn btn-danger">Deactivate</button></div>
+<tr class="row">
+    <form class="" action="~/UserManagement/EditRole" method="post">
+        <td class="um-td">
+            <input type="text" class="asd um-name" name="Name" value="@Model.UserName" readonly/>
+        </td>
+        <td class="um-td">
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Administrator, "Admin"))
+        </td>
+        <td class="um-td">
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Patient, "Patient"))
+        </td>
+        <td class="um-td">
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Researcher, "Researcher"))
+        </td>
+        <td class="um-td">
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.User, "User"))
+        </td>
+        <td class="um-td">
+            <button name="Submit" type="submit" value="Save" class="btn btn-success">Save</button>
+        </td>
+        <td class="um-td">
+            <button name="Submit" type="submit" value="Edit" class="btn btn-primary">Edit</button>
+        </td>
+        <td class="um-td">
+            <button name="Submit" type="submit" value="Deactivate" class="btn btn-danger">Deactivate</button>
+        </td>
     </form>
-</div>
+</tr>
 
 
 

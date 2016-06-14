@@ -2,11 +2,12 @@
     padding-top: 50px;
     padding-bottom: 20px;
 	padding-left: 50px; 
+    min-height: 100vh;
 	background-image: url('/Content/TloXXX.png');
-	/*background-position: center!important;   */
-    background-size: cover!important;
-	color: #fff ; 
-	 background-repeat: no-repeat;
+    background-size: cover !important;
+    background-position: center top;
+	color: #fff; 
+    background-repeat: no-repeat;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -43,15 +44,6 @@ textarea {
 
 .stopkaN
 {
-position:absolute; 
-left: 0px !important;
-bottom: -15px !important;
-height:40px ;
-background-color:#3C3D3D;
-Width:100%;
-color: #ffffff;
-padding-top:10px;
-padding-left:20px;
 }
 
 
@@ -81,6 +73,7 @@ padding: 10px;
 border:2px solid #ffffff; 
 border-radius:10px;
 color:#fff;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .errorField
@@ -204,7 +197,7 @@ color: #fff;
 position:relative;
 text-align:center; 
 margin-top: 10%;
-font-family: 'Playfair Display', serif;
+    font-family: sans-serif;
 }
 
 
@@ -215,7 +208,7 @@ font-size:42px;
 color: #fff;
 position:relative;
 text-align:center; 
-font-family: 'Playfair Display', serif;
+    font-family: sans-serif;
 }
 
 
@@ -253,4 +246,43 @@ float: left;
 Details-box-2
 {
 float: left; 
+}
+a{
+    vertical-align: middle;
+}
+.um-form{
+    
+}
+.um-name{
+    color: white;
+}
+.row{
+    margin-left:initial;
+    margin-right:initial;
+}
+.um-td{
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.um-table{
+    background-color: rgba(0,0,0,0.5);
+}
+.f-table{
+    background-color: rgba(0,0,0,0.5);
+    width: 93%;
+}
+.i-table{
+    background-color: rgba(0,0,0,0.5);
+    width: 93%;
+}
+.l-table{
+}
+.a-table{
+    background-color: rgba(0,0,0,0.5);
+    margin: 0 0 0 -0%;
+    width:95vw;
+}
+.a-table > tbody > tr,.a-table > tbody > tr > th{
+    vertical-align: middle;
+    text-align: center;
 }

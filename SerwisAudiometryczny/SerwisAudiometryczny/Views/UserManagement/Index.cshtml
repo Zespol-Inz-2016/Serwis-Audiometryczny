@@ -6,9 +6,11 @@
 
 <h2>Index</h2>
 @Html.ActionLink("Create new user", "CreateUser", "UserManagement", routeValues: null, htmlAttributes: new {Class = "btn btn-info" })
-@foreach (var item in Model)
-{
-    @Html.Partial("~/Views/Shared/SingleRecord.cshtml", item);
-}
+<table class="container-fluid um-table">
+    @foreach (var item in Model)
+    {
+        @Html.Partial("~/Views/Shared/SingleRecord.cshtml", item);
+    }
+</table>
 
 

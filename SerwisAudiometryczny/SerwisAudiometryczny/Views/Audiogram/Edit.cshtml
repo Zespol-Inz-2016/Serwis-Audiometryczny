@@ -118,16 +118,11 @@
                 <div class="checkbox">
                     <div class="container-fluid">
                         <div class="row">
-                            <!--input onchange="changeInstr()" type="radio" name="InstrumentVariant" value="new" />New Instrument
-                        <div id="new_instr">
-                            <input class="text-box single-line" id="NewInstrument_Name" name="NewInstrument.Name" type="text">
-                            <input class="text-box single-line" id="NewInstrument_ID" name="NewInstrument.ID" type="number">
-                        </div>
-                        <input onchange="changeInstr()" type="radio" name="InstrumentVariant" value="existing" />Existing instrument-->
                             <div id="exist_instr">
                                 <input class="text-box single-line form-none" id="Audiogram_Instrument_ID" name="Audiogram.Instrument.ID" type="number" />
-                                <input class="text-box single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text" />
-                                <select id="Audiogram_Instrument_ID_NAME" name="Audiogram.Instrument.ID" onchange="wymiennik()">
+                                <input placeholder="instrument name" class="text-box form-control single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text" />
+                                <br/>
+                                 <select class="form-control" id="Audiogram_Instrument_ID_NAME" name="Audiogram.Instrument.ID" onchange="wymiennik()">
                                     <option id="pick_instrument" disabled selected>Pick instrument</option>
                                     @foreach (var item in Model.Instruments)
                                     {
@@ -140,23 +135,6 @@
                             </script>
                         </div>
                     </div>
-                    <!--input class="form-control text-box single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text">
-                <input class="form-control text-box single-line" id="Audiogram_Instrument_ID" name="Audiogram.Instrument.ID" type="number"-->
-                    <!--@Html.EditorFor(model => model.Audiogram.Instrument, new { htmlAttributes = new { @class = "form-control" } })-->
-                    <!--input name="@Model.Audiogram.Instrument" id="@Model.Audiogram.Instrument" />
-                <input name="Audiogram.Instrument" id="Audiogram.Instrument"/>
-                <input name="model.Audiogram.Instrument" id="model.Audiogram.Instrument" />
-                <input name="Model.Audiogram.Instrument" id="Model.Audiogram.Instrument" />
-                <!--@Html.EditorFor(model => model.NewInstrument )
-                    @Html.DropDownListFor(model => model.Audiogram.Instrument ,
-                    new SelectList(Model.Instruments, "ID", "Name", Model.Instruments), new { @class = "DropDown Instrumentas" })
-
-                Html.EditorFor(model => model.Audiogram.Instrument, new { htmlAttributes = new { class = "form-control" } })
-                -->
-                    <!--
-                <input class="text-box single-line" id="Instrument_Name" name="Instrument.Name" type="text" value="">
-                <input class="text-box single-line"  id="Instrument_ID" name="Instrument.ID" type="number" value="">
-                -->
                     <span class="field-validation-valid text-danger" data-valmsg-for="Audiogram.Instrument" data-valmsg-replace="true"></span>
                 </div>
             </div>
@@ -170,7 +148,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group form-none">
             @Html.LabelFor(model => model.Audiogram.EditorID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Audiogram.EditorID, new { htmlAttributes = new { @class = "form-control" } })
@@ -192,6 +170,21 @@
   
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $('form').on('submit', function () {
+            var errors = 0;
+            if (document.getElementById('Audiogram_IsMusician').checked) {
+                if (document.getElementById('Audiogram_Instrument_Name').value == "") {
+                    errors++;
+                    alert("Please pick instrument");
+                }
+            }
+
+            if (errors > 0) {
+                return false;
+            }
+        })
+    </script> 
 <script>
         document.getElementById('Audiogram_Instrument_ID').disabled = 'disabled';
         document.getElementById('Audiogram_Instrument_Name').disabled = 'disabled';

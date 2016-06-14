@@ -7,9 +7,9 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", routeValues: null, htmlAttributes: new { Class = "btn btn-info" })
 </p>
-<table class="table">
+<table class="table f-table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Frequency)

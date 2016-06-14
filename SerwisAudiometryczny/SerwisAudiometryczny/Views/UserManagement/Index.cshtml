@@ -4,8 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-@Html.ActionLink("Create new user", "CreateUser", "UserManagement", routeValues: null, htmlAttributes: new {Class = "btn btn-info" })
+<h2 class="text-center">Użytkownicy</h2>
+<hr />
+@Html.ActionLink("Nowy użytkownik", "CreateUser", "UserManagement", routeValues: null, htmlAttributes: new {Class = "btn btn-info" })
 <table class="container-fluid um-table">
     @foreach (var item in Model)
     {

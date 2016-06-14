@@ -6,25 +6,25 @@
             <input type="text" class="asd um-name" name="Name" value="@Model.UserName" readonly/>
         </td>
         <td class="um-td">
-            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Administrator, "Admin"))
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Administrator, "Administrator"))
         </td>
         <td class="um-td">
-            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Patient, "Patient"))
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Patient, "Pacjent"))
         </td>
         <td class="um-td">
-            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Researcher, "Researcher"))
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Researcher, "Badacz"))
         </td>
         <td class="um-td">
-            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.User, "User"))
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.User, "Edytor"))
         </td>
         <td class="um-td">
-            <button name="Submit" type="submit" value="Save" class="btn btn-success">Save</button>
+            <button name="Submit" type="submit" value="Save" class="btn btn-success">Zapisz</button>
         </td>
         <td class="um-td">
-            <button name="Submit" type="submit" value="Edit" class="btn btn-primary">Edit</button>
+            <button name="Submit" type="submit" value="Edit" class="btn btn-primary">Edytuj</button>
         </td>
         <td class="um-td">
-            <button name="Submit" type="submit" value="Deactivate" class="btn btn-danger">Deactivate</button>
+            <button name="Submit" type="submit" value="Deactivate" class="btn btn-danger">Deaktywuj</button>
         </td>
     </form>
 </tr>

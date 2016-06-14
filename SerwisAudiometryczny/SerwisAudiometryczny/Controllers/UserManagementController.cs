@@ -126,10 +126,10 @@ namespace SerwisAudiometryczny.Controllers
         {
             string name = form["Name"];
             string submit = form["Submit"];
-            bool administrator = FormParser(form["Admin"]);
-            bool patient = FormParser(form["Patient"]);
-            bool researcher = FormParser(form["Researcher"]);
-            bool user = FormParser(form["User"]);
+            bool administrator = FormParser(form["Administrator"]);
+            bool patient = FormParser(form["Pacjent"]);
+            bool researcher = FormParser(form["Badacz"]);
+            bool user = FormParser(form["Edytor"]);
             var CurrentUser = db.Users.FirstOrDefault(x => x.UserName == name);
             if (CurrentUser == null)
             {

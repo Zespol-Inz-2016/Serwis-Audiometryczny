@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<SerwisAudiometryczny.Models.FrequencyModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Nowa częstotliwość";
 }
 
-<h2>Index</h2>
+<h2>Nowa częstotliwość</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", routeValues: null, htmlAttributes: new { Class = "btn btn-info" })
+    @Html.ActionLink("Stwórz nowy", "Create", routeValues: null, htmlAttributes: new { Class = "btn btn-info" })
 </p>
 <table class="table f-table">
     <tr>
@@ -23,9 +23,9 @@
             @Html.DisplayFor(modelItem => item.Frequency)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edytuj", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Szczegóły", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Usuń", "Delete", new { id=item.ID })
         </td>
     </tr>
 }

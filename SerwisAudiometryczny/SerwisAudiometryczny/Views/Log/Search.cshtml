@@ -2,25 +2,25 @@
 
 
 @{
-    ViewBag.Title = "Search";
+    ViewBag.Title = "Szukaj";
 }
 
-<h2>Search</h2>
+<h2>Wyszukiwarka logów</h2>
 
-
+<div class="text-large">
 @using (Html.BeginForm())
 {
-    <div class="span2">UserID </div>
+    <div class="span2">Id użytkownika </div>
     <div class="span2">@Html.TextBox("UserId")</div>
-    <div class="span2">Controller </div>
+    <div class="span2">Kontroler </div>
     <div class="span2">@Html.TextBox("Controller")</div>
-    <div class="span2">Action </div>
+    <div class="span2">Akcja </div>
     <div class="span2">@Html.TextBox("Action")</div>
-    <label for="search">From</label>
+    <label for="search">Czas od</label>
     <input type="datetime-local" name="FromTime" id="FromTime" />
-    <label for="search">To</label>
+    <label for="search">Czas do</label>
     <input type="datetime-local" name="ToTime" id="ToTime" />
-    <div class="span2 offset2"><button type="submit">Search</button></div>
+    <div class="span2 offset2"><button class="btn" type="submit">Szukaj</button></div>
 
     if (Model != null)
     {
@@ -60,11 +60,12 @@
     }
 
     @*<form method="get" action="@Url.Action("Search", "LogController")">
-            <label for="search">Controller</label>
+            <label for="search">Kontroler</label>
             <input type="text" name="Controller" id="Controller" />
-            <button type="submit">Perform search</button>
+            <button type="submit">Szukaj</button>
         </form>*@
 }
+
 @*@if (ViewBag != null)
     {
         foreach (var room in ViewBag.Rooms as List<Room>)
@@ -73,8 +74,7 @@
         }
     }*@
 
-<div>
-    @Html.ActionLink("Back to logs", "Index")
+    @Html.ActionLink("Powrót do listy", "Index") <br/><br/>
 </div>
 
 @section Scripts {

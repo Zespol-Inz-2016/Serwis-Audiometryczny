@@ -268,7 +268,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
@@ -330,9 +330,6 @@
     <Content Include="Views\Instruments\Index.cshtml" />
     <Content Include="Views\Shared\Unauthorized.cshtml" />
     <Content Include="Views\Log\Create.cshtml" />
-    <Content Include="Views\Log\Delete.cshtml" />
-    <Content Include="Views\Log\Details.cshtml" />
-    <Content Include="Views\Log\Edit.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Backup\Export.cshtml" />
     <Content Include="Views\Backup\Import.cshtml" />
@@ -345,6 +342,8 @@
     <Content Include="Views\Shared\Checkbox.cshtml" />
     <Content Include="Views\UserManagement\Index.cshtml" />
     <Content Include="Views\UserManagement\EditUser.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Enum.cshtml" />
+    <Content Include="Views\Audiogram\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

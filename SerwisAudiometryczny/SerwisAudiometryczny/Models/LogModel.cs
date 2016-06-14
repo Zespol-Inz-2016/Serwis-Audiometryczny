@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SerwisAudiometryczny.Models
 {
@@ -11,21 +12,25 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Zmienna przechowywująca numer indentyfikacyjny użytkownika.
         /// </summary>
+        [Display(Name = "Id użytkownika")]
         public int? UserId { get; set; }
 
         /// <summary>
         /// Zmienna przechowywująca gdzie zrobiono.
         /// </summary>
+        [Display(Name = "Kontroler")]
         public string Controller { get; set; }
 
         /// <summary>
         /// Zmienna przechowywująca co zrobiono.
         /// </summary>
+        [Display(Name = "Akcja")]
         public string Action { get; set; }
 
         /// <summary>
         /// Zmienna przechowywująca czas o której coś zrobiono.
         /// </summary>
+        [Display(Name = "Czas zdarzenia")]
         public DateTime? Time { get; set; }
 
         /// <summary>

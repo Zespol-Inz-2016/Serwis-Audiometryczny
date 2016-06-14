@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
 using SerwisAudiometryczny.Models;
+using SerwisAudiometryczny.Helpers;
 
 [assembly: OwinStartupAttribute(typeof(SerwisAudiometryczny.Startup))]
 namespace SerwisAudiometryczny
@@ -22,8 +23,7 @@ namespace SerwisAudiometryczny
             var UserManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
   
             if (!roleManager.RoleExists("Administrator"))
-            {
-                               
+            {                           
                 var role = new CustomRole();
                 role.Name = "Administrator";
                 roleManager.Create(role);

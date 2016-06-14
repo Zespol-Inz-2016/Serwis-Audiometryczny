@@ -2,24 +2,23 @@
 
 
 @{ 
-	ViewBag.Title = "Search";
+	ViewBag.Title = "Wyszukiwarka audiogramów";
 }
 
-<h2>Search</h2>
-
+<h2>Wyszukiwarka audiogramów</h2> <hr/>
 
 @using (Html.BeginForm())
 {
 	<div class="form-group">
-		<label class="col-md-3" for="PatientName">PatientName</label>
+		<label class="col-md-3" for="PatientName">Imię pacjenta</label>
 		<input class="form-control" type="text" name="PatientName" id="PatientName" />
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="Diagnosis">Diagnosis</label>
+		<label class="col-md-3" for="Diagnosis">Diagnoza</label>
 		<input class="form-control" type="text" name="Diagnosis" id="Diagnosis" />
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="Gender">Gender</label>
+		<label class="col-md-3" for="Gender">Płeć</label>
 		<select class="form-control" id="Gender" name="Gender">
             <option value=""></option>
             <option value="0">Male</option>
@@ -27,35 +26,35 @@
 		</select>
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="ageFrom">ageFrom</label>
+		<label class="col-md-3" for="ageFrom">Wiek od</label>
 		<input class="form-control" type="number" name="ageFrom" id="ageFrom" />
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="ageTo">ageTo</label>
+		<label class="col-md-3" for="ageTo">Wiek do</label>
 		<input class="form-control" type="number" name="ageTo" id="ageTo" />
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="PercentageHearingLossFrom">PercentageHearingLossFrom</label>
+		<label class="col-md-3" for="PercentageHearingLossFrom">Początkowy zakres ubytku słuchu (%)</label>
 		<input class="form-control" type="number" name="PercentageHearingLossFrom" id="PercentageHearingLossFrom" />
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="PercentageHearingLossTo">PercentageHearingLossTo</label>
+		<label class="col-md-3" for="PercentageHearingLossTo">Końcowy zakres ubytku słuchu (%)</label>
 		<input class="form-control" type="number" name="PercentageHearingLossTo" id="PercentageHearingLossTo" />
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="isMusican">isMusican</label>
+		<label class="col-md-3" for="isMusican">Muzyk</label>
 		<input class="form-control left" type="checkbox" name="isMusican" id="isMusican" />
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="Patient">Patient</label>
+		<label class="col-md-3" for="Patient">Pacjent</label>
 		<input class="form-control" type="number" name="Patient" id="Patient" />
 	</div>
 	<div class="form-group">
-		<label class="col-md-3" for="Editor">Editor</label>
+		<label class="col-md-3" for="Editor">Edytor</label>
 		<input class="form-control" type="number" name="Editor" id="Editor" />
 	</div>
 	<div class="span2 offset2">
-		<button type="submit" class="btn btn-default col-md-offset-3">Search</button>
+		<button type="submit" class="btn btn-default col-md-offset-3">Szukaj</button>
 	</div>
 	
 	if(Model != null)
@@ -147,9 +146,8 @@
 		</table>
 	}
 }
-
 <div>
-	@Html.ActionLink("Back to list", "Index")
+	@Html.ActionLink("Powrót do listy", "Index")
 </div>
 
 <style type="text/css">

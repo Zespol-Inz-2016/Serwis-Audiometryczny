@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SerwisAudiometryczny.Models
 {
@@ -11,6 +12,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Nazwa instrumentu.
         /// </summary>
+        [Display(Name = "Nazwa instrumentu")]
         public string Name { get; set; }
     }
 }

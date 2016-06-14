@@ -34,9 +34,13 @@ namespace SerwisAudiometryczny.Models
         }
         const string EncryptedStringPrefix = "X";
         bool _locked;
-        
+
+
+
         // private ModelsDbContext dbContext;
         // private ApplicationDbContext applicationDbContext;
+
+        UserManager<ApplicationUser, int> userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(new ApplicationDbContext()));
 
         /// <summary>
         /// Rola administratora.
@@ -120,21 +124,21 @@ namespace SerwisAudiometryczny.Models
             }
         }
 
-        [EmailAddress]
-        private string email;
+        public string emaildn { get; set; }
         /// <summary>
         /// Opisuje adres e-mail użytkownika.
         /// </summary>
+        /// 
         [Display(Name = "Email")]
         public override string Email
         {
             get
             {
-                return Decrypt(email);
+                return Decrypt(emaildn);
             }
             set
             {
-                email = Encrypt(value);
+                emaildn = Encrypt(value);
             }
         }
 
@@ -183,7 +187,9 @@ namespace SerwisAudiometryczny.Models
                 base.UserName = Encrypt(value);
             }
         }
-
+        /// <summary>
+        /// Kolekcja zawierająca użytkowników, do których danych wrażliwych obecny szkodnik ma dostęp
+        /// </summary>
         [Display(Name = "Dostęp do danych wrażliwych")]
         public ICollection<ApplicationUser> SensitiveDataAccess { get; set; }
 
@@ -228,7 +234,7 @@ namespace SerwisAudiometryczny.Models
             name = value != "" ? value : null;
             value = reader.ReadElementString("Adres");
             DBAdress = value != "" ? value : null;
-            email = reader.ReadElementString("Email");
+            emaildn = reader.ReadElementString("Email");
             EmailConfirmed = reader.ReadElementString("PotwierdzonyEmail") == "True" ? true : false;
             value = reader.ReadElementString("NumerTelefonu");
             DBPhoneNumber = value != "" ? value : null;
@@ -260,7 +266,7 @@ namespace SerwisAudiometryczny.Models
             writer.WriteElementString("Pacjent", Patient.ToString());
             writer.WriteElementString("ImieNazwisko", name);
             writer.WriteElementString("Adres", DBAdress);
-            writer.WriteElementString("Email", email);
+            writer.WriteElementString("Email", emaildn);
             writer.WriteElementString("PotwierdzonyEmail", EmailConfirmed.ToString());
             writer.WriteElementString("NumerTelefonu", DBPhoneNumber);
 

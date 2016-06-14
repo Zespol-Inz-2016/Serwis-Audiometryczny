@@ -6,10 +6,10 @@
     ViewBag.Title = "Logi";
 }
 
-<h2></h2>
+<h2>Logi </h2>
 
 <p>
-    @Html.ActionLink("Search", "Search", routeValues: null, htmlAttributes: new { Class = "btn btn-info" })
+    @Html.ActionLink("Szukaj", "Search", routeValues: null, htmlAttributes: new { Class = "btn btn-info" })
 </p>
 <table class="table l-table">
     <tr>
@@ -47,6 +47,6 @@
 
 </table>
 <br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))

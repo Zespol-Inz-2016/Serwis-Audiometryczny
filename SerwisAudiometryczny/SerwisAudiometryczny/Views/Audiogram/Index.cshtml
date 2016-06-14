@@ -1,28 +1,28 @@
 ﻿@model IEnumerable<SerwisAudiometryczny.Models.AudiogramModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Audiogramy";
 }
 
-<h2>Index</h2>
+<h2>Audiogramy</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create") &nbsp;&nbsp;&nbsp;
-    @Html.ActionLink("Search", "Search")
+    @Html.ActionLink("Stwórz nowy", "Create", routeValues: null, htmlAttributes: new { Class = "btn btn-primary" }) &nbsp;&nbsp;&nbsp;
+    @Html.ActionLink("Szukaj", "Search", routeValues: null, htmlAttributes: new { Class = "btn btn-info" })
 </p>
-<a onclick="showfilters();" style="cursor: pointer; margin-bottom:5px;" class="btn btn-info" href="#">List of filters</a>
+<a onclick="showfilters();" style="cursor: pointer; margin-bottom:5px;" class="btn btn-info" href="#">Filtruj</a>
 <div id="all-filters" style="display:none;">
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="left-ear-filter" checked/> LeftEar</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="right-ear-filter" checked/> RightEar</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="diagnosis-filter" checked/> Diagnosis</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="gender-filter" checked/> Gender</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="nuisance-filter" checked/> Nuisance</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="age-filter" checked/> Age</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="percentage-hearing-loss-filter" checked/> PercentageHearingLoss</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="is-musician-filter" checked/> IsMusician</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="left-ear-filter" checked/> Lewe ucho</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="right-ear-filter" checked/> Prawe ucho</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="diagnosis-filter" checked/> Diagnoza</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="gender-filter" checked/> Płeć</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="nuisance-filter" checked/> Uciążliwość</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="age-filter" checked/> Wiek</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="percentage-hearing-loss-filter" checked/> Ubytek słuchu (%)</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="is-musician-filter" checked/> Muzyk</label>
     <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="instrument-filter" checked/> Instrument</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="patient-id-filter"/> PatientID</label>
-    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="editor-id-filter"/> EditorID</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="patient-id-filter"/> Id pacjenta</label>
+    <label class="checkbox"><input type="checkbox" onchange="filter(this);" id="editor-id-filter"/> Id edytora</label>
 </div>
 <script>
     var showfilters = function(){
@@ -132,9 +132,9 @@
             @Html.DisplayFor(modelItem => item.EditorID)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID })
-            @Html.ActionLink("Details", "Details", new { id=item.ID })
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edytuj", "Edit", new { id=item.ID })
+            @Html.ActionLink("Szczegóły", "Details", new { id=item.ID })
+            @Html.ActionLink("Usuń", "Delete", new { id=item.ID })
         </td>
     </tr>
 }

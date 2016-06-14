@@ -1,10 +1,10 @@
 ﻿@model SerwisAudiometryczny.Models.AudiogramCreateEditViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Stwórz audiogram";
 }
 
-<h2>Create</h2>
+<h2>Nowy audiogram</h2>
 <style>
     .form-adv{
         display: inline;
@@ -27,7 +27,6 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>AudiogramModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <hr style="border-color: red;"/>
@@ -40,7 +39,7 @@
         <a href="#" class="btn btn-warning" onclick="wypleniacz();">Wypełniacz!!</a>
         <hr style="    border-color: red;"/>
         <div class="form-group">
-            @Html.LabelFor(model => model.Audiogram.LeftEar.Levels, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Audiogram.LeftEar, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Audiogram.LeftEar, new { htmlAttributes = new { @class = "form-control form-none form-final-left" } })
                 @for (var i = 0; i < Model.Frequencies.Length ; i++)
@@ -152,14 +151,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input return="val();" type="submit" value="Create" class="btn btn-default" />
+                <input return="val();" type="submit" value="Utwórz" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Powrót do listy", "Index")
 </div>
 
 @section Scripts {

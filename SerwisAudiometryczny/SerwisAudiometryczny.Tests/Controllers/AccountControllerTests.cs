@@ -3,7 +3,6 @@ using SerwisAudiometryczny.Models;
 using System.Web.Mvc;
 using System.Web;
 using Moq;
-using Microsoft.AspNet.Identity;
 
 namespace SerwisAudiometryczny.Controllers.Tests
 {
@@ -37,7 +36,7 @@ namespace SerwisAudiometryczny.Controllers.Tests
         [TestMethod()]
         public void LogOffTest()
         {
-            var userStore = new Mock<IUserStore<ApplicationUser>>();
+            var userStore = new Mock<ApplicationUser>();
             var applicationSignInManager = new Mock<ApplicationSignInManager>();
             var applicationUserManager = new Mock<ApplicationUserManager>(userStore.Object);
             controller = new AccountController(applicationUserManager.Object,applicationSignInManager.Object);

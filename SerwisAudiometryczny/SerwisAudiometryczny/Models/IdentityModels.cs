@@ -129,7 +129,7 @@ namespace SerwisAudiometryczny.Models
             }
         }
 
-        public string emaildn { get; set; }
+        private string emaildn { get; set; }
         /// <summary>
         /// Opisuje adres e-mail użytkownika.
         /// </summary>

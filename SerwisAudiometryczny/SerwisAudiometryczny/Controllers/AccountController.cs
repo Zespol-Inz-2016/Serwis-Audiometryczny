@@ -123,7 +123,7 @@ namespace SerwisAudiometryczny.Controllers
             AccountEditViewModel model = new AccountEditViewModel();
             model.Name = user.Name;
             model.Address = user.Address;
-            model.Email = user.Email;
+            model.Email = user.DecryptedEmail;
             model.PhoneNumber = user.PhoneNumber;
             return View(model);
         }

@@ -18,6 +18,7 @@ namespace SerwisAudiometryczny.Helpers
             string password = "Qwerty_123!";
 
             var userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
+            userManager.UserValidator = new UserValidator<ApplicationUser, int>(userManager) { AllowOnlyAlphanumericUserNames = false };
 
             ApplicationUser user = userManager.FindByName(userName);
             if (user == null)

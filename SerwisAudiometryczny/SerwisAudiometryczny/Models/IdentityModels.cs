@@ -14,14 +14,24 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
+using System.Security.Principal;
 
 namespace SerwisAudiometryczny.Models
 {
+    public static class IdentityExtensions
+    {
+        public static string GetDecryptedUsername(this IIdentity identity)
+        {
+            var claim = ((ClaimsIdentity)identity).FindFirst("DecryptUserName");
+            return (claim != null) ? claim.Value : string.Empty;
+        }
+    }
+
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     /// <summary>
     /// Klasa reprezentująca użytkownika.
     /// </summary>
-    public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>, IXmlSerializable, ISecured
+    public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>, IXmlSerializable
     {
         public class AplicationUserConfig : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ApplicationUser>
         {
@@ -32,11 +42,6 @@ namespace SerwisAudiometryczny.Models
                 Property(b => b.DBPhoneNumber);
             }
         }
-        const string EncryptedStringPrefix = "X";
-        bool _locked;
-
-
-
         // private ModelsDbContext dbContext;
         // private ApplicationDbContext applicationDbContext;
 
@@ -78,7 +83,7 @@ namespace SerwisAudiometryczny.Models
             }
             set
             {
-                name = Encrypt(value);
+                name = IsEncrypted(value) ? value : Encrypt(value);
             }
         }
         [Column("Name")]
@@ -108,7 +113,7 @@ namespace SerwisAudiometryczny.Models
             }
             set
             {
-                address = Encrypt(value);
+                address = IsEncrypted(value) ? value : Encrypt(value);
             }
         }
         [Column("Address")]
@@ -128,17 +133,31 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje adres e-mail użytkownika.
         /// </summary>
-        /// 
         [Display(Name = "Email")]
         public override string Email
         {
             get
             {
-                return Decrypt(emaildn);
+                return emaildn;
             }
             set
             {
-                emaildn = Encrypt(value);
+                emaildn = IsEncrypted(value) ? value : Encrypt(value);
+            }
+        }
+        /// <summary>
+        /// Opisuje niezaszyfrowany adres e-mail użytkownika.
+        /// </summary>
+        [NotMapped]
+        public string DecryptedEmail
+        {
+            get
+            {
+                return Decrypt(emaildn);
+            }
+            private set
+            {
+                emaildn = IsEncrypted(value) ? value : Encrypt(value);
             }
         }
 
@@ -155,7 +174,7 @@ namespace SerwisAudiometryczny.Models
             }
             set
             {
-                base.PhoneNumber = Encrypt(value);
+                base.PhoneNumber = IsEncrypted(value) ? value : Encrypt(value);
             }
         }
         [Phone]
@@ -180,13 +199,29 @@ namespace SerwisAudiometryczny.Models
         {
             get
             {
-                return Decrypt(base.UserName);
+                return base.UserName;
             }
             set
+            {
+                base.UserName = IsEncrypted(value) ? value : Encrypt(value);
+            }
+        }
+        /// <summary>
+        /// Opisuje niezaszyfrowaną nazwę użytkownika.
+        /// </summary>
+        [NotMapped]
+        public string DecryptedUserName
+        {
+            get
+            {
+                return Decrypt(base.UserName);
+            }
+            private set
             {
                 base.UserName = Encrypt(value);
             }
         }
+
         /// <summary>
         /// Kolekcja zawierająca użytkowników, do których danych wrażliwych obecny szkodnik ma dostęp
         /// </summary>
@@ -198,6 +233,7 @@ namespace SerwisAudiometryczny.Models
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
+            userIdentity.AddClaim(new Claim("DecryptUserName", DecryptedUserName));
             return userIdentity;
         }
 
@@ -302,7 +338,7 @@ namespace SerwisAudiometryczny.Models
                         cs.Write(clearBytes, 0, clearBytes.Length);
                         cs.Close();
                     }
-                    clearText = Convert.ToBase64String(ms.ToArray());
+                    clearText = "@" + Convert.ToBase64String(ms.ToArray());
                 }
             }
             return clearText;
@@ -313,7 +349,7 @@ namespace SerwisAudiometryczny.Models
             if (cipherText == null || cipherText == string.Empty)
                 return cipherText;
             string EncryptionKey = "MAKV2SPBNI99212";
-            byte[] cipherBytes = Convert.FromBase64String(cipherText);
+            byte[] cipherBytes = Convert.FromBase64String(cipherText.Remove(0, 1));
             using (Aes encryptor = Aes.Create())
             {
                 Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
@@ -332,32 +368,14 @@ namespace SerwisAudiometryczny.Models
             return cipherText;
         }
 
-
         public static bool IsEncrypted(string s)
         {
             if (s == null || s == string.Empty)
                 return true;
             else
-                return s.StartsWith(EncryptedStringPrefix);
-        }
-
-        public void Lock()
-        {
-            _locked = true;
-        }
-
-        public void Unlock()
-        {
-            _locked = false;
+                return s.StartsWith("@");
         }
     }
-
-    interface ISecured
-    {
-        void Lock();
-        void Unlock();
-    }
-
     public class CustomUserRole : IdentityUserRole<int> { }
     public class CustomUserClaim : IdentityUserClaim<int> { }
     public class CustomUserLogin : IdentityUserLogin<int> { }
@@ -374,6 +392,16 @@ namespace SerwisAudiometryczny.Models
         public CustomUserStore(ApplicationDbContext context)
             : base(context)
         {
+        }
+        public override Task<ApplicationUser> FindByNameAsync(string userName)
+        {
+            var user = Users.ToList().FirstOrDefault(u => u.DecryptedUserName == userName);
+            return Task.FromResult<ApplicationUser>(user);
+        }
+        public override Task<ApplicationUser> FindByEmailAsync(string email)
+        {
+            var user = Users.ToList().FirstOrDefault(u => u.DecryptedEmail == email);
+            return Task.FromResult<ApplicationUser>(user);
         }
     }
 
@@ -401,29 +429,6 @@ namespace SerwisAudiometryczny.Models
         {
             modelBuilder.Configurations.Add(new ApplicationUser.AplicationUserConfig());
             base.OnModelCreating(modelBuilder);
-        }
-        public override int SaveChanges()
-        {
-            var secured = this.ChangeTracker.Entries()
-                .Where(x => x.State == EntityState.Added || x.State == EntityState.Modified)
-                .Where(x => x.Entity is ISecured)
-                .Select(x => x.Entity as ISecured)
-                .ToArray();
-            foreach (var item in secured)
-            {
-                item.Unlock();
-            }
-            try
-            {
-                return base.SaveChanges();
-            }
-            finally
-            {
-                foreach (var item in secured)
-                {
-                    item.Lock();
-                }
-            }
         }
 
         public DbSet<AudiogramModel> AudiogramModels { get; set; }

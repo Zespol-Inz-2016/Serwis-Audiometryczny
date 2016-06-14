@@ -3,7 +3,7 @@
 <tr class="row">
     <form class="" action="~/UserManagement/EditRole" method="post">
         <td class="um-td">
-            <input type="text" class="asd um-name" name="Name" value="@Model.UserName" readonly/>
+            <input type="text" class="asd um-name" name="Name" value="@Model.DecryptedUserName" readonly/>
         </td>
         <td class="um-td">
             @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Administrator, "Administrator"))

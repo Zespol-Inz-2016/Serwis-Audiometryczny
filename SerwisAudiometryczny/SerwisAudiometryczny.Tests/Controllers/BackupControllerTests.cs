@@ -12,8 +12,6 @@ namespace SerwisAudiometryczny.Controllers.Tests
     [TestClass()]
     public class BackupControllerTests
     {
-        private object Server;
-        private object databaseBackuper;
 
         [TestMethod()]
         public void ImportTest()
@@ -39,15 +37,9 @@ namespace SerwisAudiometryczny.Controllers.Tests
         public void SendFileTest()
         {
             BackupController TestSend = new BackupController();
-            DatabaseBackuper databaseBackuper = new DatabaseBackuper();
-            Stream stream = databaseBackuper.Backup();
-            string contentType = MimeMapping.GetMimeMapping(Server.ToString());
-            string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_SerwisAudiometryczny.zip";
-            FileStreamResult aktualny = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };
-
             FileResult oczekiwany = TestSend.SendFile() as FileResult;
-
-            Assert.AreSame(oczekiwany, aktualny);
+            bool wynik = Convert.ToBoolean(oczekiwany);
+            Assert.IsFalse(wynik);
         }
     }
 }

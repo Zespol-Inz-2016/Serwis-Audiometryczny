@@ -8,9 +8,10 @@ using System.Web.Mvc;
 namespace SerwisAudiometryczny.Models.Tests
 {
     [TestClass()]
-    public class DatabaseBackuperTests
+    public class DatabaseBackuperTests       
     {
         string zipPath = HttpContext.Current.Server.MapPath("~/App_Data/backup.zip");
+
 
         [TestMethod()]
         public void BackupTest()
@@ -21,6 +22,13 @@ namespace SerwisAudiometryczny.Models.Tests
             FileStream oczekiwany = TestBackup.Backup() as FileStream;
 
             Assert.AreSame(oczekiwany, wynik);
+
+
+        }
+
+        [TestMethod()]
+        public void RestoreTest()
+        {
 
         }
     }

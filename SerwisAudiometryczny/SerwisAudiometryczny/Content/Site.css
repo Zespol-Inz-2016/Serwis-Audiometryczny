@@ -3,11 +3,8 @@
     padding-bottom: 20px;
 	padding-left: 50px; 
     min-height: 100vh;
-	background-image: url('/Content/TloXXX.png');
-    background-size: cover !important;
-    background-position: center top;
+	background-image: url('/Content/bg.png');
 	color: #fff; 
-    background-repeat: no-repeat;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -256,7 +253,7 @@ a{
 .um-name{
     color: white;
 }
-.row{
+.form-horizontal .form-group,.form-horizontal,.form-group,.row{
     margin-left:initial;
     margin-right:initial;
 }
@@ -267,13 +264,22 @@ a{
 .um-table{
     background-color: rgba(0,0,0,0.5);
 }
+.um-table > tbody > tr:hover {
+    background-color: black;
+}
 .f-table{
     background-color: rgba(0,0,0,0.5);
     width: 93%;
 }
+.f-table > tbody > tr:hover {
+    background-color: black;
+}
 .i-table{
     background-color: rgba(0,0,0,0.5);
     width: 93%;
+}
+.i-table > tbody > tr:hover {
+    background-color: black;
 }
 .l-table{
 }
@@ -282,7 +288,58 @@ a{
     margin: 0 0 0 -0%;
     width:95vw;
 }
+.a-table > tbody > tr:hover {
+    background-color: black;
+}
 .a-table > tbody > tr,.a-table > tbody > tr > th{
     vertical-align: middle;
     text-align: center;
+}
+@keyframes formErrorAnim {
+  0% {
+    background-color: rgb(255, 255, 255);
+  }
+  50% {
+    background-color: rgb(255, 198, 198);
+  }
+  100% {
+    background-color: rgb(255, 255, 255);
+  }
+}
+form-error{
+    -webkit-animation: formErrorAnim 2s infinite; /* Safari 4+ */
+    -moz-animation:    formErrorAnim 2s infinite; /* Fx 5+ */
+    -o-animation:      formErrorAnim 2s infinite; /* Opera 12+ */
+    animation:         formErrorAnim 2s infinite;
+}
+.element {
+  animation: pulse 5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: rgb(255, 255, 255);
+  }
+  50% {
+    background-color: rgb(255, 198, 198);
+  }
+  100% {
+    background-color: rgb(255, 255, 255);
+  }
+}
+div.codec{
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c7254e;
+    white-space: nowrap;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+    float: left;
+    margin-right: 5px;
+    width: 43px;
+    text-align: center;
+}
+canvas{
+    background-color: white;
 }

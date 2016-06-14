@@ -50,6 +50,8 @@ namespace SerwisAudiometryczny.Controllers.Tests
         [TestMethod()]
         public void EditTest()
         {
+            var dbContext = new Mock<ApplicationDbContext>();
+            var userStore = new Mock<CustomUserStore>(dbContext.Object);
             var obj = new Mock<ApplicationSignInManager>();
             var obj1 = new Mock<ApplicationUserManager>();
             controller = new AccountController(obj1.Object,obj.Object);

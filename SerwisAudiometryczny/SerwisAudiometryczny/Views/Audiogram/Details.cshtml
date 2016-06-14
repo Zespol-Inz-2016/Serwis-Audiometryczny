@@ -7,20 +7,27 @@
 <style>
     #LeftEarLevels > div:nth-child(1),
     #RightEarLevels > div:nth-child(1){
-        display: none;
-    }
-    .dl-horizontal > dt:nth-child(1){
-        color: blue;
+        //display: none;
     }
     .dl-horizontal > dt:nth-child(3){
+        color: blue;
+    }
+    .dl-horizontal > dt:nth-child(5){
         color: red;
     }
-    code.le{
+    div.le{
         color:#0600FF;
         background-color:#E4E4E4;
     }
-    code.ri{
+    div.ri{
         background-color:#E4E4E4;
+    }
+    dd{
+        margin-bottom: 3px;
+    }
+    .col-sm-11{
+        background-color: rgba(0, 0, 0, 0.5);
+        margin-bottom: 12px;
     }
 </style>
 
@@ -29,17 +36,23 @@
 <div>
     <hr />
     <div class="row">
-        <div class="col-sm-12 col-lg-5 col-md-5 col-xs-12">
+        <div class="col-sm-11 col-lg-6 col-md-6 col-xs-11">
             <dl class="dl-horizontal">
+                <dt></dt>
+                <dd>
+                    @foreach (var item in Model.Frequencies)
+                    {
+                        <div class="codec freq-code code-elems"></div>
+                    }
+                </dd>
                 <dt>
                     @Html.DisplayNameFor(model => model.Audiogram.LeftEar)
                 </dt>
 
                 <dd id="LeftEarLevels">
-                    <!--@Html.DisplayFor(model => model.Audiogram.LeftEar)-->
                     @foreach(var left in Model.Audiogram.LeftEar.Levels)
                     {
-                        <code class="le code-elems">@left</code>
+                        <div class="codec le code-elems">@left</div>
                     }
                 </dd>
 
@@ -48,24 +61,11 @@
                 </dt>
 
                 <dd id="RightEarLevels">
-                    <!--@Html.DisplayFor(model => model.Audiogram.RightEar)-->
                     @foreach(var right in Model.Audiogram.RightEar.Levels)
                     {
-                        <code class="ri code-elems">@right</code>
+                        <div class="codec ri code-elems">@right</div>
                     }
                 </dd>
-                <script>
-                    var elems = document.getElementsByClassName('code-elems');
-                    var _max = 0;
-                    for (var i = 0; i < elems.length; i++) {
-                        if (elems[i].offsetWidth > _max) {
-                            _max = elems[i].offsetWidth;
-                        }
-                    }
-                    for (var i = 0; i < elems.length; i++) {
-                        elems[i].style.width = _max + 'px';
-                    }
-                </script>
                 <dt>
                     @Html.DisplayNameFor(model => model.Audiogram.Diagnosis)
                 </dt>
@@ -137,10 +137,15 @@
                 <dd>
                     @Html.DisplayFor(model => model.Audiogram.EditorID)
                 </dd>
-
+                <script>
+                    var elems_for_letters = document.querySelectorAll('dt');
+                    for (var i = 0; i < elems_for_letters.length; i++) {
+                        elems_for_letters[i].innerHTML = elems_for_letters[i].innerHTML.replace(/([a-z])([A-Z])/g, '$1 $2');
+                    }
+                </script>
             </dl>
         </div>
-        <div class="col-sm-12 col-lg-7 col-md-7 col-xs-12">
+        <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12">
             <div id="graf">
                 <canvas id="ag" width="600" height="500" style="border:1px solid black;"></canvas>
             </div>
@@ -401,5 +406,13 @@
     if (!document.getElementsByClassName('check-box')[0].checked) {
         document.getElementsByClassName('instrument')[0].style.display = "none";
         document.getElementsByClassName('instrument')[1].style.display = "none";
+    }
+</script>
+<script>
+    var frequens = [];
+    @foreach (var freq in Model.Frequencies) {<text>frequens.push(@freq);</text>}
+    frequens.sort(function (a, b) { return a - b });
+    for (var i = 0; i < frequens.length ; i++) {
+        document.getElementsByClassName('code-elems')[i].innerHTML = frequens[i];
     }
 </script>

@@ -16,7 +16,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Opisuje częstotliwość.
         /// </summary>
-        [Display(Name = "Częstotliwość [MHz]")]
+        [Display(Name = "Częstotliwość [Hz]")]
         public int Frequency { get; set; }
     }
 }

@@ -29,15 +29,6 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <hr style="border-color: red;"/>
-
-        @foreach (var item in Model.Instruments)
-        {
-            <code>@item.Name</code>
-        }
-
-        <a href="#" class="btn btn-warning" onclick="wypleniacz();">Wypełniacz!!</a>
-        <hr style="    border-color: red;"/>
         <div class="form-group">
             @Html.LabelFor(model => model.Audiogram.LeftEar, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -53,7 +44,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Audiogram.RightEar, new { htmlAttributes = new { @class = "form-control form-none form-final-right" } })
                 @for (var i = 0; i < Model.Frequencies.Length; i++)
-                {<input class="form-control form-adv form-right" type="number"/> }
+                {<input class="form-control form-adv form-right" max="120" min="-10" type="number"/> }
                 @Html.ValidationMessageFor(model => model.Audiogram.RightEar, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -116,10 +107,10 @@
                         <div class="row">
                             <div id="exist_instr">
                                 <input class="text-box single-line form-none" id="Audiogram_Instrument_ID" name="Audiogram.Instrument.ID" type="number" />
-                                <input placeholder="instrument name" class="form-control text-box single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text" />
+                                <input placeholder="nazwa instrumentu" class="form-control text-box single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text" />
                                 <br/>
                                 <select class="form-control" id="Audiogram_Instrument_ID_NAME" name="Audiogram.Instrument.ID" onchange="wymiennik()">
-                                    <option id="pick_instrument" disabled selected>Pick instrument</option>
+                                    <option id="pick_instrument" disabled selected>Wybierz instrument</option>
                                     @foreach (var item in Model.Instruments)
                                     {
                                         <option value="@item.Name" data-id="@item.ID">@item.Name</option>
@@ -164,16 +155,79 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+        function hasClass(el, name) {
+            return new RegExp('(\\s|^)' + name + '(\\s|$)').test(el.className);
+        }
+
+        function addClass(el, name) {
+            if (!hasClass(el, name)) { el.className += (el.className ? ' ' : '') + name; }
+        }
+
+        function remClass(el, name) {
+            if (hasClass(el, name)) {
+                el.className = el.className.replace(new RegExp('(\\s|^)' + name + '(\\s|$)'), ' ').replace(/^\s+|\s+$/g, '');
+            }
+        }
         $('form').on('submit', function () {
             var errors = 0;
+            var error_list = "Żadne pole nie może pozostać puste!\n\n";
+            var elems = $(".form-adv");
+            for (var i = 0; i < elems.length; i++) {
+                if (elems[i].value == "" || elems[i].value == "NaN") {
+                    addClass(elems[i], 'element');
+                    errors++;
+                } else {
+                    remClass(elems[i], 'element');
+                }
+            }
+            if (errors > 0) {
+                error_list += "Proszę wypełnić puste pola.\n";
+            }
+            elems = $('#Audiogram_Diagnosis');
+            if (elems[0].value == "" || elems[0].value == null) {
+                addClass(elems[0], 'element');
+                error_list += "Proszę podać diagnozę.\n";
+                errors++;
+            } else {
+                var len = elems[0].value.length;
+                if (len > 150) {
+                    errors++;
+                    error_list += "Dopuszczalna długość diagnozy to 150 znaków.\n";
+                } else {
+                    remClass(elems[0], 'element');
+                }
+            }
+            elems = $('#Audiogram_Age');
+            if (!(parseInt($('#Audiogram_Age').val()) > 0 && parseInt($('#Audiogram_Age').val()) <= 150)) {
+                addClass(elems[0], 'element');
+                error_list += 'Proszę podać realny wiek.\n';
+                errors++;
+            }
             if (document.getElementById('Audiogram_IsMusician').checked) {
                 if (document.getElementById('Audiogram_Instrument_Name').value == "") {
                     errors++;
-                    alert("Please pick instrument");
+                    if (!$("#Audiogram_Instrument_Name").hasClass('element')) {
+                        $("#Audiogram_Instrument_Name").addClass('element');
+                        addClass($('#Audiogram_Instrument_ID_NAME')[0],'element');
+                    }
+                    error_list += "Proszę wpisać lub wybrać instrument.\n";
+                    errors++;
+                }
+                else {
+                    if ($("#Audiogram_Instrument_Name").hasClass('element')) {
+                        $("#Audiogram_Instrument_Name").removeClass('element');
+                        remClass($('#Audiogram_Instrument_ID_NAME')[0], 'element');
+                    }
                 }
             }
-
+            elems = $("#Audiogram_PatientID");
+            if (elems.val() == '' || elems.val() == null) {
+                addClass(elems[0], 'element');
+                errors++;
+                error_list += "Proszę wpisać ID pacjenta.\n";
+            }
             if (errors > 0) {
+                alert(error_list);
                 return false;
             }
         })
@@ -203,7 +257,7 @@
             }
             if (czy_jest == false) {
                 var temp = document.getElementById('Audiogram_Instrument_Name').value;
-                document.getElementById('Audiogram_Instrument_ID_NAME').value = "Pick instrument";
+                document.getElementById('Audiogram_Instrument_ID_NAME').value = "Wybierz instrument";
                 document.getElementById('Audiogram_Instrument_Name').value = temp;
             }
         })

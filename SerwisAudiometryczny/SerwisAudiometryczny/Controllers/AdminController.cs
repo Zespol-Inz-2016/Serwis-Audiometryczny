@@ -8,7 +8,7 @@ namespace SerwisAudiometryczny.Controllers
     /// <summary>
     /// Klasa obsługująca panel administratora. Dziedziczy po Controller.
     /// </summary>
-    [IsAdministrator]
+    [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {       
         /// <summary>

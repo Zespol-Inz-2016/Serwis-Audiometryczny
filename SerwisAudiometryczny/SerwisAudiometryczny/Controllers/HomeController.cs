@@ -20,9 +20,8 @@ namespace SerwisAudiometryczny.Controllers
         {
             var user = User.Identity.GetUserId<int>();
             int currentUserId = User.Identity.GetUserId<int>();
-            ApplicationUser currentUser = ApplicationDbContext.Create().Users.FirstOrDefault(x => x.Id == currentUserId);
 
-            if (currentUser != null && currentUser.Administrator)
+            if (User != null && User.IsInRole("Administrator"))
                 return View("~/Views/Admin/Index.cshtml");
 
             return View();

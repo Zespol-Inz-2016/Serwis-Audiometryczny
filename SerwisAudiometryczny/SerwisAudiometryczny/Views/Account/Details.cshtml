@@ -8,66 +8,6 @@
 
 
     @*<h4>ApplicationUser</h4>*@
- 
-
-          </div class="Details-box-1">
-        
-            @Html.DisplayNameFor(model => model.Administrator)
-     
-		   </div>
-		  
-		     </div class="Details-box-2">
-      
-            @Html.DisplayFor(model => model.Administrator)
-      
-		 </div>
-
-		 <div style="clear:both">
-          
-		  </div class="Details-box-1">
-            
-			@Html.DisplayNameFor(model => model.User)
-        
-		 </div>
-
-         </div class="Details-box-2">
-
-            @Html.DisplayFor(model => model.User)
-      
-	  	 </div>
-
-		 <div style="clear:both">
-
-        </div class="Details-box-1">
-            
-
-            @Html.DisplayNameFor(model => model.Researcher)
-       
-	     
-		 </div>
-
-		    </div class="Details-box-2">
-      
-            @Html.DisplayFor(model => model.Researcher)
-       
-	    </div>
-
-		<div style="clear:both">
-
-		 </div class="Details-box-1">
-        
-            @Html.DisplayNameFor(model => model.Patient)
-       
-	      </div>
-
-		   </div class="Details-box-2">
-      
-      
-            @Html.DisplayFor(model => model.Patient)
-       
-	         </div>
-
-			 <div style="clear:both">
 
       </div class="Details-box-1">
 
@@ -120,6 +60,78 @@
           </div class="Details-box-2">
             @Html.DisplayFor(model => model.DecryptedUserName)
          </div>
+
+		  <div style="clear:both">
+
+          </div class="Details-box-1">	
+			<div class="checkbox">
+				<label>				 
+					@if (User.IsInRole("Administrator"))
+					{ 
+						<input id="Administrator" type="checkbox" disabled name="Administrator" checked> 
+					}
+					else 
+					{ 
+						<input id="Administrator" type="checkbox" disabled name="Administrator">
+					}	
+					Administrator	
+				</label>
+			</div>
+		  </div>
+
+		 <div style="clear:both">
+          
+		  </div class="Details-box-1">	
+			<div class="checkbox">
+				<label>				 
+					@if (User.IsInRole("Researcher"))
+					{ 
+						<input id="Researcher" type="checkbox" disabled name="Researcher" checked> 
+					}
+					else 
+					{ 
+						<input id="Researcher" type="checkbox" disabled name="Resercher">
+					}	
+					Badacz
+				</label>
+			</div>
+		  </div>
+
+		 <div style="clear:both">
+
+        </div class="Details-box-1">	
+			<div class="checkbox">
+				<label>				 
+					@if (User.IsInRole("Patient"))
+					{ 
+						<input id="Patient" type="checkbox" disabled name="Patient" checked> 
+					}
+					else 
+					{ 
+						<input id="Patient" type="checkbox" disabled name="Patient">
+					}	
+					Pacjent
+				</label>
+			</div>
+		</div>
+
+		<div style="clear:both">
+
+		</div class="Details-box-1">	
+			<div class="checkbox">
+				<label>				 
+					@if (User.IsInRole("User"))
+					{ 
+						<input id="User" type="checkbox" disabled name="User" checked> 
+					}
+					else 
+					{ 
+						<input id="User" type="checkbox" disabled name="User">
+					}	
+					Edytor
+				</label>
+			</div>
+		</div>
 
    <div style="clear:both">
 

@@ -27,11 +27,9 @@ namespace SerwisAudiometryczny.Helpers
                 {
                     UserName = userName,
                     Email = userName,
-                    EmailConfirmed = true,
-                    Administrator = true
+                    EmailConfirmed = true
                 };
                 IdentityResult userResult = userManager.Create(user, password);
-
             }
         }
     }

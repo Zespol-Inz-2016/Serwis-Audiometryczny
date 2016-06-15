@@ -215,10 +215,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionFilters\IsAdministratorAttribute.cs" />
-    <Compile Include="ActionFilters\IsPatientAttribute.cs" />
-    <Compile Include="ActionFilters\IsResercherAttribute.cs" />
-    <Compile Include="ActionFilters\IsUserAttribute.cs" />
     <Compile Include="ActionFilters\LogActionFilterAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />

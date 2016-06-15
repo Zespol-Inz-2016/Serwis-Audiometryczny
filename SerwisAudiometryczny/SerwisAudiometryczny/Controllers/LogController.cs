@@ -54,11 +54,12 @@ namespace SerwisAudiometryczny.Controllers
             int pageNumber = (page ?? 1);
 
             int currentUserId = User.Identity.GetUserId<int>();
-            ApplicationUser currentUser = dba.Users.FirstOrDefault(x => x.Id == currentUserId);
+            
+            UserManager<ApplicationUser, int> UserManager = new UserManager<ApplicationUser, int>(new CustomUserStore(new ApplicationDbContext()));
 
-            if (currentUser != null && currentUser.Administrator)
+            if (User != null && UserManager.IsInRole(currentUserId, "Administrator"))
                 return View(db.LogModels.OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));
-            if (currentUser == null)
+            if (User == null)
                 return new ViewResult { ViewName = "Unauthorized" };
 
             return View(db.LogModels.Where(x => x.UserId == currentUserId).OrderByDescending(i => i.Time).ToPagedList(pageNumber, pageSize));

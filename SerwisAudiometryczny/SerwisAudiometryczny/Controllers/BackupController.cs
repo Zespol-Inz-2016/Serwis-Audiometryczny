@@ -13,7 +13,7 @@ namespace SerwisAudiometryczny.Controllers
     /// Kontroler służący do wykonywania kopii zapasowej bazy danych
     /// oraz jej przywracania. Dziedziczy po Controller.
     /// </summary>
-    [IsAdministrator]
+    [Authorize(Roles = "Administrator")]
     public class BackupController : Controller
     {
         DatabaseBackuper databaseBackuper = new DatabaseBackuper();

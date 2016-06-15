@@ -1,4 +1,5 @@
 ﻿@model SerwisAudiometryczny.Models.ApplicationUser
+@using Microsoft.AspNet.Identity
 
 <tr class="row">
     <form class="" action="~/UserManagement/EditRole" method="post">
@@ -6,16 +7,16 @@
             <input type="text" class="asd um-name" name="Name" value="@Model.DecryptedUserName" readonly/>
         </td>
         <td class="um-td">
-            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Administrator, "Administrator"))
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(@Model.UserManager.IsInRole(Model.Id,"Administrator"), "Administrator"))
         </td>
         <td class="um-td">
-            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Patient, "Pacjent"))
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(@Model.UserManager.IsInRole(Model.Id,"Patient"), "Pacjent"))
         </td>
         <td class="um-td">
-            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.Researcher, "Badacz"))
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(@Model.UserManager.IsInRole(Model.Id,"Researcher"), "Badacz"))
         </td>
         <td class="um-td">
-            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(Model.User, "Edytor"))
+            @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(@Model.UserManager.IsInRole(Model.Id,"User"), "Edytor"))
         </td>
         <td class="um-td">
             <button name="Submit" type="submit" value="Save" class="btn btn-success">Zapisz</button>

@@ -109,10 +109,10 @@
                         <div class="row">
                             <div id="exist_instr">
                                 <input class="text-box single-line form-none" id="Audiogram_Instrument_ID" name="Audiogram.Instrument.ID" type="number" />
-                                <input placeholder="instrument name" class="text-box form-control single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text" />
+                                <input placeholder="nazwa instrumentu" class="text-box form-control single-line" id="Audiogram_Instrument_Name" name="Audiogram.Instrument.Name" type="text" />
                                 <br/>
                                  <select class="form-control" id="Audiogram_Instrument_ID_NAME" name="Audiogram.Instrument.ID" onchange="wymiennik()">
-                                    <option id="pick_instrument" disabled selected>Pick instrument</option>
+                                    <option id="pick_instrument" disabled selected>Wybierz instrument</option>
                                     @foreach (var item in Model.Instruments)
                                     {
                                         <option value="@item.Name" data-id="@item.ID">@item.Name</option>
@@ -264,7 +264,7 @@
             }
             if (czy_jest == false) {
                 var temp = document.getElementById('Audiogram_Instrument_Name').value;
-                document.getElementById('Audiogram_Instrument_ID_NAME').value = "Pick instrument";
+                document.getElementById('Audiogram_Instrument_ID_NAME').value = "Wybierz instrument";
                 document.getElementById('Audiogram_Instrument_Name').value = temp;
             }
         })

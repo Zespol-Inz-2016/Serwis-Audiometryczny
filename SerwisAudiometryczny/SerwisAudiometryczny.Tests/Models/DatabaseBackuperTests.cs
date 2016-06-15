@@ -12,7 +12,9 @@ namespace SerwisAudiometryczny.Models.Tests
     {
         string zipPath = HttpContext.Current.Server.MapPath("~/App_Data/backup.zip");
 
-
+        /// <summary>
+        /// Test sprawdza czy utworzony plik jest taki sam jak utworzony w teście.
+        /// </summary>
         [TestMethod()]
         public void BackupTest()
         {
@@ -25,6 +27,7 @@ namespace SerwisAudiometryczny.Models.Tests
 
 
         }
+
 
         [TestMethod()]
         public void RestoreTest()

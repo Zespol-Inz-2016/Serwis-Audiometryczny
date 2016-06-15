@@ -7,12 +7,17 @@ using System.Web.Mvc;
 
 
 
+
 namespace SerwisAudiometryczny.Controllers.Tests
 {
     [TestClass()]
-    public class BackupControllerTests
+    public class BackupControllerTests:Controller
     {
+        DatabaseBackuper databaseBackuper = new DatabaseBackuper();
 
+        /// <summary>
+        /// Test sprawdza czy po wykonaniu metoda nie zwraca wartości "null".
+        /// </summary>
         [TestMethod()]
         public void ImportTest()
         {
@@ -22,7 +27,9 @@ namespace SerwisAudiometryczny.Controllers.Tests
             Assert.IsNotNull(wynik);
         }
 
-
+        /// <summary>
+        /// Test sprawdza czy po wykonaniu metoda nie zwraca wartości "null".
+        /// </summary>
         [TestMethod()]
         public void ExportTest()
         {
@@ -33,13 +40,21 @@ namespace SerwisAudiometryczny.Controllers.Tests
             
         }
 
+        /// <summary>
+        /// Test sprawdza czy plik utworzony przez metodę jest taki sam jak utworzony w teście.
+        /// </summary>
         [TestMethod()]
         public void SendFileTest()
         {
             BackupController TestSend = new BackupController();
+
+            Stream stream = databaseBackuper.Backup();
+            string contentType = MimeMapping.GetMimeMapping(Server.MapPath("~/App_Data/backup.zip"));
+            string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_SerwisAudiometryczny.zip";
+            FileStreamResult wynik = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };
+
             FileResult oczekiwany = TestSend.SendFile() as FileResult;
-            bool wynik = Convert.ToBoolean(oczekiwany);
-            Assert.IsFalse(wynik);
+            Assert.AreSame(oczekiwany, wynik);
         }
     }
 }

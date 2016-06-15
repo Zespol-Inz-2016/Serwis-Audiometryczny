@@ -44,6 +44,12 @@ textarea {
 }
 
 
+.text-awarded
+{
+color: orange;
+font-style: italic;
+}
+
 .guzik
 {
 
@@ -236,7 +242,7 @@ height: 30px
 
 Details-box-1
 {
-
+clear:both;
 float: left;
 }
 

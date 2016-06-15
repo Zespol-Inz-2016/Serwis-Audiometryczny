@@ -10,18 +10,28 @@ using System.Web.Mvc;
 
 namespace SerwisAudiometryczny.Controllers.Tests
 {
-
+    /// <summary>
+    /// Klasa obsługująca testy związane z zarządzaniem logami.
+    /// </summary>
     [TestClass()]
     public class LogControllerTests
     {
+        /// <summary>
+        /// Metoda sprawdzająca metodę Index
+        /// </summary>
         [TestMethod()]
         public void IndexTest()
         {
             LogController controller = new LogController();
             int page = 2;
+            /// <summary>
+            /// Test sprawdza czy widok z wybranej strony logów nie jest pusty.
+            /// </summary>
             Assert.IsNotNull(controller.Index(page));
         }
-
+        /// <summary>
+        /// Metoda sprawdzająca działanie metody LogSearch
+        /// </summary>
         [TestMethod()]
         public void LogSearchTest()
         {
@@ -30,6 +40,9 @@ namespace SerwisAudiometryczny.Controllers.Tests
             var model = new LogSearchViewModel() { UserId = id };
             controller = new LogController();
             ViewResult view = controller.Search(model) as ViewResult;
+            /// <summary>
+            /// Metoda sprawdzająca czy widok po wyszukaniu logów o podanym id nie jest pusty.
+            /// </summary>
             Assert.IsNotNull(view);
         }
 

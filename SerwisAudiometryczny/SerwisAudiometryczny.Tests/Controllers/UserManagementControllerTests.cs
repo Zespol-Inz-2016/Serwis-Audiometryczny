@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Owin.Security;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using SerwisAudiometryczny.Controllers;
 using SerwisAudiometryczny.Models;
 using System;
@@ -13,9 +15,14 @@ namespace SerwisAudiometryczny.Controllers.Tests
     [TestClass()]
     public class UserManagementControllerTests
     {
+        /// <summary>
+        /// Test metody wyświetlającej listę użytkowników.
+        /// Sprawdza czy po wykonaniu metoda nie zwraca wartości "null".
+        /// </summary>
         [TestMethod()] 
         public void IndexTest()
         {
+            
             UserManagementController controller = new UserManagementController();
             
             ViewResult result = controller.Index() as ViewResult;
@@ -24,6 +31,10 @@ namespace SerwisAudiometryczny.Controllers.Tests
  
         }
 
+        /// <summary>
+        /// Test metody odpowiedzialnej za utworzenie użytkownika.
+        /// Sprawdza czy model i zwrócony widok nie zwraca wartości "null".
+        /// </summary>
         [TestMethod()] 
         public void CreateUserTest()
         {
@@ -44,9 +55,13 @@ namespace SerwisAudiometryczny.Controllers.Tests
             
         }
 
+        /// <summary>
+        /// Test metody odpowiedzialnej za edycję użytkownika.
+        /// </summary>
         [TestMethod()] 
         public void EditUserTest()
         {
+            
             int id = 1;
             UserManagementController controller = new UserManagementController();
             ViewResult view = controller.EditUser(id) as ViewResult;
@@ -59,11 +74,13 @@ namespace SerwisAudiometryczny.Controllers.Tests
             
 
             Assert.AreEqual(mymodel, view.ViewName);
-
-
         }
 
-        [TestMethod()] //zle
+
+        /// <summary>
+        /// Test metody odpowiedzialnej za resetowanie hasła.
+        /// </summary>
+        [TestMethod()]
         public void ResetUserPasswordTest()
         {
             UserManagementController controller = new UserManagementController();
@@ -74,14 +91,5 @@ namespace SerwisAudiometryczny.Controllers.Tests
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
-        [TestMethod()] 
-        public void EditUserTest1()
-        {
-            var mymodel = new UserEditModelView { Id = 1, Name = "name", Email = "user@gmail.com", Address = "adres"};
-            UserManagementController controller = new UserManagementController();
-            RedirectToRouteResult result = controller.EditUser(mymodel) as RedirectToRouteResult;
-
-            Assert.AreEqual("Index", result.RouteValues["action"]);
-        }
     }
 }

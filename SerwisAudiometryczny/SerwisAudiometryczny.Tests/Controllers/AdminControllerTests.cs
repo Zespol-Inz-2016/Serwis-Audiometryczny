@@ -12,6 +12,10 @@ namespace SerwisAudiometryczny.Controllers.Tests
     [TestClass()]
     public class AdminControllerTests
     {
+        /// <summary>
+        /// Test metody wyświetlającej panel administratora.
+        /// Sprawdza czy po wykonaniumetoda nie zwraca wartości "null".
+        /// </summary>
         [TestMethod()]
         public void IndexTest()
         {

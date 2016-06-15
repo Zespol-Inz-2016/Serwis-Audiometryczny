@@ -142,6 +142,7 @@ namespace SerwisAudiometryczny.Controllers
                 user.Email = model.Email;
                 user.UserName = model.Email;
                 user.PhoneNumber = model.PhoneNumber;
+                UserManager.UserValidator = new UserValidator<ApplicationUser, int>(UserManager) { AllowOnlyAlphanumericUserNames = false };
 
                 UserManager.SetEmail<ApplicationUser, int>(User.Identity.GetUserId<int>(), model.Email);
                 UserManager.Update(user);
@@ -151,7 +152,6 @@ namespace SerwisAudiometryczny.Controllers
                         UserManager.RemovePassword<ApplicationUser, int>(User.Identity.GetUserId<int>());
                         UserManager.AddPassword(user.Id, model.Password);
                     }
-                UserManager.Update<ApplicationUser, int>(user);
             }
             return View(model);
         }

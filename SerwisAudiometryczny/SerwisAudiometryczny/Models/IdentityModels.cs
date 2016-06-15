@@ -356,6 +356,11 @@ namespace SerwisAudiometryczny.Models
     public class CustomUserClaim : IdentityUserClaim<int> { }
     public class CustomUserLogin : IdentityUserLogin<int> { }
 
+    public enum AppRoles
+    {
+        Administrator, Patient, User, Researcher
+    }
+
     public class CustomRole : IdentityRole<int, CustomUserRole>
     {
         public CustomRole() { }

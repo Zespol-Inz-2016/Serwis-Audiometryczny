@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using System.Net;
 using System.Collections.Generic;
 using System.Web.Security;
+using System;
 
 namespace SerwisAudiometryczny.Controllers
 {
@@ -23,7 +24,7 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda wyświetlająca spis wszystkich użytkowników.
         /// </summary>
         public ActionResult Index()
-        { 
+        {
             return View(db.Users.ToList());
         }
 
@@ -44,23 +45,23 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber};
+                var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 ApplicationDbContext context = new ApplicationDbContext();
-                var userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
+                var userManager = new ApplicationUserManager(new CustomUserStore(context));
                 userManager.UserValidator = new UserValidator<ApplicationUser, int>(userManager) { AllowOnlyAlphanumericUserNames = false };
                 IdentityResult userResult = userManager.Create(user, model.Password);
                 db.SaveChanges();
 
-                List<string> roles = new List<string>();
+                List<AppRoles> roles = new List<AppRoles>();
                 if (model.Administrator)
-                    roles.Add("Administrator");
+                    roles.Add(AppRoles.Administrator);
                 if (model.Patient)
-                    roles.Add("Patient");
+                    roles.Add(AppRoles.Patient);
                 if (model.Researcher)
-                    roles.Add("Researcher");
+                    roles.Add(AppRoles.Researcher);
                 if (model.User)
-                    roles.Add("User");
-                userManager.AddToRoles(user.Id, roles.ToArray<string>());
+                    roles.Add(AppRoles.User);
+                userManager.AddToRoles(user.Id, roles.Select(role => role.ToString()).ToArray());
 
                 return RedirectToAction("Index", "UserManagement");
             }
@@ -89,7 +90,7 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserEditModelView model = new UserEditModelView() {Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.DecryptedEmail, PhoneNumber = currentUser.PhoneNumber };
+            UserEditModelView model = new UserEditModelView() { Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.DecryptedEmail, PhoneNumber = currentUser.PhoneNumber };
             ViewBag.UserName = currentUser.UserName;
             return View(model);
         }
@@ -140,42 +141,46 @@ namespace SerwisAudiometryczny.Controllers
         {
             string name = form["Name"];
             string submit = form["Submit"];
+            List<AppRoles> userRoles = new List<AppRoles>(4);
             bool administrator = FormParser(form["Administrator"]);
             bool patient = FormParser(form["Pacjent"]);
             bool researcher = FormParser(form["Badacz"]);
-            bool user = FormParser(form["Edytor"]);        
-            var UserManager = new UserManager<ApplicationUser, int>(new CustomUserStore(new ApplicationDbContext()));
-            var CurrentUser = UserManager.FindByName(name);
-            if (CurrentUser == null)
+            bool user = FormParser(form["Edytor"]);
+            if (administrator) userRoles.Add(AppRoles.Administrator);
+            if (patient) userRoles.Add(AppRoles.Patient);
+            if (researcher) userRoles.Add(AppRoles.Researcher);
+            if (user) userRoles.Add(AppRoles.User);
+            var userManager = new ApplicationUserManager(new CustomUserStore(db));
+            var currentUser = userManager.FindByName(name);
+            if (currentUser == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            AppRoles[] appRoles = (AppRoles[])Enum.GetValues(typeof(AppRoles));
             switch (submit)
             {
                 case "Save":
-                    List<string> roles = new List<string>();
-                    if (administrator)
-                        roles.Add("Administrator");
-                    if (patient)
-                        roles.Add("Patient");
-                    if (researcher)
-                        roles.Add("Researcher");
-                    if (user)
-                        roles.Add("User");
-                    UserManager.AddToRoles(CurrentUser.Id, roles.ToArray<string>());
+                    foreach (AppRoles role in appRoles)
+                    {
+                        IdentityResult result = null;
+                        if (userRoles.Contains(role))
+                            result = userManager.AddToRole(currentUser.Id, role.ToString());
+                        else
+                            result = userManager.RemoveFromRole(currentUser.Id, role.ToString());
+                    }
                     break;
                 case "Deactivate":
-                    UserManager.RemoveFromRoles(CurrentUser.Id, "Administrator", "Patient", "Researcher", "User");
+                    userManager.RemoveFromRoles(currentUser.Id, appRoles.Select(role => role.ToString()).ToArray());
                     break;
                 case "Edit":
-                    return RedirectToAction("EditUser", new { myId = CurrentUser.Id });
+                    return RedirectToAction("EditUser", new { myId = currentUser.Id });
                 default:
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-       
+
         private bool FormParser(string value)
         {
             if (value == "on")

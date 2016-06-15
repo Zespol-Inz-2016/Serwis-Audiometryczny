@@ -27,12 +27,5 @@ namespace SerwisAudiometryczny.Models.Tests
 
 
         }
-
-
-        [TestMethod()]
-        public void RestoreTest()
-        {
-
-        }
     }
 }

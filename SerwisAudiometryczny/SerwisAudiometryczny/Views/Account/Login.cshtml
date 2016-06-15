@@ -4,17 +4,22 @@
 @{
     ViewBag.Title = "Logowanie";
 }
-
+<style>
+    .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form{
+        display: none;
+    }
+    body{
+        background-image: url('/Content/kartki.jpg');
+        background-position: center top;
+        background-size: cover;
+    }
+</style>
 <div class="pojemniczek3">
-
-<div class="CiemnaNakladka">
-
-</div>
 
 </div>
     <div class="centerPower2">
         <section id="loginForm ">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal login-form-rot", role = "form" }))
             {
                
            
@@ -29,13 +34,13 @@
                 <div class="form-group ">
                     @Html.LabelFor(m => m.Email,"Email", new { @class = "col-md-2 zmiana2 text-large" })
                     <div class="col-md-10 ">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "style-inpute2  zmiana" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "style-inpute2  zmiana input-log" })
                         <div class="errorField"> @Html.ValidationMessageFor(m => m.Email, "", new {})</div>
                     </div>
 
                     @Html.LabelFor(m => m.Password,"Hasło", new { @class = "col-md-2 zmiana3 text-large" })
                     <div class="col-md-10 ">
-                        @Html.PasswordFor(m => m.Password, new { @class = "style-inpute2  zmiana" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "style-inpute2  zmiana input-log" })
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "errorField text-danger" })
                     </div>
                 </div>		
@@ -52,10 +57,6 @@
 
 		 </div>
 
-                @* Enable this once you have account confirmation enabled for password reset functionality
-                    <p>
-                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                    </p>*@
             }
         </section>
     </div>

@@ -1,31 +1,37 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
-
-
-
-
+<link href='https://fonts.googleapis.com/css?family=Alegreya' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+<style>
+    .navbar.navbar-inverse.navbar-fixed-top {
+        display: none;
+    }
+    body{
+        padding:0px;
+        background-image: url('/Content/Przychodnia.jpg');
+        background-position: top center;
+        background-size: cover;
+    }
+</style>
 
 <div class="pojemniczekX">
-<div class="CiemnaNakladka">
-  
+    <!--div class="CiemnaNakladka"></div-->
+    <div class="text-home">
+        Serwis Audiometryczny
+    </div>
 
-	  </div>
+    <div class="text-home2 content-min">
+        <a href="Account/Login" class="custom-button-1">
+            Zaloguj się
+        </a>
 
-	   <div class="text-home">
-      Serwis Audiometryczny
-	  </div>
-
-	    <div class="text-home2">
-     witamy w naszym serwisie, 
-	  
-	  <a href="Account/Login"> <button type="button" class="btn btn-primary button-home">Zaloguj się !</button> </a>
-	  
-	  </div>
-
-
-
-
-
+        <br />
+        <div class="home-info">
+            Centrum medyczne "U Mangisty"<br />
+            ul. Nowoursynowska 166; 02-739 Warszawa<br />
+            tel. (22) 123 34 45<br />
+            email: <email>info@info.com</email>
+        </div>
+    </div>
 </div>

@@ -16,15 +16,15 @@
     <div class="span2">@Html.TextBox("Controller")</div>
     <div class="span2">Akcja </div>
     <div class="span2">@Html.TextBox("Action")</div>
-    <label for="search">Czas od</label>
-    <input type="datetime-local" name="FromTime" id="FromTime" />
-    <label for="search">Czas do</label>
-    <input type="datetime-local" name="ToTime" id="ToTime" />
+    <label class="span2" for="search">Czas od</label>
+    <input class="control-label" type="datetime-local" name="FromTime" id="FromTime" />
+    <label class="span2" for="search">Czas do</label>
+    <input class-"control-label type="datetime-local" name="ToTime" id="ToTime" />
     <div class="span2 offset2"><button class="btn" type="submit">Szukaj</button></div>
 
     if (Model != null)
     {
-        <table class="table">
+        <table class="table l-table">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.UserId)
@@ -80,3 +80,4 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+@Html.Partial("_Footer")

@@ -45,7 +45,7 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
+                var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, Address = model.Address };
                 ApplicationDbContext context = new ApplicationDbContext();
                 var userManager = new ApplicationUserManager(new CustomUserStore(context));
                 userManager.UserValidator = new UserValidator<ApplicationUser, int>(userManager) { AllowOnlyAlphanumericUserNames = false };

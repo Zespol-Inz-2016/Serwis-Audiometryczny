@@ -52,7 +52,7 @@ namespace SerwisAudiometryczny.Controllers.Tests
         
         /// <summary>
         /// Test metody odpowiedzialnej za wylogowywanie.
-        /// Testuje poprawność mocków przekazanych do konstruktora controllera
+        /// Testuje poprawność mocków przekazanych do konstruktora controllera oraz metodę wylogowującą
         /// </summary>
         [TestMethod()]
         public void LogOffTest()
@@ -77,7 +77,7 @@ namespace SerwisAudiometryczny.Controllers.Tests
 
         /// <summary>
         /// Test metody przygotowywującej edycję użytkownika.
-        /// Weryfikacja mocków przekazanych do konstruktora.
+        /// Weryfikacja mocków przekazanych do konstruktora oraz metody edytującej
         /// </summary>
         [TestMethod()]
         public void EditTest()
@@ -91,14 +91,8 @@ namespace SerwisAudiometryczny.Controllers.Tests
             controller = new AccountController(obj1.Object, obj.Object);
             obj1.VerifyAll();
             obj.VerifyAll();
-
-            var principal = new Mock<IPrincipal>();
-            
-            obj1.Setup(ob => ob.FindById(principal.Object.Identity.GetUserId<int>()));
-            controller.Edit();
-
-
-        
+            var result= controller.Edit();
+            Assert.IsNotNull(result);
 
         }
 

@@ -159,11 +159,11 @@ namespace SerwisAudiometryczny.Controllers
 
             if (CurrentUser != null)
             {
-                if (CurrentUser.Researcher)
+                if (User.IsInRole("Researcher"))
                 {
                     return View(db.AudiogramModels.Include("Instrument").ToList());
                 }
-                if (CurrentUser.User && CurrentUser.Patient)
+                if (User.IsInRole("User") && User.IsInRole("Patient"))
                 {
                     var results = from t in db.AudiogramModels.Include("Instrument")
                                   where t.EditorID == CurrentUser.Id || t.PatientID == CurrentUser.Id
@@ -171,14 +171,14 @@ namespace SerwisAudiometryczny.Controllers
 
                     return View(results.ToList());
                 }
-                if (CurrentUser.User)
+                if (User.IsInRole("Patient"))
                 {
                     var results = from t in db.AudiogramModels.Include("Instrument")
                                   where t.EditorID == CurrentUser.Id
                                   select t;
                     return View(results.ToList());
                 }
-                if (CurrentUser.Patient)
+                if (User.IsInRole("Patient"))
                 {
                     var results = from t in db.AudiogramModels.Include("Instrument")
                                   where t.PatientID == CurrentUser.Id
@@ -207,7 +207,7 @@ namespace SerwisAudiometryczny.Controllers
                 return HttpNotFound();
             }
 
-            if (CurrentUser != null && (CurrentUser.Researcher || (CurrentUser.User && audiogramModel.EditorID == CurrentUser.Id) || (CurrentUser.Patient && audiogramModel.PatientID == CurrentUser.Id)))
+            if (CurrentUser != null && (User.IsInRole("Researcher") || (User.IsInRole("User") && audiogramModel.EditorID == CurrentUser.Id) || ( User.IsInRole("Patient") && audiogramModel.PatientID == CurrentUser.Id)))
             {
                 AudiogramDisplayViewModel audiogramDisplay = new AudiogramDisplayViewModel();
                 audiogramDisplay.Audiogram = audiogramModel;
@@ -245,9 +245,7 @@ namespace SerwisAudiometryczny.Controllers
         /// </summary>
         public ActionResult Create()
         {
-            ApplicationUser CurrentUser = GetUser();
-
-            if (CurrentUser != null && CurrentUser.User)
+            if (User!= null && User.IsInRole("User"))
             {
                 AudiogramCreateEditViewModel audiogramCreate = new AudiogramCreateEditViewModel();
                 audiogramCreate.Audiogram = new AudiogramModel();
@@ -340,9 +338,8 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser CurrentUser = GetUser();
-
-            if (CurrentUser != null && CurrentUser.User)
+            
+            if (User != null && User.IsInRole("User"))
             {
                 AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
                 if (audiogramModel == null)
@@ -465,10 +462,9 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser CurrentUser = GetUser();
 
             AudiogramModel audiogramModel = db.AudiogramModels.Find(id);
-            if (CurrentUser != null && (CurrentUser.User && CurrentUser.Id == audiogramModel.EditorID))
+            if (User != null && (User.IsInRole("User") && User.Identity.GetUserId<int>() == audiogramModel.EditorID))
             {
                 if (audiogramModel == null)
                 {

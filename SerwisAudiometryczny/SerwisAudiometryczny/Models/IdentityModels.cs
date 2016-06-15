@@ -42,32 +42,8 @@ namespace SerwisAudiometryczny.Models
                 Property(b => b.DBPhoneNumber);
             }
         }
-        // private ModelsDbContext dbContext;
-        // private ApplicationDbContext applicationDbContext;
 
-        UserManager<ApplicationUser, int> userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(new ApplicationDbContext()));
-
-        /// <summary>
-        /// Rola administratora.
-        /// </summary>
-        [Display(Name = "Administrator")]
-        public bool Administrator { get; set; }
-        /// <summary>
-        /// Rola użytkownika
-        /// </summary>
-        [Display(Name = "Użytkownik")]
-        public bool User { get; set; }
-        /// <summary>
-        /// Rola badacza
-        /// </summary>
-        [Display(Name = "Badacz")]
-        public bool Researcher { get; set; }
-        /// <summary>
-        /// Rola pacjenta
-        /// </summary>
-        [Display(Name = "Pacjent")]
-        public bool Patient { get; set; }
-
+        public UserManager<ApplicationUser, int> UserManager { get { return new UserManager<ApplicationUser, int>(new CustomUserStore(new ApplicationDbContext())); } }
 
         private string name;
         /// <summary>
@@ -262,10 +238,10 @@ namespace SerwisAudiometryczny.Models
             base.UserName = reader.ReadElementString("NazwaUzytkownika");
             SecurityStamp = reader.ReadElementString("Zabezpieczenie");
             PasswordHash = reader.ReadElementString("Haslo");
-            Administrator = reader.ReadElementString("Administrator") == "True" ? true : false;
-            User = reader.ReadElementString("Uzytkownik") == "True" ? true : false;
-            Researcher = reader.ReadElementString("Badacz") == "True" ? true : false;
-            Patient = reader.ReadElementString("Pacjent") == "True" ? true : false;
+            //Administrator = reader.ReadElementString("Administrator") == "True" ? true : false;
+            //User = reader.ReadElementString("Uzytkownik") == "True" ? true : false;
+            //Researcher = reader.ReadElementString("Badacz") == "True" ? true : false;
+            //Patient = reader.ReadElementString("Pacjent") == "True" ? true : false;
             value = reader.ReadElementString("ImieNazwisko");
             name = value != "" ? value : null;
             value = reader.ReadElementString("Adres");
@@ -296,10 +272,10 @@ namespace SerwisAudiometryczny.Models
             writer.WriteElementString("NazwaUzytkownika", base.UserName);
             writer.WriteElementString("Zabezpieczenie", SecurityStamp);
             writer.WriteElementString("Haslo", PasswordHash);
-            writer.WriteElementString("Administrator", Administrator.ToString());
-            writer.WriteElementString("Uzytkownik", User.ToString());
-            writer.WriteElementString("Badacz", Researcher.ToString());
-            writer.WriteElementString("Pacjent", Patient.ToString());
+            //writer.WriteElementString("Administrator", Administrator.ToString());
+            //writer.WriteElementString("Uzytkownik", User.ToString());
+            //writer.WriteElementString("Badacz", Researcher.ToString());
+            //writer.WriteElementString("Pacjent", Patient.ToString());
             writer.WriteElementString("ImieNazwisko", name);
             writer.WriteElementString("Adres", DBAdress);
             writer.WriteElementString("Email", emaildn);

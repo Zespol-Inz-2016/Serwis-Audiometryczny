@@ -39,7 +39,7 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda wyświetlająca spis wszystkich FrequencyModel.
         /// </summary>
         /// <param name="page"></param>
-        [IsAdministrator]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Index(int? page)
         {
             return View(db.FrequencyModels.ToList());
@@ -49,7 +49,7 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda przekazująca FrequencyModel do widoku Details.
         /// </summary>
         /// <param name="id"></param>
-        [IsAdministrator]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -67,7 +67,7 @@ namespace SerwisAudiometryczny.Controllers
         /// <summary>
         /// Metoda wyświetlająca widok /Frequency/Create.
         /// </summary>
-        [IsAdministrator]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Create()
         {
             return View();
@@ -95,7 +95,7 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda przekazująca FrequencyModel do widoku Edit.
         /// </summary>
         /// <param name = "id" ></ param >
-        [IsAdministrator]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -131,7 +131,7 @@ namespace SerwisAudiometryczny.Controllers
         /// Metoda sprawdzająca możliwość usunięcia i wysyłająca żądanie usunięcia FrequencyModel.
         /// </summary>
         /// <param name = "id" ></ param >
-        [IsAdministrator]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

@@ -25,13 +25,15 @@ namespace SerwisAudiometryczny.Models.Tests
             /// </summary>
             LogModel model = new LogModel();
             model.Time = null;
-            model.UserId = 333;
+            model.UserId = 1;
             model.Controller = "control" ;            
             model.Action = "usunieto uzytkownika";
             /// <summary>
             /// Porównanie wyniku działania metody ToString z wartościami oczekiwanymi.
             /// </summary>
-            Assert.AreEqual(model.ToString(), "null, 333, control, usunieto uzytkownika");
+            /// Assert.AreEqual(model.ToString(), ", 1, control, usunieto uzytkownika");
+            /// //return string.Format("Date: {0}, user ID: {1}, controller: {2}, action: {3}", Time, UserId, Controller, Action);
+            Assert.AreEqual(model.ToString(), String.Format("Date: {0}, user ID: {1}, controller: {2}, action: {3}",null,1, "control", "usunieto uzytkownika"));
         }
     }
 }

@@ -15,24 +15,26 @@ namespace SerwisAudiometryczny
             ConfigureAuth(app);
             CreateRolesAndUsers();
         }
-        private void CreateRolesAndUsers()
-        {
-            ApplicationDbContext context = new ApplicationDbContext();
 
-            var roleManager = new RoleManager<CustomRole, int>(new CustomRoleStore(context));
-            var UserManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
-  
+        /// <summary>
+        /// Metoda tworząca role w bazie.
+        /// </summary>
+        public static void CreateRolesAndUsers()
+        {
+            ApplicationDbContext dbContext = new ApplicationDbContext();
+
+            var roleManager = new RoleManager<CustomRole, int>(new CustomRoleStore(dbContext));
+            var userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(dbContext));
+
             if (!roleManager.RoleExists("Administrator"))
             {                           
                 var role = new CustomRole();
                 role.Name = "Administrator";
                 roleManager.Create(role);
 
-                string UserName = "admin@admin.com";
-                ApplicationUser user = UserManager.FindByName(UserName);
-
-                UserManager.AddToRole(user.Id, "Administrator");
-
+                string userName = "admin@admin.com";
+                ApplicationUser user = userManager.FindByName(userName);
+                userManager.AddToRole(user.Id, "Administrator");
             }
  
             if (!roleManager.RoleExists("Patient"))
@@ -40,7 +42,6 @@ namespace SerwisAudiometryczny
                 var role = new CustomRole();
                 role.Name = "Patient";
                 roleManager.Create(role);
-
             }
  
             if (!roleManager.RoleExists("Researcher"))
@@ -48,7 +49,6 @@ namespace SerwisAudiometryczny
                 var role = new CustomRole();
                 role.Name = "Researcher";
                 roleManager.Create(role);
-
             }
 
             if (!roleManager.RoleExists("User"))
@@ -56,7 +56,6 @@ namespace SerwisAudiometryczny
                 var role = new CustomRole();
                 role.Name = "User";
                 roleManager.Create(role);
-
             }
         }
     }

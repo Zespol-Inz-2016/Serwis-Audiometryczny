@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -8,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using System.Linq;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.Text;
@@ -43,7 +41,7 @@ namespace SerwisAudiometryczny.Models
             }
         }
 
-        public UserManager<ApplicationUser, int> UserManager { get { return new UserManager<ApplicationUser, int>(new CustomUserStore(new ApplicationDbContext())); } }
+        public ApplicationUserManager UserManager { get { return new ApplicationUserManager(new CustomUserStore(new ApplicationDbContext())); } }
 
         private string name;
         /// <summary>
@@ -199,6 +197,11 @@ namespace SerwisAudiometryczny.Models
         }
 
         /// <summary>
+        /// Kolekcja posiadanych uprawnień użytkownika.
+        /// </summary>
+        public List<AppRoles> userRoles { get; set; }
+
+        /// <summary>
         /// Kolekcja zawierająca użytkowników, do których danych wrażliwych obecny szkodnik ma dostęp
         /// </summary>
         [Display(Name = "Dostęp do danych wrażliwych")]
@@ -238,10 +241,6 @@ namespace SerwisAudiometryczny.Models
             base.UserName = reader.ReadElementString("NazwaUzytkownika");
             SecurityStamp = reader.ReadElementString("Zabezpieczenie");
             PasswordHash = reader.ReadElementString("Haslo");
-            //Administrator = reader.ReadElementString("Administrator") == "True" ? true : false;
-            //User = reader.ReadElementString("Uzytkownik") == "True" ? true : false;
-            //Researcher = reader.ReadElementString("Badacz") == "True" ? true : false;
-            //Patient = reader.ReadElementString("Pacjent") == "True" ? true : false;
             value = reader.ReadElementString("ImieNazwisko");
             name = value != "" ? value : null;
             value = reader.ReadElementString("Adres");
@@ -250,14 +249,30 @@ namespace SerwisAudiometryczny.Models
             EmailConfirmed = reader.ReadElementString("PotwierdzonyEmail") == "True" ? true : false;
             value = reader.ReadElementString("NumerTelefonu");
             DBPhoneNumber = value != "" ? value : null;
-
-            // TODO: 
-            /*
-            while (reader.Name == "DostepWrazliweId")
+            
+            // Deserializacja uprawnień
+            if (reader.Name == "Uprawnienia")
+                userRoles = new List<AppRoles>(4);
+            while (reader.Name == "Uprawnienia")
             {
-                // TODO:
+                switch (reader.ReadElementString())
+                {
+                    case "Administrator":
+                        userRoles.Add(AppRoles.Administrator);
+                        break;
+                    case "Patient":
+                        userRoles.Add(AppRoles.Patient);
+                        break;
+                    case "Researcher":
+                        userRoles.Add(AppRoles.Researcher);
+                        break;
+                    case "User":
+                        userRoles.Add(AppRoles.User);
+                        break;
+                    default:
+                        break;
+                }
             }
-            */
             reader.Read();
         }
 
@@ -272,29 +287,18 @@ namespace SerwisAudiometryczny.Models
             writer.WriteElementString("NazwaUzytkownika", base.UserName);
             writer.WriteElementString("Zabezpieczenie", SecurityStamp);
             writer.WriteElementString("Haslo", PasswordHash);
-            //writer.WriteElementString("Administrator", Administrator.ToString());
-            //writer.WriteElementString("Uzytkownik", User.ToString());
-            //writer.WriteElementString("Badacz", Researcher.ToString());
-            //writer.WriteElementString("Pacjent", Patient.ToString());
             writer.WriteElementString("ImieNazwisko", name);
             writer.WriteElementString("Adres", DBAdress);
             writer.WriteElementString("Email", emaildn);
             writer.WriteElementString("PotwierdzonyEmail", EmailConfirmed.ToString());
             writer.WriteElementString("NumerTelefonu", DBPhoneNumber);
 
-            // TODO:
-            /*
-            // Serializacja dostępu do danych wrażliwych jeśli takowe istnieją (tylko Id)
-            if (SensitiveDataAccess != null)
+            // Serializacja uprawnień
+            foreach (var item in UserManager.GetRoles(Id))
             {
-                foreach (var item in SensitiveDataAccess)
-                {
-                    writer.WriteElementString("DostepWrazliweId", item.Id);
-                }
-            } 
-            */
+                writer.WriteElementString("Uprawnienia", item.ToString());
+            }
         }
-
 
         private string Encrypt(string clearText)
         {

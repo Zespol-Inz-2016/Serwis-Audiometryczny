@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using System.IO.Compression;
+using Microsoft.AspNet.Identity;
 
 namespace SerwisAudiometryczny.Models
 {
@@ -68,12 +69,14 @@ namespace SerwisAudiometryczny.Models
             ApplicationDbContext applicationDbContext = new ApplicationDbContext();
             dbContext.Database.Delete(); // usunięcie wszystkich obiektów modeli
             applicationDbContext.Database.Delete(); // usunięcie wszystkich użytkowników
-            applicationDbContext.Database.CreateIfNotExists(); // utworzenie bazy użytkowników 
+            applicationDbContext.Database.CreateIfNotExists();
 
             string zipPath = HttpContext.Current.Server.MapPath("~/App_Data/backup.zip");
             string backupPath = HttpContext.Current.Server.MapPath("~/App_Data/Backup");
-            if (!Directory.Exists(backupPath))
-                Directory.CreateDirectory(backupPath); // tworzenie tymczasowego katalogu Backup
+
+            if (Directory.Exists(backupPath))
+                Directory.Delete(backupPath, true);
+            Directory.CreateDirectory(backupPath); // tworzenie tymczasowego katalogu Backup
             if (File.Exists(zipPath))
                 File.Delete(zipPath); // jeśli istnieje jakies archiwum backup.zip to je najpierw usuwamy
 
@@ -81,7 +84,7 @@ namespace SerwisAudiometryczny.Models
             using (FileStream fileStream = new FileStream(zipPath, FileMode.Create))
             {
                 stream.CopyTo(fileStream);
-            }   
+            }
             ZipFile.ExtractToDirectory(zipPath, backupPath); // rozpakowanie archiwum do katalogu Backup
 
             // Przywracanie logów
@@ -104,9 +107,23 @@ namespace SerwisAudiometryczny.Models
             listOfFrequencyModels.ForEach(item => dbContext.FrequencyModels.Add(item));
             dbContext.SaveChanges();
 
-            // Przywracanie użytkowników
+            // Przywracanie użytkowników         
             List<ApplicationUser> lisfOfUsers = deserializeXMLToObject<ApplicationUser>("users");
             lisfOfUsers.ForEach(item => applicationDbContext.Users.Add(item));
+            applicationDbContext.SaveChanges();
+
+            // Tworzenie ról w bazie
+            Startup.CreateRolesAndUsers();
+
+            // Przywracanie ról użytkowników
+            var userManager = new ApplicationUserManager((new CustomUserStore(applicationDbContext)));
+            foreach (var user in lisfOfUsers)
+            {
+                foreach (var role in user.userRoles)
+                {
+                    userManager.AddToRole(user.Id, role.ToString());
+                }
+            }
             applicationDbContext.SaveChanges();
 
             // usunięcie plików tymczasowych potrzebnych do przywrócenia bazy

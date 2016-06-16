@@ -16,7 +16,15 @@ namespace SerwisAudiometryczny.Controllers
     [Authorize(Roles = "Administrator")]
     public class BackupController : Controller
     {
-        DatabaseBackuper databaseBackuper = new DatabaseBackuper();
+        private DatabaseBackuper databaseBackuper;
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        public BackupController()
+        {
+            databaseBackuper = new DatabaseBackuper();
+        }
         
         /// <summary>
         /// Widok strony służącej do przywracania bazy danych.

@@ -230,12 +230,6 @@ namespace SerwisAudiometryczny.Controllers
                 }
                 audiogramDisplay.Frequencies = FrequencyIntArray;
 
-                List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
-                if (InstrumentModelList == null)
-                {
-                    return HttpNotFound();
-                }
-
                 return View(audiogramDisplay);
             }
             return new ViewResult { ViewName = "Unauthorized" };
@@ -251,7 +245,11 @@ namespace SerwisAudiometryczny.Controllers
                 audiogramCreate.Audiogram = new AudiogramModel();
                 audiogramCreate.Audiogram.EditorID = User.Identity.GetUserId<int>();
 
-                List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+                var results = from t in db.InstrumentModels
+                              where t.Name != null
+                              select t;
+
+                List<InstrumentModel> InstrumentModelList = results.ToList();
                 if (InstrumentModelList == null)
                 {
                     return HttpNotFound();
@@ -307,7 +305,11 @@ namespace SerwisAudiometryczny.Controllers
                 return RedirectToAction("Index");
             }
 
-            List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+            var results = from t in db.InstrumentModels
+                          where t.Name != null
+                          select t;
+
+            List<InstrumentModel> InstrumentModelList = results.ToList();
             if (InstrumentModelList == null)
             {
                 return HttpNotFound();
@@ -349,7 +351,11 @@ namespace SerwisAudiometryczny.Controllers
                 AudiogramCreateEditViewModel audiogramEdit = new AudiogramCreateEditViewModel();
                 audiogramEdit.Audiogram = audiogramModel;
 
-                List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+                var results = from t in db.InstrumentModels
+                              where t.Name != null
+                              select t;
+
+                List<InstrumentModel> InstrumentModelList = results.ToList();
                 if (InstrumentModelList == null)
                 {
                     return HttpNotFound();
@@ -431,7 +437,11 @@ namespace SerwisAudiometryczny.Controllers
                 return RedirectToAction("Index");
             }
 
-            List<InstrumentModel> InstrumentModelList = db.InstrumentModels.ToList();
+            var results = from t in db.InstrumentModels
+                          where t.Name != null
+                          select t;
+
+            List<InstrumentModel> InstrumentModelList = results.ToList();
             if (InstrumentModelList == null)
             {
                 return HttpNotFound();

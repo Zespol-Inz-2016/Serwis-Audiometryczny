@@ -74,6 +74,12 @@ namespace SerwisAudiometryczny.Controllers
             {
                 var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, Address = model.Address };
                 UserManager.UserValidator = new UserValidator<ApplicationUser, int>(UserManager) { AllowOnlyAlphanumericUserNames = false };
+                if (UserManager.FindByEmail(model.Email) != null)
+                {
+                    model.Password = String.Empty;
+                    ModelState.AddModelError("Error", "Podany email istnieje w bazie!");
+                    return View(model);
+                }
                 IdentityResult userResult = await UserManager.CreateAsync(user, model.Password);
                 DbContext.SaveChanges();
 

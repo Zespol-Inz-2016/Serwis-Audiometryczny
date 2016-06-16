@@ -31,21 +31,28 @@
 	  
 		      @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 		    
-                <div class="form-group ">
+                <div class="form-group">
                     @Html.LabelFor(m => m.Email,"Email", new { @class = "col-md-2 zmiana2 text-large" })
                     <div class="col-md-10 ">
                         @Html.TextBoxFor(m => m.Email, new { @class = "style-inpute2  zmiana input-log" })
-                        <div class="errorField"> @Html.ValidationMessageFor(m => m.Email, "", new {})</div>
+                        <div class="errorField text-danger"> 
+							@Html.ValidationMessageFor(m => m.Email, "", new {})
+						</div>
+						
                     </div>
 
                     @Html.LabelFor(m => m.Password,"Hasło", new { @class = "col-md-2 zmiana3 text-large" })
                     <div class="col-md-10 ">
                         @Html.PasswordFor(m => m.Password, new { @class = "style-inpute2  zmiana input-log" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "errorField text-danger" })
+                        <div class="errorField text-danger"> 
+							@Html.ValidationMessageFor(m => m.Password, "", new { }) 
+						</div>
                     </div>
                 </div>		
-
-			    <div class="errorField" style="margin-bottom: 10px;"> @Html.ValidationMessage("Error") </div>
+				
+				<div class="col-md-10 errorField text-danger">
+					@Html.ValidationMessage("Error")
+				</div>
 
 			    <!-- tutaj jest guzik log-in   -->
 

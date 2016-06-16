@@ -1,15 +1,17 @@
 ﻿@using (Html.BeginForm("Import", "Backup", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+	<div class="page-header text-center">
+		<h2>Przywracanie bazy danych</h2>
+	</div>
     <div class="container">
-        <div class="content">
-            <label for="backup">Plik:</label>
+        <div class="row text-center">
             <span class="btn btn-default btn-file">
                 <label>
                     <input type="file" name="backup" class="btn-file" />
                 </label>
             </span>
-            <input type="submit" value="Wyślij" class="btn btn-primary" />
-            <div>@ViewBag.Message</div>
+            <input type="submit" value="Przywróć bazę" class="btn btn-primary" />
+            <h4 class="text-danger">@ViewBag.Message</h4>
         </div>
     </div>
 

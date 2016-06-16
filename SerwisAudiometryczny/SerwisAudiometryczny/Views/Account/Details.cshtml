@@ -42,7 +42,22 @@
 			@Html.Label("rolesLabel","Posiadane uprawnienia:") <br/>
 			@foreach(var item in @Model.UserManager.GetRoles(Model.Id))
 			{
-				@Html.Label(item.ToString(), item.ToString(), new {@style = "color: orange"}) <br/>	
+				var txtRole = "Administrator";
+				switch(item.ToString())
+				{
+				case "Patient":
+					txtRole = "Pacjent";
+					break;
+				case "Researcher":
+					txtRole = "Badacz";
+					break;
+				case "User":
+					txtRole = "Edytor/Lekarz";
+					break;
+				default:
+					break;
+				}
+				<li> @Html.Label(item.ToString(), txtRole, new {style = "color: orange"}) </li> 
 			}
 	  </div>
 </div> 

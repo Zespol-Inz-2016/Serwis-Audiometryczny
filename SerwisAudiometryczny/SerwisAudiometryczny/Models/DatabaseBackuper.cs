@@ -18,12 +18,12 @@ namespace SerwisAudiometryczny.Models
         /// Metoda wykonująca kopię zapasową bazy danych (serializacja do XML).
         /// </summary>
         /// <returns>Stream zawierający archiwum z plikami XML.</returns>
-        public Stream Backup()
+        public Stream Backup(string backupZipName)
         {
             ModelsDbContext dbContext = new ModelsDbContext();
             ApplicationDbContext applicationDbContext = new ApplicationDbContext();
 
-            string zipPath = HttpContext.Current.Server.MapPath("~/App_Data/backup.zip");
+            string zipPath = HttpContext.Current.Server.MapPath($"~/App_Data/{backupZipName}.zip");
             string backupPath = HttpContext.Current.Server.MapPath("~/App_Data/Backup");
             if (!Directory.Exists(backupPath))
                 Directory.CreateDirectory(backupPath); // Utworzenie tymczasowego katalogu Backup
@@ -71,7 +71,7 @@ namespace SerwisAudiometryczny.Models
             applicationDbContext.Database.Delete(); // usunięcie wszystkich użytkowników
             applicationDbContext.Database.CreateIfNotExists();
 
-            string zipPath = HttpContext.Current.Server.MapPath("~/App_Data/backup.zip");
+            string zipPath = HttpContext.Current.Server.MapPath("~/App_Data/backupFile.zip");
             string backupPath = HttpContext.Current.Server.MapPath("~/App_Data/Backup");
 
             if (Directory.Exists(backupPath))
@@ -83,7 +83,7 @@ namespace SerwisAudiometryczny.Models
             // utworzenie archiwum przesłanego w streamie na serwerze 
             using (FileStream fileStream = new FileStream(zipPath, FileMode.Create))
             {
-                stream.CopyTo(fileStream);
+                stream.CopyTo(fileStream); 
             }
             ZipFile.ExtractToDirectory(zipPath, backupPath); // rozpakowanie archiwum do katalogu Backup
 

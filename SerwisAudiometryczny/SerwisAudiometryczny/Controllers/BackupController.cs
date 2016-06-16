@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
 using System.IO;
 using SerwisAudiometryczny.ActionFilters;
+using SerwisAudiometryczny.Helpers;
 
 namespace SerwisAudiometryczny.Controllers
 { 
@@ -45,7 +46,23 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (backup != null)
             {
-                databaseBackuper.Restore(backup.InputStream);
+                Stream tempBackup = databaseBackuper.Backup("tempBackup");
+                try
+                {
+                    databaseBackuper.Restore(backup.InputStream);             
+                }
+                catch (Exception)
+                {
+                    backup.InputStream.Close(); // zamkniecie strumienia po niepowodzeniu   
+                    databaseBackuper.Restore(tempBackup);             
+                    tempBackup.Close(); 
+                    ViewBag.Message = "Nie udało się przywrócić bazy danych. Zostaniesz wylogowany, a baza zostanie przywrócona do poprzedniego stanu";
+                    HttpContext.GetOwinContext().Authentication.SignOut();
+
+                    return View();
+                }
+
+                tempBackup.Close();
                 ViewBag.Message = "Pomyślnie przywrócono bazę danych!";
             }
             else
@@ -69,7 +86,7 @@ namespace SerwisAudiometryczny.Controllers
         /// <returns>Archiwum (.zip) ze wszystkimi plikami XML.</returns>
         public FileResult SendFile()
         {
-            Stream stream = databaseBackuper.Backup();
+            Stream stream = databaseBackuper.Backup("backup");
             string contentType = MimeMapping.GetMimeMapping(Server.MapPath("~/App_Data/backup.zip"));
             string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_SerwisAudiometryczny.zip";
             FileStreamResult fileStreamResult = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };

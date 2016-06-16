@@ -1,18 +1,19 @@
 ﻿@model SerwisAudiometryczny.Models.AccountEditViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edycja danych";
 }
 
 <div class="margin-left">
-<h2> Edycja</h2>
+<h2> Edycja danych</h2>
 </div>
+<br/>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
- 
+	<div class="form-horizontal">
        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -68,7 +69,8 @@
                 <input type="submit" value="Zapisz" class="btn btn-default" />
             </div>
         </div>
-  
+
+	</div>
 }
 
 <div class="text-large">

@@ -47,6 +47,6 @@
 
 </table>
 <br />
-Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount
+<h5 style="color: black;">Strona @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount </h5>
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))

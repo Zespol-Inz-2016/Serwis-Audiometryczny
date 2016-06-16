@@ -18,14 +18,41 @@ namespace SerwisAudiometryczny.Controllers
     [Authorize(Roles = "Administrator")]
     public class UserManagementController : Controller
     {
-        ApplicationDbContext db = ApplicationDbContext.Create();
-        //public ApplicationUserManager UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+        /// <summary>
+        /// Zarządca użytkowników
+        /// </summary>
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+        public ApplicationDbContext DbContext { get; set; }
+
+        public UserManagementController()
+        {
+            DbContext = new ApplicationDbContext();
+        }
+
+        public UserManagementController(ApplicationUserManager userManager, ApplicationDbContext dbContext)
+        {
+            UserManager = userManager;
+            DbContext = dbContext;
+        }
+
         /// <summary>
         /// Metoda wyświetlająca spis wszystkich użytkowników.
         /// </summary>
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(DbContext.Users.ToList());
         }
 
         /// <summary>
@@ -46,11 +73,9 @@ namespace SerwisAudiometryczny.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, Address = model.Address };
-                ApplicationDbContext context = new ApplicationDbContext();
-                var userManager = new ApplicationUserManager(new CustomUserStore(context));
-                userManager.UserValidator = new UserValidator<ApplicationUser, int>(userManager) { AllowOnlyAlphanumericUserNames = false };
-                IdentityResult userResult = userManager.Create(user, model.Password);
-                db.SaveChanges();
+                UserManager.UserValidator = new UserValidator<ApplicationUser, int>(UserManager) { AllowOnlyAlphanumericUserNames = false };
+                IdentityResult userResult = await UserManager.CreateAsync(user, model.Password);
+                DbContext.SaveChanges();
 
                 List<AppRoles> roles = new List<AppRoles>();
                 if (model.Administrator)
@@ -61,7 +86,7 @@ namespace SerwisAudiometryczny.Controllers
                     roles.Add(AppRoles.Researcher);
                 if (model.User)
                     roles.Add(AppRoles.User);
-                userManager.AddToRoles(user.Id, roles.Select(role => role.ToString()).ToArray());
+                UserManager.AddToRoles(user.Id, roles.Select(role => role.ToString()).ToArray());
 
                 return RedirectToAction("Index", "UserManagement");
             }
@@ -85,34 +110,16 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="myId">Id użytkownika</param>
         public ActionResult EditUser(int myId)
         {
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == myId);
+            ApplicationUser currentUser = DbContext.Users.FirstOrDefault(x => x.Id == myId);
             if (currentUser == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserEditModelView model = new UserEditModelView() { Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.DecryptedEmail, PhoneNumber = currentUser.PhoneNumber };
+            UserEditModelView model = new UserEditModelView() { Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email, PhoneNumber = currentUser.PhoneNumber };
             ViewBag.UserName = currentUser.UserName;
             return View(model);
         }
-        /// <summary>
-        /// Metoda resetująca hasło.
-        /// </summary>
-        /// <param name="model">Model użytkownika z widoku</param>
-        [HttpPost]
-        public ActionResult ResetUserPassword(UserEditModelView model)
-        {
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Id);
 
-            if (currentUser == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            userManager.RemovePassword(model.Id);
-
-            userManager.AddPassword(model.Id, model.Password);
-            return RedirectToAction("Index");
-        }
         /// <summary>
         /// Metoda edytująca użytkownika.
         /// </summary>
@@ -120,18 +127,31 @@ namespace SerwisAudiometryczny.Controllers
         [HttpPost]
         public ActionResult EditUser(UserEditModelView model)
         {
-            ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == model.Id);
-            if (currentUser == null)
+            if (ModelState.IsValid)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            currentUser.Address = model.Address;
-            currentUser.Email = model.Email;
-            currentUser.Name = model.Name;
-            currentUser.PhoneNumber = model.PhoneNumber;
-            db.SaveChanges();
+                ApplicationUser currentUser = DbContext.Users.FirstOrDefault(x => x.Id == model.Id);
+                if (currentUser == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                currentUser.Address = model.Address;
+                currentUser.Email = model.Email;
+                currentUser.Name = model.Name;
+                currentUser.PhoneNumber = model.PhoneNumber;
 
-            return RedirectToAction("Index");
+                IdentityResult sth;
+                if (model.Password != null && model.Password != String.Empty)
+                {
+                    string code = UserManager.GeneratePasswordResetToken(model.Id);
+                    sth = UserManager.ResetPassword(currentUser.Id, code, model.Password);
+                }
+
+                DbContext.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View();
         }
         /// <summary>
         /// Metoda edytująca role użytkownika.
@@ -139,24 +159,25 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="form">Zawartość formularza z widoku</param>
         public ActionResult EditRole(FormCollection form)
         {
-            string name = form["Name"];
+            int id = int.Parse(form["Id"]);
             string submit = form["Submit"];
-            List<AppRoles> userRoles = new List<AppRoles>(4);
             bool administrator = FormParser(form["Administrator"]);
             bool patient = FormParser(form["Pacjent"]);
             bool researcher = FormParser(form["Badacz"]);
             bool user = FormParser(form["Edytor"]);
+
+            List<AppRoles> userRoles = new List<AppRoles>(4);
+            AppRoles[] appRoles = (AppRoles[])Enum.GetValues(typeof(AppRoles));
             if (administrator) userRoles.Add(AppRoles.Administrator);
             if (patient) userRoles.Add(AppRoles.Patient);
             if (researcher) userRoles.Add(AppRoles.Researcher);
             if (user) userRoles.Add(AppRoles.User);
-            var userManager = new ApplicationUserManager(new CustomUserStore(db));
-            var currentUser = userManager.FindByName(name);
+
+            var currentUser = UserManager.FindById(id);
             if (currentUser == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AppRoles[] appRoles = (AppRoles[])Enum.GetValues(typeof(AppRoles));
             switch (submit)
             {
                 case "Save":
@@ -164,20 +185,20 @@ namespace SerwisAudiometryczny.Controllers
                     {
                         IdentityResult result = null;
                         if (userRoles.Contains(role))
-                            result = userManager.AddToRole(currentUser.Id, role.ToString());
+                            result = UserManager.AddToRole(currentUser.Id, role.ToString());
                         else
-                            result = userManager.RemoveFromRole(currentUser.Id, role.ToString());
+                            result = UserManager.RemoveFromRole(currentUser.Id, role.ToString());
                     }
                     break;
                 case "Deactivate":
-                    userManager.RemoveFromRoles(currentUser.Id, appRoles.Select(role => role.ToString()).ToArray());
+                    UserManager.RemoveFromRoles(currentUser.Id, appRoles.Select(role => role.ToString()).ToArray());
                     break;
                 case "Edit":
                     return RedirectToAction("EditUser", new { myId = currentUser.Id });
                 default:
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            db.SaveChanges();
+            DbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 

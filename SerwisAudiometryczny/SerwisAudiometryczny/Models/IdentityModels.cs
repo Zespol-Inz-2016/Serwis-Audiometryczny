@@ -232,7 +232,7 @@ namespace SerwisAudiometryczny.Models
             string value = "";
             reader.MoveToContent();
             reader.ReadStartElement();
-            
+
             //Deserializacja danych o koncie 
             Id = int.Parse(reader.ReadElementString("Id"));
             base.UserName = reader.ReadElementString("NazwaUzytkownika");
@@ -351,70 +351,5 @@ namespace SerwisAudiometryczny.Models
             else
                 return s.StartsWith("@");
         }
-    }
-    public class CustomUserRole : IdentityUserRole<int> { }
-    public class CustomUserClaim : IdentityUserClaim<int> { }
-    public class CustomUserLogin : IdentityUserLogin<int> { }
-
-    public enum AppRoles
-    {
-        Administrator, Patient, User, Researcher
-    }
-
-    public class CustomRole : IdentityRole<int, CustomUserRole>
-    {
-        public CustomRole() { }
-        public CustomRole(string name) { Name = name; }
-    }
-
-    public class CustomUserStore : UserStore<ApplicationUser, CustomRole, int,
-        CustomUserLogin, CustomUserRole, CustomUserClaim>
-    {
-        public CustomUserStore(ApplicationDbContext context)
-            : base(context)
-        {
-        }
-        public override Task<ApplicationUser> FindByNameAsync(string userName)
-        {
-            var user = Users.ToList().FirstOrDefault(u => u.DecryptedUserName == userName);
-            return Task.FromResult<ApplicationUser>(user);
-        }
-        public override Task<ApplicationUser> FindByEmailAsync(string email)
-        {
-            var user = Users.ToList().FirstOrDefault(u => u.DecryptedEmail == email);
-            return Task.FromResult<ApplicationUser>(user);
-        }
-    }
-
-    public class CustomRoleStore : RoleStore<CustomRole, int, CustomUserRole>
-    {
-        public CustomRoleStore(ApplicationDbContext context)
-            : base(context)
-        {
-        }
-    }
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, CustomRole,
-    int, CustomUserLogin, CustomUserRole, CustomUserClaim>
-    {
-        public ApplicationDbContext()
-            : base("DefaultConnection")
-        {
-        }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Configurations.Add(new ApplicationUser.AplicationUserConfig());
-            base.OnModelCreating(modelBuilder);
-        }
-
-        public DbSet<AudiogramModel> AudiogramModels { get; set; }
-        public DbSet<LogModel> LogModels { get; set; }
-        public DbSet<InstrumentModel> InstrumentModels { get; set; }
-        public DbSet<FrequencyModel> FrequencyModels { get; set; }
     }
 }

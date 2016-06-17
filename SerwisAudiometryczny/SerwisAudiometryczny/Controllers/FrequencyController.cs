@@ -63,7 +63,10 @@ namespace SerwisAudiometryczny.Controllers
             }
             return View(frequencyModel);
         }
-
+        /// <summary>
+        /// Generuje 11 oktaw i wstawia do bazy
+        /// </summary>
+        /// <returns>Przekierowanie</returns>
         public ActionResult GenerateOctave()
         {
             FrequencyModel[] octave = new FrequencyModel[11];

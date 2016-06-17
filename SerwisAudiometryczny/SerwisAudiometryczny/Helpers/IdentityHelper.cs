@@ -10,9 +10,15 @@ using System.Web;
 
 namespace SerwisAudiometryczny.Helpers
 {
+    /// <summary>
+    /// Wspomaganie tożsamości
+    /// </summary>
     public class IdentityHelper
     {
-
+        /// <summary>
+        /// Tworzy pierwszego użytkownika
+        /// </summary>
+        /// <param name="context"></param>
         internal static void SeedIdentities(ApplicationDbContext context)
         {
             int Id = 1;

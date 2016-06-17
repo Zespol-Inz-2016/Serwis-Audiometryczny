@@ -2,6 +2,9 @@
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// ViewModle na potrzeby edycji użytkowników
+    /// </summary>
     public class UserEditModelView
     {
         /// <summary>
@@ -23,7 +26,7 @@ namespace SerwisAudiometryczny.Models
         public string Address { get; set; }
 
         /// <summary>
-        /// /// Opisuje numer telefonu użytkownika.
+        /// Opisuje numer telefonu użytkownika.
         /// </summary>
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Numer telefonu")]
@@ -42,7 +45,9 @@ namespace SerwisAudiometryczny.Models
         [DataType(DataType.Password)]
         [Display(Name = "Hasło")]
         public string Password { get; set; }
-
+        /// <summary>
+        /// Id dostępu do danych wrażliwych
+        /// </summary>
         [DataType(DataType.MultilineText)]
         [Display(Name ="Dostęp do danych wrażliwych")]
         public string SensitiveDataIds { get; set; }

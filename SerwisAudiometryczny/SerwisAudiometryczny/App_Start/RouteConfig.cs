@@ -7,8 +7,15 @@ using System.Web.Routing;
 
 namespace SerwisAudiometryczny
 {
+    /// <summary>
+    /// Konfiguracja trasowania
+    /// </summary>
     public class RouteConfig
     {
+        /// <summary>
+        /// Rejestracja tras
+        /// </summary>
+        /// <param name="routes">Kolekcja tras</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

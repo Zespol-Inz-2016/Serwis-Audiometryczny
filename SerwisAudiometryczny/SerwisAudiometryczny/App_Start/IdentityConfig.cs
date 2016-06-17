@@ -14,15 +14,26 @@ using SerwisAudiometryczny.Models;
 
 namespace SerwisAudiometryczny
 {
-
+    /// <summary>
+    /// Zarządza użytkownikami
+    /// </summary>
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser, int>
     {
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="store">Magazyn użytkowników</param>
         public ApplicationUserManager(IUserStore<ApplicationUser, int> store)
             : base(store)
         {
         }
-
+        /// <summary>
+        /// Metoda tworząca instancję klasy
+        /// </summary>
+        /// <param name="options">Opcje tworzenia Identity</param>
+        /// <param name="context">Owin Context</param>
+        /// <returns>Instancja klasy ApplicationUserManager</returns>
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
             var manager = new ApplicationUserManager(new CustomUserStore(context.Get<ApplicationDbContext>()));
@@ -68,25 +79,49 @@ namespace SerwisAudiometryczny
             return manager;
         }
     }
-
+    /// <summary>
+    /// Zarządza logowania
+    /// </summary>
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, int>
     {
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="userManager">Zarządca użytkownikami</param>
+        /// <param name="authenticationManager">Zarządca uwierzytelniania</param>
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
         }
-
+        /// <summary>
+        /// Metoda zwracająca instancję klasy
+        /// </summary>
+        /// <param name="options">Opcje</param>
+        /// <param name="context">Owin Context</param>
+        /// <returns>Instancja klasy ApplicationSignInManager</returns>
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
+    /// <summary>
+    /// Zmodyfikowany walidator na potrzeby walidacji zaszyfrowanych pól użytkownika
+    /// </summary>
     public class CustomValidator : UserValidator<ApplicationUser, int>
     {
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="manager">Zarządza użytkowników</param>
         public CustomValidator(UserManager<ApplicationUser, int> manager) : base(manager)
         {
         }
+        /// <summary>
+        /// Walidacja użytkownika
+        /// </summary>
+        /// <param name="item">użytkownik do walidacji</param>
+        /// <returns></returns>
         public override Task<IdentityResult> ValidateAsync(ApplicationUser item)
         {
             return base.ValidateAsync(item.Decrypted);

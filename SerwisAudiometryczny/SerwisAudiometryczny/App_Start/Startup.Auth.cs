@@ -9,8 +9,15 @@ using SerwisAudiometryczny.Models;
 
 namespace SerwisAudiometryczny
 {
+    /// <summary>
+    /// Klasa z frameworku uruchamiana przy starcie aplikacji
+    /// </summary>
     public partial class Startup
     {
+        /// <summary>
+        /// Konfiguracja autoryzacji
+        /// </summary>
+        /// <param name="app"></param>
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {

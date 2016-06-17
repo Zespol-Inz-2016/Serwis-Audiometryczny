@@ -251,7 +251,6 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LogSearchViewModel.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\DatabaseBackuper.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\UserCreateModelView.cs" />

@@ -5,6 +5,10 @@ namespace SerwisAudiometryczny
 {
     public class BundleConfig
     {
+        /// <summary>
+        /// Rejestruje paczki niezbędne do działania aplikacji
+        /// </summary>
+        /// <param name="bundles">Kolekcja paczek</param>
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {

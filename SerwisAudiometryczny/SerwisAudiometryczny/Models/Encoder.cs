@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// Klasa szyfrująca
+    /// </summary>
     static public class Encoder
     {
+        /// <summary>
+        /// Metoda szyfrujaca
+        /// </summary>
+        /// <param name="clearText">Tekst do zaszyfrowania</param>
+        /// <returns>Tekst po zaszyfrowaniu</returns>
         static public string Encrypt(string clearText)
         {
             if (clearText == null || clearText == string.Empty)
@@ -34,6 +42,11 @@ namespace SerwisAudiometryczny.Models
             return clearText;
         }
 
+        /// <summary>
+        /// Metoda deszyfrujaca
+        /// </summary>
+        /// <param name="clearText">Tekst do odszyfrowania</param>
+        /// <returns>Tekst po odszyfrowaniu</returns>
         static public string Decrypt(string cipherText)
         {
             if (cipherText == null || cipherText == string.Empty)
@@ -57,7 +70,11 @@ namespace SerwisAudiometryczny.Models
             }
             return cipherText;
         }
-
+        /// <summary>
+        /// Metoda sprawdza czy tekst jest szyfrownay
+        /// </summary>
+        /// <param name="s">tekst do sprawdzenia</param>
+        /// <returns>prawda, gdy zaszyfrowany</returns>
         public static bool IsEncrypted(string s)
         {
             if (s == null || s == string.Empty)

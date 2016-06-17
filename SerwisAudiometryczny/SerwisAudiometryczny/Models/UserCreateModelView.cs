@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// ViewModel na potrzeby tworzenia użytkowników
+    /// </summary>
     public class UserCreateModelView
     {
         /// <summary>

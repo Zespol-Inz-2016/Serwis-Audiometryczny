@@ -35,13 +35,22 @@ namespace SerwisAudiometryczny.Controllers
                 _userManager = value;
             }
         }
+        /// <summary>
+        /// Kontekst bazy
+        /// </summary>
         public ApplicationDbContext DbContext { get; set; }
-
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         public UserManagementController()
         {
             DbContext = new ApplicationDbContext();
         }
-
+        /// <summary>
+        /// Konstruktor z zależnościami
+        /// </summary>
+        /// <param name="userManager">Zarządca użytkowników</param>
+        /// <param name="dbContext">Kontekst bazy</param>
         public UserManagementController(ApplicationUserManager userManager, ApplicationDbContext dbContext)
         {
             UserManager = userManager;

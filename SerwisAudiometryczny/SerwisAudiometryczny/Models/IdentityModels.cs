@@ -23,17 +23,28 @@ namespace SerwisAudiometryczny.Models
     /// </summary>
     public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>, IXmlSerializable
     {
+        /// <summary>
+        /// Instancja klasy wewnętrzna z odszyforwanymi polami
+        /// </summary>
         [NotMapped]
         public DecryptedUser Decrypted { get; set; }
+        /// <summary>
+        /// Zarządca użytkowników
+        /// </summary>
         [NotMapped]
         public virtual ApplicationUserManager UserManager { get; set; }
-
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="userManager">Zarządca użytkowników</param>
         public ApplicationUser(ApplicationUserManager userManager)
         {
             UserManager = userManager;
             Decrypted = new DecryptedUser(this);
         }
-
+        /// <summary>
+        /// Konstruktor bezparametrowt
+        /// </summary>
         public ApplicationUser()
             : this(new ApplicationUserManager(new CustomUserStore(new ApplicationDbContext())))
         {
@@ -41,6 +52,9 @@ namespace SerwisAudiometryczny.Models
 
         private ApplicationUser(bool asNested)
         { }
+        /// <summary>
+        /// Klasa wewnętrzna z odszyfrowanymi polami
+        /// </summary>
         [NotMapped]
         public class DecryptedUser : ApplicationUser
         {
@@ -51,6 +65,9 @@ namespace SerwisAudiometryczny.Models
             {
                 _parent = parent;
             }
+            /// <summary>
+            /// Odszyfrowane pole Email
+            /// </summary>
             [Display(Name = "Email")]
             public override string Email
             {
@@ -64,6 +81,9 @@ namespace SerwisAudiometryczny.Models
                     _parent.Email = Encoder.IsEncrypted(value) ? value : Encoder.Encrypt(value);
                 }
             }
+            /// <summary>
+            /// Id użytkownika
+            /// </summary>
             public override int Id
             {
                 get
@@ -76,6 +96,9 @@ namespace SerwisAudiometryczny.Models
                     _parent.Id = value;
                 }
             }
+            /// <summary>
+            /// Odszyfrowane pole z numerem telefonu
+            /// </summary>
             [Display(Name = "Numer telefonu")]
             public override string PhoneNumber
             {
@@ -88,7 +111,9 @@ namespace SerwisAudiometryczny.Models
                 {
                     _parent.PhoneNumber = Encoder.IsEncrypted(value) ? value : Encoder.Encrypt(value);
                 }
-            }
+            }/// <summary>
+            /// Odszyfrowane pole z adresem
+            /// </summary>
             [Display(Name = "Adres")]
             public override string Address
             {
@@ -102,6 +127,9 @@ namespace SerwisAudiometryczny.Models
                     _parent.Address = Encoder.IsEncrypted(value) ? value : Encoder.Encrypt(value);
                 }
             }
+            /// <summary>
+            /// Odszyfrowane pole z imieniem i nazwiskiem
+            /// </summary>
             [Display(Name = "Imię i Nazwisko")]
             public override string Name
             {
@@ -115,6 +143,9 @@ namespace SerwisAudiometryczny.Models
                     _parent.Name = Encoder.IsEncrypted(value) ? value : Encoder.Encrypt(value);
                 }
             }
+            /// <summary>
+            /// Nazwa użytkownika
+            /// </summary>
             public override string UserName
             {
                 get
@@ -127,6 +158,9 @@ namespace SerwisAudiometryczny.Models
                     _parent.UserName = value;
                 }
             }
+            /// <summary>
+            /// Zarządca użytkownikami
+            /// </summary>
             public override ApplicationUserManager UserManager
             {
                 get
@@ -161,17 +195,17 @@ namespace SerwisAudiometryczny.Models
         /// </summary>
         [Display(Name = "Numer telefonu")]
         public override string PhoneNumber { get; set; }
-        /// <summary>
-        /// Opisuje nazwę użytkownika.
-        /// </summary>
 
         /// <summary>
         /// Kolekcja posiadanych uprawnień użytkownika.
         /// </summary>
         public virtual List<AppRoles> userRoles { get; set; }
+        /// <summary>
+        /// Pole do przechowywania id użytkowników, do których danych wrażliwych użytkownik tej instancji ma dostęp
+        /// </summary>
         public virtual string SensitiveDataAccessStorage { get; set; }
         /// <summary>
-        /// Kolekcja zawierająca użytkowników, do których danych wrażliwych obecny szkodnik ma dostęp
+        /// Kolekcja zawierająca użytkowników, do których danych wrażliwych użytkownik tej instancji ma dostęp
         /// </summary>
         [Display(Name = "Dostęp do danych wrażliwych")]
         public virtual int[] SensitiveDataAccessIds

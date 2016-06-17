@@ -34,7 +34,9 @@ namespace SerwisAudiometryczny.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
-
+        /// <summary>
+        /// Zarządca logowania
+        /// </summary>
         public ApplicationSignInManager SignInManager
         {
             get
@@ -46,7 +48,9 @@ namespace SerwisAudiometryczny.Controllers
                 _signInManager = value;
             }
         }
-
+        /// <summary>
+        /// Zarządca użytkowników
+        /// </summary>
         public ApplicationUserManager UserManager
         {
             get

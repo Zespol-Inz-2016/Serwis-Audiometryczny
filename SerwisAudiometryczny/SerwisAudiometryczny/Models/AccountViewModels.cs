@@ -3,11 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SerwisAudiometryczny.Models
 {
+    /// <summary>
+    /// ViewModel na potrzeby logowania
+    /// </summary>
     public class LoginViewModel
     {
 
         /// <summary>
-        /// Password
+        /// Hasło
         /// </summary>
         [Required(ErrorMessage = "Hasło jest wymagane.")]
         [DataType(DataType.Password)]

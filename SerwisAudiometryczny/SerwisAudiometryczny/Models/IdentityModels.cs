@@ -61,7 +61,7 @@ namespace SerwisAudiometryczny.Models
 
                 set
                 {
-                    _parent.Email = Encoder.IsEncrypted(value) ? Encoder.Encrypt(value) : value;
+                    _parent.Email = Encoder.IsEncrypted(value) ? value : Encoder.Encrypt(value);
                 }
             }
             public override int Id
@@ -81,12 +81,12 @@ namespace SerwisAudiometryczny.Models
             {
                 get
                 {
-                    return _parent.PhoneNumber;
+                    return Encoder.IsEncrypted(_parent.PhoneNumber) ? Encoder.Decrypt(_parent.PhoneNumber) : _parent.PhoneNumber;
                 }
 
                 set
                 {
-                    _parent.PhoneNumber = value;
+                    _parent.PhoneNumber = Encoder.IsEncrypted(value) ? value : Encoder.Encrypt(value);
                 }
             }
             [Display(Name = "Adres")]
@@ -99,7 +99,7 @@ namespace SerwisAudiometryczny.Models
 
                 set
                 {
-                    _parent.Address = Encoder.IsEncrypted(value) ? Encoder.Encrypt(value) : value;
+                    _parent.Address = Encoder.IsEncrypted(value) ? value : Encoder.Encrypt(value);
                 }
             }
             [Display(Name = "Imię i Nazwisko")]
@@ -112,7 +112,7 @@ namespace SerwisAudiometryczny.Models
 
                 set
                 {
-                    _parent.Name = Encoder.IsEncrypted(value) ? Encoder.Encrypt(value) : value;
+                    _parent.Name = Encoder.IsEncrypted(value) ? value : Encoder.Encrypt(value);
                 }
             }
             public override string UserName

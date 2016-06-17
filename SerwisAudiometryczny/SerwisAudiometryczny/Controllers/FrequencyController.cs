@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SerwisAudiometryczny.Models;
-using SerwisAudiometryczny.ActionFilters;
 
 namespace SerwisAudiometryczny.Controllers
 {
     /// <summary>
     /// Klasa obsługująca modele częstotliwości. Dziedziczy po Controller.
     /// </summary>
+    [Authorize(Roles = "Administrator")]
     public class FrequencyController : Controller
     {
         private ModelsDbContext db;
@@ -42,6 +38,10 @@ namespace SerwisAudiometryczny.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Index(int? page)
         {
+            if (db.FrequencyModels.Count() == 0)
+                ViewBag.GenerateButton = true;
+            else
+                ViewBag.GenerateButton = false;
             return View(db.FrequencyModels.ToList());
         }
 
@@ -64,7 +64,7 @@ namespace SerwisAudiometryczny.Controllers
             return View(frequencyModel);
         }
 
-        public void GenerateOctave()
+        public ActionResult GenerateOctave()
         {
             FrequencyModel[] octave = new FrequencyModel[11];
             octave[0] = new FrequencyModel() { Frequency = 16 };
@@ -80,6 +80,7 @@ namespace SerwisAudiometryczny.Controllers
             octave[10] = new FrequencyModel() { Frequency = 1600 };
             db.FrequencyModels.AddRange(octave);
             db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -143,39 +144,6 @@ namespace SerwisAudiometryczny.Controllers
                 return RedirectToAction("Index");
             }
             return View(model);
-        }
-
-        /// <summary>
-        /// Metoda sprawdzająca możliwość usunięcia i wysyłająca żądanie usunięcia FrequencyModel.
-        /// </summary>
-        /// <param name = "id" ></ param >
-        [Authorize(Roles = "Administrator")]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            FrequencyModel frequencyModel = db.FrequencyModels.Find(id);
-            if (frequencyModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(frequencyModel);
-        }
-
-        /// <summary>
-        /// Metoda usuwająca FrequencyModel.
-        /// </summary>
-        /// <param name = "id" ></ param >
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            FrequencyModel frequencyModel = db.FrequencyModels.Find(id);
-            db.FrequencyModels.Remove(frequencyModel);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

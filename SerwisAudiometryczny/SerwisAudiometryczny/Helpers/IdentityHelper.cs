@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SerwisAudiometryczny.Controllers;
 using SerwisAudiometryczny.Models;
 using System;
 using System.Collections.Generic;

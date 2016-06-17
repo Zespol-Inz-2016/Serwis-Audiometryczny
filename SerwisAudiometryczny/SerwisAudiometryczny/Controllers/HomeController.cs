@@ -20,7 +20,7 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (User != null && User.IsInRole("Administrator"))
                 return View("~/Views/Admin/Index.cshtml");
-            if (User != null)
+            if (User.Identity.IsAuthenticated)
                 return View("~/Views/Home/Start.cshtml");
 
             return View();

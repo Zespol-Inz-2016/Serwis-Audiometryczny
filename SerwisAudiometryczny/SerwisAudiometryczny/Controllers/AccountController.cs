@@ -94,7 +94,7 @@ namespace SerwisAudiometryczny.Controllers
             {
                 user = UserManager.FindById(id);
                 string userName = user.UserName;
-                if(user!=null)
+                if (user != null)
                 {
                     result = await SignInManager.PasswordSignInAsync(userName, model.Password, isPersistent: false/*tu było RememberMe z LoginViewModel*/, shouldLockout: false);
                 }
@@ -153,7 +153,7 @@ namespace SerwisAudiometryczny.Controllers
                 user.Decrypted.Email = model.Email;
                 user.Decrypted.PhoneNumber = model.PhoneNumber;
 
-                UserManager.Update(user);
+                var sth = UserManager.Update(user);
                 if (model.Password != null && model.Password != string.Empty)
                     if (model.Password.CompareTo(model.ConfirmPassword) == 0)
                     {
@@ -161,7 +161,7 @@ namespace SerwisAudiometryczny.Controllers
                         UserManager.AddPassword(user.Id, model.Password);
                     }
             }
-            return View(model);
+            return RedirectToAction("Details");
         }
         /// <summary>
         /// Metoda zwracająca szczegóły użytkownika.

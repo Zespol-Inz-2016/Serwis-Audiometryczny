@@ -27,7 +27,7 @@ namespace SerwisAudiometryczny
         {
             var manager = new ApplicationUserManager(new CustomUserStore(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser, int>(manager)
+            manager.UserValidator = new CustomValidator(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true

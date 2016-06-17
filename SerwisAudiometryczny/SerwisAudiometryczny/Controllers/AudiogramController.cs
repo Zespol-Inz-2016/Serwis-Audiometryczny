@@ -128,9 +128,9 @@ namespace SerwisAudiometryczny.Controllers
                     int currentUserId = User.Identity.GetUserId<int>();
                     ApplicationUser currentUser = datab.Users.FirstOrDefault(x => x.Id == currentUserId);
                     ApplicationUser user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById<ApplicationUser, int>(t.ID);
-                    if (user == null || currentUser.SensitiveDataAccess == null) continue;
+                    if (user == null || currentUser.SensitiveDataAccessIds == null) continue;
                     string userName = user.Name;
-                    if (userName != null && userName.Contains(model.PatientName) && currentUser.SensitiveDataAccess.Contains(user))
+                    if (userName != null && userName.Contains(model.PatientName) && currentUser.SensitiveDataAccessIds.Contains(user.Id))
                     {
                         res.Add(t);
                     }
@@ -175,13 +175,6 @@ namespace SerwisAudiometryczny.Controllers
                 {
                     var results = from t in db.AudiogramModels.Include("Instrument")
                                   where t.EditorID == CurrentUser.Id
-                                  select t;
-                    return View(results.ToList());
-                }
-                if (User.IsInRole("Patient"))
-                {
-                    var results = from t in db.AudiogramModels.Include("Instrument")
-                                  where t.PatientID == CurrentUser.Id
                                   select t;
                     return View(results.ToList());
                 }

@@ -14,21 +14,24 @@ namespace SerwisAudiometryczny.Helpers
 
         internal static void SeedIdentities(ApplicationDbContext context)
         {
-            string userName = "admin@admin.com";
+            int Id = 1;
             string password = "Qwerty_123!";
 
-            var userManager = new UserManager<ApplicationUser, int>(new CustomUserStore(context));
-            userManager.UserValidator = new UserValidator<ApplicationUser, int>(userManager) { AllowOnlyAlphanumericUserNames = false };
+            var userManager = new ApplicationUserManager(new CustomUserStore(context));
+            userManager.UserValidator = new CustomValidator(userManager) { AllowOnlyAlphanumericUserNames = false };
 
-            ApplicationUser user = userManager.FindByName(userName);
+            ApplicationUser user = userManager.FindById(Id);
             if (user == null)
             {
                 user = new ApplicationUser()
                 {
-                    UserName = userName,
-                    Email = userName,
+                    UserName = Guid.NewGuid().ToString(),
                     EmailConfirmed = true
                 };
+                user.Decrypted.Email = "admin@admin.com";
+                user.Decrypted.Address = "tam gdzie admin miszka";
+                user.Decrypted.Name = "Janusz Admin";
+
                 IdentityResult userResult = userManager.Create(user, password);
             }
         }

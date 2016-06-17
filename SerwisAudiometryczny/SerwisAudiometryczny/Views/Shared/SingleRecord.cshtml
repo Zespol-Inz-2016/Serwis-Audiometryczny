@@ -7,7 +7,10 @@
             <input type="text" class="asd um-name" name="Id" value="@Model.Id" readonly />
         </td>
         <td class="um-td">
-            <input type="text" class="asd um-name" name="Name" value="@Model.DecryptedUserName" readonly/>
+            <input type="text" class="asd um-name" name="Name" value="@Model.Decrypted.Name" readonly/>
+        </td>
+        <td class="um-td">
+            <input type="text" class="asd um-name" name="Email" value="@Model.Decrypted.Email" readonly />
         </td>
         <td class="um-td">
             @Html.Partial("~/Views/Shared/Checkbox.cshtml", new SerwisAudiometryczny.Models.CheckboxModel(@Model.UserManager.IsInRole(Model.Id,"Administrator"), "Administrator"))

@@ -32,9 +32,9 @@ namespace SerwisAudiometryczny
                 role.Name = "Administrator";
                 roleManager.Create(role);
 
-                string userName = "admin@admin.com";
-                ApplicationUser user = userManager.FindByName(userName);
-                userManager.AddToRole(user.Id, "Administrator");
+                int id = 1;
+                ApplicationUser user = userManager.FindById(1);
+                userManager.AddToRole(user.Id, AppRoles.Administrator.ToString());
             }
  
             if (!roleManager.RoleExists("Patient"))
@@ -57,6 +57,7 @@ namespace SerwisAudiometryczny
                 role.Name = "User";
                 roleManager.Create(role);
             }
+            dbContext.SaveChanges();
         }
     }
 }

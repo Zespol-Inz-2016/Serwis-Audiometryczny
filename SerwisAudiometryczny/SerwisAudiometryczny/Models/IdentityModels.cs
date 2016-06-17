@@ -13,206 +13,183 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 using System.Security.Principal;
+using System.Linq;
 
 namespace SerwisAudiometryczny.Models
 {
-    public static class IdentityExtensions
-    {
-        public static string GetDecryptedUsername(this IIdentity identity)
-        {
-            var claim = ((ClaimsIdentity)identity).FindFirst("DecryptUserName");
-            return (claim != null) ? claim.Value : string.Empty;
-        }
-    }
-
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     /// <summary>
     /// Klasa reprezentująca użytkownika.
     /// </summary>
     public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>, IXmlSerializable
     {
-        public class AplicationUserConfig : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<ApplicationUser>
+        [NotMapped]
+        public DecryptedUser Decrypted { get; set; }
+        [NotMapped]
+        public virtual ApplicationUserManager UserManager { get; set; }
+
+        public ApplicationUser(ApplicationUserManager userManager)
         {
-            public AplicationUserConfig()
+            UserManager = userManager;
+            Decrypted = new DecryptedUser(this);
+        }
+
+        public ApplicationUser()
+            : this(new ApplicationUserManager(new CustomUserStore(new ApplicationDbContext())))
+        {
+        }
+
+        private ApplicationUser(bool asNested)
+        { }
+        [NotMapped]
+        public class DecryptedUser : ApplicationUser
+        {
+            private ApplicationUser _parent;
+
+            internal DecryptedUser(ApplicationUser parent)
+                : base(true)
             {
-                Property(b => b.DBAdress);
-                Property(b => b.DBName);
-                Property(b => b.DBPhoneNumber);
+                _parent = parent;
+            }
+            [Display(Name = "Email")]
+            public override string Email
+            {
+                get
+                {
+                    return Encoder.IsEncrypted(_parent.Email) ? Encoder.Decrypt(_parent.Email) : _parent.Email;
+                }
+
+                set
+                {
+                    _parent.Email = Encoder.IsEncrypted(value) ? Encoder.Encrypt(value) : value;
+                }
+            }
+            public override int Id
+            {
+                get
+                {
+                    return _parent.Id;
+                }
+
+                set
+                {
+                    _parent.Id = value;
+                }
+            }
+            [Display(Name = "Numer telefonu")]
+            public override string PhoneNumber
+            {
+                get
+                {
+                    return _parent.PhoneNumber;
+                }
+
+                set
+                {
+                    _parent.PhoneNumber = value;
+                }
+            }
+            [Display(Name = "Adres")]
+            public override string Address
+            {
+                get
+                {
+                    return Encoder.IsEncrypted(_parent.Address) ? Encoder.Decrypt(_parent.Address) : _parent.Address;
+                }
+
+                set
+                {
+                    _parent.Address = Encoder.IsEncrypted(value) ? Encoder.Encrypt(value) : value;
+                }
+            }
+            [Display(Name = "Imię i Nazwisko")]
+            public override string Name
+            {
+                get
+                {
+                    return Encoder.IsEncrypted(_parent.Name) ? Encoder.Decrypt(_parent.Name) : _parent.Name;
+                }
+
+                set
+                {
+                    _parent.Name = Encoder.IsEncrypted(value) ? Encoder.Encrypt(value) : value;
+                }
+            }
+            public override string UserName
+            {
+                get
+                {
+                    return _parent.UserName;
+                }
+
+                set
+                {
+                    _parent.UserName = value;
+                }
+            }
+            public override ApplicationUserManager UserManager
+            {
+                get
+                {
+                    return _parent.UserManager;
+                }
+
+                set
+                {
+                    _parent.UserManager = value;
+                }
             }
         }
 
-        public ApplicationUserManager UserManager { get { return new ApplicationUserManager(new CustomUserStore(new ApplicationDbContext())); } }
-
-        private string name;
         /// <summary>
         /// Opisuje imię i nazwisko użytkownika.
         /// </summary>
-        [NotMapped]
         [Display(Name = "Imię i Nazwisko")]
-        public string Name
-        {
-            get
-            {
-                return Decrypt(name);
-            }
-            set
-            {
-                name = IsEncrypted(value) ? value : Encrypt(value);
-            }
-        }
-        [Column("Name")]
-        private string DBName
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-            }
-        }
-
-        private string address;
+        public virtual string Name { get; set; }
         /// <summary>
         /// Opisuje adres zamieszkania użytkownika.
         /// </summary>
-        [NotMapped]
         [Display(Name = "Adres")]
-        public string Address
-        {
-            get
-            {
-                return Decrypt(address);
-            }
-            set
-            {
-                address = IsEncrypted(value) ? value : Encrypt(value);
-            }
-        }
-        [Column("Address")]
-        private string DBAdress
-        {
-            get
-            {
-                return address;
-            }
-            set
-            {
-                address = value;
-            }
-        }
-
-        private string emaildn { get; set; }
+        public virtual string Address { get; set; }
         /// <summary>
         /// Opisuje adres e-mail użytkownika.
         /// </summary>
         [Display(Name = "Email")]
-        public override string Email
-        {
-            get
-            {
-                return emaildn;
-            }
-            set
-            {
-                emaildn = IsEncrypted(value) ? value : Encrypt(value);
-            }
-        }
-        /// <summary>
-        /// Opisuje niezaszyfrowany adres e-mail użytkownika.
-        /// </summary>
-        [NotMapped]
-        public string DecryptedEmail
-        {
-            get
-            {
-                return Decrypt(emaildn);
-            }
-            private set
-            {
-                emaildn = IsEncrypted(value) ? value : Encrypt(value);
-            }
-        }
-
+        public override string Email { get; set; }
         /// <summary>
         /// Opisuje numer telefonu użytkownika.
         /// </summary>
-        [NotMapped]
         [Display(Name = "Numer telefonu")]
-        public override string PhoneNumber
-        {
-            get
-            {
-                return Decrypt(base.PhoneNumber);
-            }
-            set
-            {
-                base.PhoneNumber = IsEncrypted(value) ? value : Encrypt(value);
-            }
-        }
-        [Phone]
-        [Column("PhoneNumber")]
-        private string DBPhoneNumber
-        {
-            get
-            {
-                return base.PhoneNumber;
-            }
-            set
-            {
-                base.PhoneNumber = value;
-            }
-        }
-
+        public override string PhoneNumber { get; set; }
         /// <summary>
         /// Opisuje nazwę użytkownika.
         /// </summary>
-        [Display(Name = "Nazwa użytkownika")]
-        public override string UserName
-        {
-            get
-            {
-                return base.UserName;
-            }
-            set
-            {
-                base.UserName = IsEncrypted(value) ? value : Encrypt(value);
-            }
-        }
-        /// <summary>
-        /// Opisuje niezaszyfrowaną nazwę użytkownika.
-        /// </summary>
-        [NotMapped]
-        public string DecryptedUserName
-        {
-            get
-            {
-                return Decrypt(base.UserName);
-            }
-            private set
-            {
-                base.UserName = Encrypt(value);
-            }
-        }
 
         /// <summary>
         /// Kolekcja posiadanych uprawnień użytkownika.
         /// </summary>
-        public List<AppRoles> userRoles { get; set; }
-
+        public virtual List<AppRoles> userRoles { get; set; }
+        public virtual string SensitiveDataAccessStorage { get; set; }
         /// <summary>
         /// Kolekcja zawierająca użytkowników, do których danych wrażliwych obecny szkodnik ma dostęp
         /// </summary>
         [Display(Name = "Dostęp do danych wrażliwych")]
-        public ICollection<ApplicationUser> SensitiveDataAccess { get; set; }
-
+        public virtual int[] SensitiveDataAccessIds
+        {
+            get
+            {
+                return Array.ConvertAll(SensitiveDataAccessStorage.Split(';'), int.Parse);
+            }
+            set
+            {
+                SensitiveDataAccessStorage = string.Join(";", value.OrderBy(x=>x).Distinct().ToArray());
+            }
+        }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
-            userIdentity.AddClaim(new Claim("DecryptUserName", DecryptedUserName));
             return userIdentity;
         }
 
@@ -242,14 +219,14 @@ namespace SerwisAudiometryczny.Models
             SecurityStamp = reader.ReadElementString("Zabezpieczenie");
             PasswordHash = reader.ReadElementString("Haslo");
             value = reader.ReadElementString("ImieNazwisko");
-            name = value != "" ? value : null;
+            Name = value != "" ? value : null;
             value = reader.ReadElementString("Adres");
-            DBAdress = value != "" ? value : null;
-            emaildn = reader.ReadElementString("Email");
+            Address = value != "" ? value : null;
+            Email = reader.ReadElementString("Email");
             EmailConfirmed = reader.ReadElementString("PotwierdzonyEmail") == "True" ? true : false;
             value = reader.ReadElementString("NumerTelefonu");
-            DBPhoneNumber = value != "" ? value : null;
-            
+            PhoneNumber = value != "" ? value : null;
+
             // Deserializacja uprawnień
             if (reader.Name == "Uprawnienia")
                 userRoles = new List<AppRoles>(4);
@@ -287,73 +264,17 @@ namespace SerwisAudiometryczny.Models
             writer.WriteElementString("NazwaUzytkownika", base.UserName);
             writer.WriteElementString("Zabezpieczenie", SecurityStamp);
             writer.WriteElementString("Haslo", PasswordHash);
-            writer.WriteElementString("ImieNazwisko", name);
-            writer.WriteElementString("Adres", DBAdress);
-            writer.WriteElementString("Email", emaildn);
+            writer.WriteElementString("ImieNazwisko", Name);
+            writer.WriteElementString("Adres", Address);
+            writer.WriteElementString("Email", Email);
             writer.WriteElementString("PotwierdzonyEmail", EmailConfirmed.ToString());
-            writer.WriteElementString("NumerTelefonu", DBPhoneNumber);
+            writer.WriteElementString("NumerTelefonu", PhoneNumber);
 
             // Serializacja uprawnień
             foreach (var item in UserManager.GetRoles(Id))
             {
                 writer.WriteElementString("Uprawnienia", item.ToString());
             }
-        }
-
-        private string Encrypt(string clearText)
-        {
-            if (clearText == null || clearText == string.Empty)
-                return clearText;
-            string EncryptionKey = "MAKV2SPBNI99212";
-            byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
-            using (Aes encryptor = Aes.Create())
-            {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(clearBytes, 0, clearBytes.Length);
-                        cs.Close();
-                    }
-                    clearText = "@" + Convert.ToBase64String(ms.ToArray());
-                }
-            }
-            return clearText;
-        }
-
-        private string Decrypt(string cipherText)
-        {
-            if (cipherText == null || cipherText == string.Empty)
-                return cipherText;
-            string EncryptionKey = "MAKV2SPBNI99212";
-            byte[] cipherBytes = Convert.FromBase64String(cipherText.Remove(0, 1));
-            using (Aes encryptor = Aes.Create())
-            {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(cipherBytes, 0, cipherBytes.Length);
-                        cs.Close();
-                    }
-                    cipherText = Encoding.Unicode.GetString(ms.ToArray());
-                }
-            }
-            return cipherText;
-        }
-
-        public static bool IsEncrypted(string s)
-        {
-            if (s == null || s == string.Empty)
-                return true;
-            else
-                return s.StartsWith("@");
         }
     }
 }

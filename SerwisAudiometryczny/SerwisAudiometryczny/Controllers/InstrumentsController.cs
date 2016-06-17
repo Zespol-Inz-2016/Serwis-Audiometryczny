@@ -155,6 +155,12 @@ namespace SerwisAudiometryczny.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             InstrumentModel instrumentModel = db.InstrumentModels.Find(id);
+            var found = db.AudiogramModels.Any(audiogram => (audiogram.Instrument.ID == id));
+            if(found)
+            {
+                ViewBag.Error = "Nie można usunąć tego instumentu - jest używany";
+                return View();
+            }
             db.InstrumentModels.Remove(instrumentModel);
             db.SaveChanges();
             return RedirectToAction("Index");

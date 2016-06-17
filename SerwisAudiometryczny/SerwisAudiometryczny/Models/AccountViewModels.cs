@@ -72,13 +72,6 @@ namespace SerwisAudiometryczny.Models
 
     public class LoginViewModel
     {
-        /// <summary>
-        /// Zmienna email
-        /// </summary>
-        [Required(ErrorMessage = "Email jest wymagany.")]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
 
         /// <summary>
         /// Password
@@ -94,6 +87,7 @@ namespace SerwisAudiometryczny.Models
         /// <summary>
         /// Zmienna ID
         /// </summary>
+        [Required(ErrorMessage = "ID jest wymagane")]
         public string ID { get; set; }
     }
 

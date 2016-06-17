@@ -87,7 +87,18 @@ namespace SerwisAudiometryczny.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false/*tu było RememberMe z LoginViewModel*/, shouldLockout: false);
+            int id;
+            ApplicationUser user;
+            SignInStatus result = SignInStatus.Failure;
+            if (int.TryParse(model.ID, out id))
+            {
+                user = UserManager.FindById(id);
+                string userName = user.UserName;
+                if(user!=null)
+                {
+                    result = await SignInManager.PasswordSignInAsync(userName, model.Password, isPersistent: false/*tu było RememberMe z LoginViewModel*/, shouldLockout: false);
+                }
+            }
             switch (result)
             {
                 case SignInStatus.Success:
@@ -121,10 +132,10 @@ namespace SerwisAudiometryczny.Controllers
         {
             ApplicationUser user = UserManager.FindById<ApplicationUser, int>(User.Identity.GetUserId<int>());
             AccountEditViewModel model = new AccountEditViewModel();
-            model.Name = user.Name;
-            model.Address = user.Address;
-            model.Email = user.DecryptedEmail;
-            model.PhoneNumber = user.PhoneNumber;
+            model.Name = user.Decrypted.Name;
+            model.Address = user.Decrypted.Address;
+            model.Email = user.Decrypted.Email;
+            model.PhoneNumber = user.Decrypted.PhoneNumber;
             return View(model);
         }
         /// <summary>
@@ -137,19 +148,16 @@ namespace SerwisAudiometryczny.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = UserManager.FindById<ApplicationUser, int>(User.Identity.GetUserId<int>());
-                user.Name = model.Name;
-                user.Address = model.Address;
-                user.Email = model.Email;
-                user.UserName = model.Email;
-                user.PhoneNumber = model.PhoneNumber;
-                UserManager.UserValidator = new UserValidator<ApplicationUser, int>(UserManager) { AllowOnlyAlphanumericUserNames = false };
+                user.Decrypted.Name = model.Name;
+                user.Decrypted.Address = model.Address;
+                user.Decrypted.Email = model.Email;
+                user.Decrypted.PhoneNumber = model.PhoneNumber;
 
-                UserManager.SetEmail<ApplicationUser, int>(User.Identity.GetUserId<int>(), model.Email);
                 UserManager.Update(user);
                 if (model.Password != null && model.Password != string.Empty)
                     if (model.Password.CompareTo(model.ConfirmPassword) == 0)
                     {
-                        UserManager.RemovePassword<ApplicationUser, int>(User.Identity.GetUserId<int>());
+                        UserManager.RemovePassword(User.Identity.GetUserId<int>());
                         UserManager.AddPassword(user.Id, model.Password);
                     }
             }
@@ -164,7 +172,7 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser model = UserManager.FindById<ApplicationUser, int>(User.Identity.GetUserId<int>());
+            ApplicationUser model = UserManager.FindById(User.Identity.GetUserId<int>());
             return View(model);
         }
 

@@ -96,14 +96,19 @@ namespace SerwisAudiometryczny
         {
         }
 
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
-        {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
-        }
-
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+    }
+    public class CustomValidator : UserValidator<ApplicationUser, int>
+    {
+        public CustomValidator(UserManager<ApplicationUser, int> manager) : base(manager)
+        {
+        }
+        public override Task<IdentityResult> ValidateAsync(ApplicationUser item)
+        {
+            return base.ValidateAsync(item.Decrypted);
         }
     }
 }

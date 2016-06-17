@@ -43,5 +43,8 @@ namespace SerwisAudiometryczny.Models
         [Display(Name = "Hasło")]
         public string Password { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        [Display(Name ="Dostęp do danych wrażliwych")]
+        public string SensitiveDataIds { get; set; }
     }
 }

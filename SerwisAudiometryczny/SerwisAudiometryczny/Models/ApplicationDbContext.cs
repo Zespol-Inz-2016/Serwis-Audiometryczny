@@ -15,11 +15,6 @@ namespace SerwisAudiometryczny.Models
         {
             return new ApplicationDbContext();
         }
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Configurations.Add(new ApplicationUser.AplicationUserConfig());
-            base.OnModelCreating(modelBuilder);
-        }
 
         public DbSet<AudiogramModel> AudiogramModels { get; set; }
         public DbSet<LogModel> LogModels { get; set; }

@@ -26,15 +26,10 @@ namespace SerwisAudiometryczny.Models
             : base(context)
         {
         }
-        public override Task<ApplicationUser> FindByNameAsync(string userName)
-        {
-            var user = Users.ToList().FirstOrDefault(u => u.DecryptedUserName == userName);
-            return Task.FromResult<ApplicationUser>(user);
-        }
         public override Task<ApplicationUser> FindByEmailAsync(string email)
         {
-            var user = Users.ToList().FirstOrDefault(u => u.DecryptedEmail == email);
-            return Task.FromResult<ApplicationUser>(user);
+            var user = Users.ToList().FirstOrDefault(u => u.Decrypted.Email == email);
+            return Task.FromResult(user);
         }
     }
 

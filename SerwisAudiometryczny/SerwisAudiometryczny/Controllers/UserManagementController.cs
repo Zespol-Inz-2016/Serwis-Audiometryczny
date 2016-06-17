@@ -9,6 +9,8 @@ using System.Net;
 using System.Collections.Generic;
 using System.Web.Security;
 using System;
+using System.IO;
+using System.Text;
 
 namespace SerwisAudiometryczny.Controllers
 {
@@ -121,7 +123,7 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserEditModelView model = new UserEditModelView() { Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email, PhoneNumber = currentUser.PhoneNumber };
+            UserEditModelView model = new UserEditModelView() { Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email, PhoneNumber = currentUser.PhoneNumber, SensitiveDataIds = currentUser.SensitiveDataAccessStorage?.Replace(';','\n') };
             ViewBag.UserName = currentUser.UserName;
             return View(model);
         }
@@ -145,11 +147,31 @@ namespace SerwisAudiometryczny.Controllers
                 currentUser.Name = model.Name;
                 currentUser.PhoneNumber = model.PhoneNumber;
 
-                IdentityResult sth;
                 if (model.Password != null && model.Password != String.Empty)
                 {
-                    string code = UserManager.GeneratePasswordResetToken(model.Id);
-                    sth = UserManager.ResetPassword(currentUser.Id, code, model.Password);
+                    UserManager.RemovePassword(model.Id);
+                    UserManager.AddPassword(model.Id, model.Password);
+                }
+
+                if (model.SensitiveDataIds != null && model.SensitiveDataIds != String.Empty)
+                {
+                    using (StringReader reader = new StringReader(model.SensitiveDataIds))
+                    {
+                        List<int> ids = new List<int>();
+                        while (reader.Peek() > -1)
+                        {
+                            int nextInt;
+                            if (int.TryParse(reader.ReadLine(), out nextInt))
+                            {
+                                ids.Add(nextInt);
+                            }
+                            else
+                            {
+                                return View();
+                            }
+                        }
+                        currentUser.SensitiveDataAccessIds = ids.ToArray();
+                    }
                 }
 
                 DbContext.SaveChanges();

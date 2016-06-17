@@ -7,16 +7,25 @@
 <h3 style="color: black;">Czy na pewno chcesz usunąć?</h3>
 <div class="text-large" style="color: black;">
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+    @if (ViewBag.Error != null)
+    {
+        <dl class="dl-horizontal">
+            @ViewBag.Error
+        </dl>
+    }
+    else
+    {
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
 
-    </dl>
+        </dl>
+    }
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()

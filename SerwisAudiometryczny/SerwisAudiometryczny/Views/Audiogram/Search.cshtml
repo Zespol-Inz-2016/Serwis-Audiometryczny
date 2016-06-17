@@ -8,160 +8,160 @@
 <h2>Wyszukiwarka audiogramów</h2> <hr/>
 
 <div style="color: black; font-size: 16px;">
-@using (Html.BeginForm())
-{
-	<div class="form-group">
-		<label class="col-md-3" for="PatientName">Imię pacjenta</label>
-		<input class="form-control" type="text" name="PatientName" id="PatientName" />
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="Diagnosis">Diagnoza</label>
-		<input class="form-control" type="text" name="Diagnosis" id="Diagnosis" />
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="Gender">Płeć</label>
-		<select class="form-control" id="Gender" name="Gender">
-            <option value=""></option>
-            <option value="0">Mężczyzna</option>
-			<option value="1">Kobieta</option>
-		</select>
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="ageFrom">Wiek od</label>
-		<input class="form-control" type="number" name="ageFrom" id="ageFrom" />
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="ageTo">Wiek do</label>
-		<input class="form-control" type="number" name="ageTo" id="ageTo" />
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="PercentageHearingLossFrom">Początkowy zakres ubytku słuchu (%)</label>
-		<input class="form-control" type="number" name="PercentageHearingLossFrom" id="PercentageHearingLossFrom" />
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="PercentageHearingLossTo">Końcowy zakres ubytku słuchu (%)</label>
-		<input class="form-control" type="number" name="PercentageHearingLossTo" id="PercentageHearingLossTo" />
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="isMusican">Muzyk</label>
-		<input class="form-control left" type="checkbox" name="isMusican" id="isMusican" />
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="Patient">Pacjent</label>
-		<input class="form-control" type="number" name="Patient" id="Patient" />
-	</div>
-	<div class="form-group">
-		<label class="col-md-3" for="Editor">Edytor</label>
-		<input class="form-control" type="number" name="Editor" id="Editor" />
-	</div>
-	<div class="span2 offset2">
-		<button type="submit" class="btn btn-default col-md-offset-3">Szukaj</button>
-	</div>
-	
-	if(Model != null)
-	{
-		<table>
-			<tr>
-				<th>
-					@Html.DisplayNameFor(x => x.LeftEar)
-				</th>
-				
-				<th>
-					@Html.DisplayNameFor(x => x.RightEar)
-				</th>
+    @using (Html.BeginForm())
+    {
+        <div class="form-group">
+            <label class="col-md-3" for="Diagnosis">Diagnoza</label>
+            <input class="form-control" type="text" name="Diagnosis" id="Diagnosis" />
+        </div>
+        <div class="form-group">
+            <label class="col-md-3" for="Gender">Płeć</label>
+            <select class="form-control" id="Gender" name="Gender">
+                <option value=""></option>
+                <option value="0">Mężczyzna</option>
+                <option value="1">Kobieta</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3" for="ageFrom">Wiek od</label>
+            <input class="form-control" type="number" name="ageFrom" id="ageFrom" />
+        </div>
+        <div class="form-group">
+            <label class="col-md-3" for="ageTo">Wiek do</label>
+            <input class="form-control" type="number" name="ageTo" id="ageTo" />
+        </div>
+        <div class="form-group">
+            <label class="col-md-3" for="PercentageHearingLossFrom">Początkowy zakres ubytku słuchu (%)</label>
+            <input class="form-control" type="number" name="PercentageHearingLossFrom" id="PercentageHearingLossFrom" />
+        </div>
+        <div class="form-group">
+            <label class="col-md-3" for="PercentageHearingLossTo">Końcowy zakres ubytku słuchu (%)</label>
+            <input class="form-control" type="number" name="PercentageHearingLossTo" id="PercentageHearingLossTo" />
+        </div>
+        <div class="form-group">
+            <label class="col-md-3" for="isMusican">Muzyk</label>
+            <input class="form-control left" type="checkbox" name="isMusican" id="isMusican" />
+        </div>
+        <div class="form-group">
+            <label class="col-md-3" for="Patient">Pacjent</label>
+            <input class="form-control" type="number" name="Patient" id="Patient" />
+        </div>
+        <div class="form-group">
+            <label class="col-md-3" for="Editor">Edytor</label>
+            <input class="form-control" type="number" name="Editor" id="Editor" />
+        </div>
+        <div class="span2 offset2">
+            <button type="submit" class="btn btn-default col-md-offset-3">Szukaj</button>
+        </div>
+    }
+    </div>
+        @if(Model!=null)
+        {
+        <div class="container-fluid">
+            <div class="row">
+                <table class="table row a-table">
+                    <tr>
+                        <th class="left-ear-filter reg">
+                            <div></div>
+                            @Html.DisplayNameFor(model => model.LeftEar)
+                        </th>
+                        <th class="right-ear-filter reg">
+                            <div></div>
+                            @Html.DisplayNameFor(model => model.RightEar)
+                        </th>
+                        <th class="diagnosis-filter reg">
+                            @Html.DisplayNameFor(model => model.Diagnosis)
+                        </th>
+                        <th class="gender-filter reg">
+                            @Html.DisplayNameFor(model => model.Gender)
+                        </th>
+                        <th class="nuisance-filter reg">
+                            @Html.DisplayNameFor(model => model.Nuisance)
+                        </th>
+                        <th class="age-filter reg">
+                            @Html.DisplayNameFor(model => model.Age)
+                        </th>
+                        <th class="percentage-hearing-loss-filter reg">
+                            @Html.DisplayNameFor(model => model.PercentageHearingLoss)
+                        </th>
+                        <th class="is-musician-filter reg">
+                            @Html.DisplayNameFor(model => model.IsMusician)
+                        </th>
+                        <th class="instrument-filter reg">
+                            @Html.DisplayNameFor(model => model.Instrument)
+                        </th>
+                        <th class="patient-id-filter reg" style="display:none;">
+                            @Html.DisplayNameFor(model => model.PatientID)
+                        </th>
+                        <th class="editor-id-filter reg" style="display:none;">
+                            @Html.DisplayNameFor(model => model.EditorID)
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="left-ear-filter">
+                                @Html.DisplayFor(modelItem => item.LeftEar)
+                            </td>
+                            <td class="right-ear-filter">
+                                @Html.DisplayFor(modelItem => item.RightEar)
+                            </td>
+                            <td class="diagnosis-filter">
+                                @Html.DisplayFor(modelItem => item.Diagnosis)
+                            </td>
+                            <td class="gender-filter">
+                                @Html.DisplayFor(modelItem => item.Gender)
+                            </td>
+                            <td class="nuisance-filter">
+                                @Html.DisplayFor(modelItem => item.Nuisance)
+                            </td>
+                            <td class="age-filter">
+                                @Html.DisplayFor(modelItem => item.Age)
+                            </td>
+                            <td class="percentage-hearing-loss-filter">
+                                @Html.DisplayFor(modelItem => item.PercentageHearingLoss)
+                            </td>
+                            <td class="is-musician-filter">
+                                @Html.DisplayFor(modelItem => item.IsMusician)
+                            </td>
+                            <td class="instrument-filter">
+                                @Html.DisplayFor(modelItem => item.Instrument.Name)
+                            </td>
+                            <td class="patient-id-filter" style="display:none;">
+                                @Html.DisplayFor(modelItem => item.PatientID)
+                            </td>
+                            <td class="editor-id-filter" style="display:none;">
+                                @Html.DisplayFor(modelItem => item.EditorID)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edytuj", "Edit", new { id = item.ID })
+                                @Html.ActionLink("Szczegóły", "Details", new { id = item.ID })
+                                @Html.ActionLink("Usuń", "Delete", new { id = item.ID })
+                            </td>
+                        </tr>
+                    }
 
-				<th>
-					@Html.DisplayNameFor(x => x.Diagnosis)
-				</th>
+                </table>
 
-				<th>
-					@Html.DisplayNameFor(x => x.Gender)
-				</th>
+            </div>
+            </div>
+        }
+            <div>
+                @Html.ActionLink("Powrót do listy", "Index")
+            </div>
 
-				<th>
-					@Html.DisplayNameFor(x => x.Nuisance)
-				</th>
+            <style type="text/css">
+                .left {
+                    width: 20px !important;
+                }
 
-				<th>
-					@Html.DisplayNameFor(x => x.Age)
-				</th>
+                tr > td:nth-child(1) > div:nth-child(1),
+                tr > td:nth-child(2) > div:nth-child(1) {
+                    display: none;
+                }
+            </style>
 
-				<th>
-					@Html.DisplayNameFor(x => x.PercentageHearingLoss)
-				</th>
-
-				<th>
-					@Html.DisplayNameFor(x => x.IsMusician)
-				</th>
-
-				<th>
-					@Html.DisplayNameFor(x => x.Instrument)
-				</th>
-
-				<th>
-					@Html.DisplayNameFor(x => x.PatientID)
-				</th>
-
-				<th>
-					@Html.DisplayNameFor(x => x.EditorID)
-				</th>
-			</tr>
-			@foreach (var x in Model)
-			{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => x.LeftEar )
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.RightEar )
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.Diagnosis)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.Gender)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.Nuisance)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.Age)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.PercentageHearingLoss)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.IsMusician)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.Instrument)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.PatientID)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => x.EditorID)
-					</td>
-				</tr>
-			}
-		</table>
-	}
-}
-</div>
-<div>
-	@Html.ActionLink("Powrót do listy", "Index")
-</div>
-
-<style type="text/css">
-	.left{
-		width: 20px !important;
-	}
-	tr > td:nth-child(1) > div:nth-child(1),
-	tr > td:nth-child(2) > div:nth-child(1){
-		display: none;
-	}
-</style>
-
-@section Scripts {
-	@Scripts.Render("~/bundles/jqueryval")
-}
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }

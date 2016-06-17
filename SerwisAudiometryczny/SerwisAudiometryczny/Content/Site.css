@@ -37,25 +37,42 @@ input, select, textarea {
 .guzik
 {
     display: block;
-    margin-left:215px ;
+    margin-left:230px ;
+	margin-top: 25px !important;
 }
 .login-form-rot{
     margin-left: 30px !important;
     margin-top: -30px;
 }
 .LogBox
-{
+{   
+background-color: #5C5C5C;
     width: 380px;
+
+    margin-top: 12%;
+    height: 330px;
+
     margin-top: 10%;
-    height: auto;
+  
+
     color: black;
+	border:2px solid #000; 
+    border-radius:10px;
+	margin-left:auto;
+    margin-right:auto;
+	opacity: 0.6 ; 
 }
 .errorField
 {
     font-size: 14px;
     font-weight: bold;
     margin-left: 30px;
+
+
+    color: orange;
+
     margin-bottom: 5px;
+
 }
 .zmiana
 {
@@ -68,7 +85,7 @@ input, select, textarea {
 }
 .zmiana3
 {
-    margin-top:40px ;
+     margin-top:10px ;
     margin-left:30px;
 }
 .centerPower2

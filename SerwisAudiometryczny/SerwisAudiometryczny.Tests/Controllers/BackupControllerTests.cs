@@ -48,7 +48,7 @@ namespace SerwisAudiometryczny.Controllers.Tests
         {
             BackupController TestSend = new BackupController();
 
-            Stream stream = databaseBackuper.Backup();
+            Stream stream = databaseBackuper.Backup("bp");
             string contentType = MimeMapping.GetMimeMapping(Server.MapPath("~/App_Data/backup.zip"));
             string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_SerwisAudiometryczny.zip";
             FileStreamResult wynik = new FileStreamResult(stream, contentType) { FileDownloadName = fileName };

@@ -20,7 +20,6 @@ namespace SerwisAudiometryczny.Controllers
     [Authorize(Roles = "Administrator")]
     public class UserManagementController : Controller
     {
-        private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         /// <summary>
         /// Zarządca użytkowników

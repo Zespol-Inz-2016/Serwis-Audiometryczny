@@ -64,6 +64,24 @@ namespace SerwisAudiometryczny.Controllers
             return View(frequencyModel);
         }
 
+        public void GenerateOctave()
+        {
+            FrequencyModel[] octave = new FrequencyModel[11];
+            octave[0] = new FrequencyModel() { Frequency = 16 };
+            octave[1] = new FrequencyModel() { Frequency = 32 };
+            octave[2] = new FrequencyModel() { Frequency = 63 };
+            octave[3] = new FrequencyModel() { Frequency = 125 };
+            octave[4] = new FrequencyModel() { Frequency = 250 };
+            octave[5] = new FrequencyModel() { Frequency = 500 };
+            octave[6] = new FrequencyModel() { Frequency = 1000 };
+            octave[7] = new FrequencyModel() { Frequency = 2000 };
+            octave[8] = new FrequencyModel() { Frequency = 4000 };
+            octave[9] = new FrequencyModel() { Frequency = 8000 };
+            octave[10] = new FrequencyModel() { Frequency = 1600 };
+            db.FrequencyModels.AddRange(octave);
+            db.SaveChanges();
+        }
+
         /// <summary>
         /// Metoda wyświetlająca widok /Frequency/Create.
         /// </summary>

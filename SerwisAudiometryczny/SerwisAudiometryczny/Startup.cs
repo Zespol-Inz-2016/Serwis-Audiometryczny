@@ -33,7 +33,7 @@ namespace SerwisAudiometryczny
                 roleManager.Create(role);
 
                 int id = 1;
-                ApplicationUser user = userManager.FindById(1);
+                ApplicationUser user = userManager.FindById(id);
                 userManager.AddToRole(user.Id, AppRoles.Administrator.ToString());
             }
  

@@ -50,7 +50,7 @@
                 </dt>
 
                 <dd id="LeftEarLevels">
-                    @foreach(var left in Model.Audiogram.LeftEar.Levels)
+                    @foreach (var left in Model.Audiogram.LeftEar.Levels)
                     {
                         <div class="codec le code-elems">@left</div>
                     }
@@ -61,7 +61,7 @@
                 </dt>
 
                 <dd id="RightEarLevels">
-                    @foreach(var right in Model.Audiogram.RightEar.Levels)
+                    @foreach (var right in Model.Audiogram.RightEar.Levels)
                     {
                         <div class="codec ri code-elems">@right</div>
                     }
@@ -118,18 +118,51 @@
                     @Html.DisplayNameFor(model => model.Audiogram.Instrument)
                 </dt>
 
-                <dd class="instrument">  
+                <dd class="instrument">
                     @Html.DisplayFor(model => model.Audiogram.Instrument.Name)
                 </dd>
-                
+
                 <dt>
                     @Html.DisplayNameFor(model => model.Audiogram.PatientID)
                 </dt>
-
+                
                 <dd>
                     @Html.DisplayFor(model => model.Audiogram.PatientID)
                 </dd>
+                @if (Model.ShowPatientData)
+                {
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Patient.Decrypted.Name)
+                    </dt>
 
+                    <dd>
+                        @Html.DisplayFor(model => model.Patient.Decrypted.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Patient.Decrypted.Email)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Patient.Decrypted.Email)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Patient.Decrypted.Address)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Patient.Decrypted.Address)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Patient.Decrypted.PhoneNumber)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Patient.Decrypted.PhoneNumber)
+                    </dd>
+                }
                 <dt>
                     @Html.DisplayNameFor(model => model.Audiogram.EditorID)
                 </dt>
@@ -137,13 +170,47 @@
                 <dd>
                     @Html.DisplayFor(model => model.Audiogram.EditorID)
                 </dd>
+                @if (Model.ShowEditorData)
+                {
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Editor.Decrypted.Name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Editor.Decrypted.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Editor.Decrypted.Email)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Editor.Decrypted.Email)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Editor.Decrypted.Address)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Editor.Decrypted.Address)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Editor.Decrypted.PhoneNumber)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Editor.Decrypted.PhoneNumber)
+                    </dd>
+                }
+            </dl>
                 <script>
                     var elems_for_letters = document.querySelectorAll('dt');
                     for (var i = 0; i < elems_for_letters.length; i++) {
                         elems_for_letters[i].innerHTML = elems_for_letters[i].innerHTML.replace(/([a-z])([A-Z])/g, '$1 $2');
                     }
                 </script>
-            </dl>
         </div>
         <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12">
             <div id="graf">

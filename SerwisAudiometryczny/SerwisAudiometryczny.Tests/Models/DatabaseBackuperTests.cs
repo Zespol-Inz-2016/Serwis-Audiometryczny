@@ -21,7 +21,7 @@ namespace SerwisAudiometryczny.Models.Tests
             DatabaseBackuper TestBackup = new DatabaseBackuper();
 
             FileStream wynik = new FileStream(zipPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.DeleteOnClose);
-            FileStream oczekiwany = TestBackup.Backup() as FileStream;
+            FileStream oczekiwany = TestBackup.Backup("bp") as FileStream;
 
             Assert.AreSame(oczekiwany, wynik);
 

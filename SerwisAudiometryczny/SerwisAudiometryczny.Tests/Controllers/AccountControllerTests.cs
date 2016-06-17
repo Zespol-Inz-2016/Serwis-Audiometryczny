@@ -41,7 +41,7 @@ namespace SerwisAudiometryczny.Controllers.Tests
         [TestMethod()]
         public async void LoginTest1()
         {
-            var model = new LoginViewModel { Email = "user123@gmail.com", Password = "somepass12" };
+            var model = new LoginViewModel { ID = "2", Password = "somepass12" };
             controller = new AccountController();
             string url = "//adres_serwera/sciezka_dostępu";
             ViewResult view = await controller.Login(model, url) as ViewResult;

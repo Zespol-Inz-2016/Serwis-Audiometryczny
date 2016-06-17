@@ -211,6 +211,14 @@ namespace SerwisAudiometryczny.Controllers
                 ApplicationUser Patient = datab.Users.FirstOrDefault(x => x.Id == audiogramModel.PatientID);
                 audiogramDisplay.Patient = Patient;
 
+                int[] sensitiveDataIds = CurrentUser.SensitiveDataAccessIds;
+
+                audiogramDisplay.ShowEditorData = sensitiveDataIds.Contains(Editor.Id);
+                audiogramDisplay.ShowPatientData = sensitiveDataIds.Contains(Patient.Id);
+
+                if (Editor.Id == CurrentUser.Id) audiogramDisplay.ShowEditorData = true;
+                if (Patient.Id == CurrentUser.Id) audiogramDisplay.ShowPatientData = true;
+
                 FrequencyModel[] FrequencyModelArray = db.FrequencyModels.ToArray();
                 if (FrequencyModelArray == null)
                 {

@@ -18,11 +18,10 @@ namespace SerwisAudiometryczny.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            var user = User.Identity.GetUserId<int>();
-            int currentUserId = User.Identity.GetUserId<int>();
-
             if (User != null && User.IsInRole("Administrator"))
                 return View("~/Views/Admin/Index.cshtml");
+            if (User != null)
+                return View("~/Views/Home/Start.cshtml");
 
             return View();
         }

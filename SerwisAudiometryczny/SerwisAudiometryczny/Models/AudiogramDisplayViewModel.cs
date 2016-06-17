@@ -21,5 +21,7 @@
         /// Służy przekazaniu tablicy częstotliwości do widoku wyświetlania.
         /// </summary>
         public int[] Frequencies { get; set; }
+        public bool ShowPatientData { get; set; }
+        public bool ShowEditorData { get; set; }
     }
 }

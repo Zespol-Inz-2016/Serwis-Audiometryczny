@@ -47,14 +47,14 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="page">Określa numer strony</param>
         /// <returns></returns>
         // GET: Log
-        [Authorize(Roles="Administrator, Patient, Researcher, User")]
+        [Authorize(Roles = "Administrator, Patient, Researcher, User")]
         public ActionResult Index(int? page)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
             int currentUserId = User.Identity.GetUserId<int>();
-            
+
             UserManager<ApplicationUser, int> UserManager = new UserManager<ApplicationUser, int>(new CustomUserStore(new ApplicationDbContext()));
 
             if (User != null && UserManager.IsInRole(currentUserId, "Administrator"))
@@ -69,7 +69,6 @@ namespace SerwisAudiometryczny.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: Search
-        [Authorize(Roles = "Administrator")]
         public ActionResult Search()
         {
             return View();
@@ -80,12 +79,19 @@ namespace SerwisAudiometryczny.Controllers
         /// <param name="model">Określa zmienne z modelu LogSearchViewModel</param>
         /// <returns></returns>
         // POST: Search
-        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult Search(LogSearchViewModel model)
         {
+            UserManager<ApplicationUser, int> UserManager = new UserManager<ApplicationUser, int>(new CustomUserStore(new ApplicationDbContext()));
             var logs = from i in db.LogModels
                        select i;
+            if (!UserManager.IsInRole(User.Identity.GetUserId<int>(), AppRoles.Administrator.ToString()))
+            {
+                logs = from i in db.LogModels
+                       where i.UserId == User.Identity.GetUserId<int>()
+                       select i;
+            }
+
             if (model.UserId != null)
             {
                 logs = from i in logs

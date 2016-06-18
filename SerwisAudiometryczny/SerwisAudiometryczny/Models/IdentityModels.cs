@@ -212,7 +212,14 @@ namespace SerwisAudiometryczny.Models
         {
             get
             {
-                return Array.ConvertAll(SensitiveDataAccessStorage.Split(';'), int.Parse);
+				if(SensitiveDataAccessStorage != null)
+				{
+					return Array.ConvertAll(SensitiveDataAccessStorage.Split(';'), int.Parse);
+				}
+				else
+				{
+					return new int[] {};
+				}
             }
             set
             {
@@ -260,6 +267,8 @@ namespace SerwisAudiometryczny.Models
             EmailConfirmed = reader.ReadElementString("PotwierdzonyEmail") == "True" ? true : false;
             value = reader.ReadElementString("NumerTelefonu");
             PhoneNumber = value != "" ? value : null;
+            value = reader.ReadElementString("DostepDoDanychWrazliwych");
+            SensitiveDataAccessStorage = value != "" ? value : null;
 
             // Deserializacja uprawnień
             if (reader.Name == "Uprawnienia")
@@ -303,6 +312,7 @@ namespace SerwisAudiometryczny.Models
             writer.WriteElementString("Email", Email);
             writer.WriteElementString("PotwierdzonyEmail", EmailConfirmed.ToString());
             writer.WriteElementString("NumerTelefonu", PhoneNumber);
+            writer.WriteElementString("DostepDoDanychWrazliwych", SensitiveDataAccessStorage);
 
             // Serializacja uprawnień
             foreach (var item in UserManager.GetRoles(Id))

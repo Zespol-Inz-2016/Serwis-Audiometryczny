@@ -82,7 +82,12 @@ namespace SerwisAudiometryczny.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, Address = model.Address };
+                var user = new ApplicationUser();
+                user.Decrypted.Name = model.Name;
+                user.UserName = Guid.NewGuid().ToString();
+                user.Decrypted.Email = model.Email;
+                user.Decrypted.PhoneNumber = model.PhoneNumber
+                user.Decrypted.Address = model.Address
                 UserManager.UserValidator = new UserValidator<ApplicationUser, int>(UserManager) { AllowOnlyAlphanumericUserNames = false };
                 if (UserManager.FindByEmail(model.Email) != null)
                 {
@@ -131,7 +136,11 @@ namespace SerwisAudiometryczny.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserEditModelView model = new UserEditModelView() { Id = myId, Name = currentUser.Name, Address = currentUser.Address, Email = currentUser.Email, PhoneNumber = currentUser.PhoneNumber, SensitiveDataIds = currentUser.SensitiveDataAccessStorage?.Replace(';','\n') };
+            UserEditModelView model = new UserEditModelView() 
+				{ Id = myId, Name = currentUser.Decrypted.Name, Address = currentUser.Decrypted.Address, 
+					Email = currentUser.Decrypted.Email, PhoneNumber = currentUser.PhoneNumber, 
+					SensitiveDataIds = currentUser.SensitiveDataAccessStorage?.Replace(';','\n') 
+				};
             ViewBag.UserName = currentUser.UserName;
             return View(model);
         }
